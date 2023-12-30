@@ -25,6 +25,7 @@ public class MailServiceImpl implements MailService {
 
     @Value("${spring.mail.sender.email}")
     private String sender;
+
     @Override
     public void send(
             EmailMessageDto message,
@@ -52,7 +53,7 @@ public class MailServiceImpl implements MailService {
 
             mailSender.send(msg);
 
-            log.info("Mail Sent Successfully");
+            log.info("Mail Sent Successfully {}", message);
         } catch (Exception e) {
             log.error("Error while Sending Mail, msg {}", e.getMessage());
         }
