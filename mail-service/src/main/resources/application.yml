@@ -1,0 +1,50 @@
+spring:
+  rabbitmq:
+    headers:
+      x-dead-letter-exchange: dead-letter.exchange
+      x-dead-letter-routing-key: dead-letter.routing-key
+    queues:
+      news-letter-name: news-letter.queue
+      news-letter-routing-key: news-letter.routing-key
+      news-letter-exchange: news-letter.exchange
+    username: ${RABBIT_USERNAME:user}
+    password: ${RABBIT_PASSWORD:password}
+    host: ${RABBIT_HOST:localhost}
+    listener:
+      direct:
+        retry:
+          enabled: true
+          initial-interval: 3000 # 3 seconds
+          max-attempts: 3
+          max-interval: 10000 # 10 seconds
+          multiplier: 2
+          stateless: true
+        acknowledge-mode: auto
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 3000 # 3 seconds
+          max-attempts: 3
+          max-interval: 10000 # 10 seconds
+          multiplier: 2
+          stateless: true
+        acknowledge-mode: auto
+    ssl:
+      validate-server-certificate: false
+  application:
+    name: mail-service
+  mail:
+    host: ${SMTP_HOST:smtp.gmail.com}
+    username: ${SMTP_USERNAME:kkraken2005@gmail.com}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    sender:
+      email: no-reply@social-network.com
+    port: 587
+  freemarker:
+    template-loader-path: "classpath:/templates"
