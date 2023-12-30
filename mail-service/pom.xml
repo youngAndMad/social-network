@@ -7,6 +7,8 @@
         <artifactId>social-network</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
+
+    <packaging>jar</packaging>
     <artifactId>mail-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
@@ -42,6 +44,12 @@
             <groupId>org.springframework.amqp</groupId>
             <artifactId>spring-rabbit-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>rabbitmq</artifactId>
+            <scope>test</scope>
+            <version>${testcontainers.version}</version>
         </dependency>
     </dependencies>
 

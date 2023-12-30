@@ -11,7 +11,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class RabbitProperties {
 
     private Headers headers;
-    private Long baseTtl;
     private Queues queues;
     private String username;
     private String password;

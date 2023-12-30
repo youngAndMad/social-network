@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.boot.autoconfigure.amqp.SimpleRabbitListenerContainerFactoryConfigurer;
@@ -69,6 +70,16 @@ public class ConnectionConfig {
         configurer.configure(factory, connectionFactory);
         factory.setErrorHandler(errorHandler);
         return factory;
+    }
+
+    @Bean
+    RabbitTemplate rabbitTemplate(
+            ConnectionFactory connectionFactory,
+            MessageConverter jsonMessageConverter
+    ) {
+        final var rabbitTemplate = new RabbitTemplate(connectionFactory);
+        rabbitTemplate.setMessageConverter(jsonMessageConverter);
+        return rabbitTemplate;
     }
 
 

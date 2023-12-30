@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
+import socialapp.mailservice.config.rabbit.RabbitProperties;
 import socialapp.mailservice.model.dto.EmailMessageDto;
 import socialapp.mailservice.model.enums.MailMessageType;
 import socialapp.mailservice.service.MailService;
@@ -26,8 +27,8 @@ public class EmailConsumer {
      * @see MailService
      * @see MailMessageType
      */
-    @RabbitListener(queues = "${spring.rabbitmq.queues.newsletter.name}")
-    void consumeNewsLetter(EmailMessageDto message) {
+    @RabbitListener(queues = {"${spring.rabbitmq.queues.news-letter-name}"})
+    public void consumeNewsLetter(EmailMessageDto message) {
         log.info("Consuming email: {}", message);
         mailService.send(message, MailMessageType.NEWSLETTER);
     }
