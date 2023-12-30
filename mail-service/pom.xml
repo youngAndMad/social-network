@@ -6,7 +6,6 @@
         <groupId>social-app</groupId>
         <artifactId>social-network</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <artifactId>mail-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>

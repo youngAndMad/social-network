@@ -14,5 +14,14 @@ spring:
     sender:
       email: no-reply@social-network.com
     port: 587
+  rabbitmq:
+    queues:
+      news-letter:
+        routing-key: news-letter.routing-key
+        name: news-letter.queue
+        exchange: news-letter.exchange
+    username: guest
+    password: guest
+    host: localhost
   freemarker:
     template-loader-path: "classpath:/templates"
