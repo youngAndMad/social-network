@@ -1,4 +1,38 @@
 spring:
+  rabbitmq:
+    baseTtl: 3000 # 3 seconds
+    headers:
+      x-dead-letter-exchange: dead-letter.exchange
+      x-dead-letter-routing-key: dead-letter.routing-key
+    queues:
+      news-letter-name: news-letter.queue
+      news-letter-routing-key: news-letter.routing-key
+      news-letter-exchange: news-letter.exchange
+
+    username: user
+    password: password
+    host: localhost
+    listener:
+      direct:
+        retry:
+          enabled: true
+          initial-interval: 3000 # 3 seconds
+          max-attempts: 2
+          max-interval: 10000 # 10 seconds
+          multiplier: 2
+          stateless: true
+        acknowledge-mode: auto
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 3000 # 3 seconds
+          max-attempts: 2
+          max-interval: 10000 # 10 seconds
+          multiplier: 2
+          stateless: true
+        acknowledge-mode: auto
+    ssl:
+      validate-server-certificate: false
   application:
     name: mail-service
   mail:
@@ -14,14 +48,5 @@ spring:
     sender:
       email: no-reply@social-network.com
     port: 587
-  rabbitmq:
-    queues:
-      news-letter:
-        routing-key: news-letter.routing-key
-        name: news-letter.queue
-        exchange: news-letter.exchange
-    username: user
-    password: password
-    host: localhost
   freemarker:
-    template-loader-path: "classpath:/templates"
+    template-loader-path: "classpath:/templates"/
