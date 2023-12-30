@@ -13,6 +13,9 @@
   <groupId>social-app</groupId>
   <artifactId>social-network</artifactId>
   <packaging>pom</packaging>
+  <modules>
+    <module>apigateway</module>
+  </modules>
   <version>1.0-SNAPSHOT</version>
 
   <name>social-network Maven Webapp</name>
