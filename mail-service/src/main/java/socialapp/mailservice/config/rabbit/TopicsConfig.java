@@ -67,11 +67,4 @@ public class TopicsConfig {
                 .noargs();
     }
 
-    @Bean
-    Queue deadLetterQueue() {
-        return QueueBuilder
-                .durable(rabbitProperties.getQueues().getDeadLetterName())
-                .build();
-    }
-
 }
