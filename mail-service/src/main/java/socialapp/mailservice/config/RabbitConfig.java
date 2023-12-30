@@ -2,14 +2,17 @@ package socialapp.mailservice.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.amqp.SimpleRabbitListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.amqp.support.converter.MessageConverter;
+import socialapp.mailservice.consumer.advice.RabbitErrorHandler;
 
 
 /**
@@ -38,6 +41,7 @@ public class RabbitConfig {
     @Value("${spring.rabbitmq.queues.news-letter.routing-key}")
     private String newsLetterRoutingKey;
 
+
     /**
      * Configures a Jackson2JsonMessageConverter as the default message converter for RabbitMQ.
      *
@@ -55,12 +59,37 @@ public class RabbitConfig {
      */
     @Bean
     ConnectionFactory connectionFactory() {
-        var connectionFactory = new CachingConnectionFactory(rabbitHost);
+        var fct = new CachingConnectionFactory(rabbitHost);
 
-        connectionFactory.setUsername(rabbitUsername);
-        connectionFactory.setPassword(rabbitPassword);
+        fct.setUsername(rabbitUsername);
+        fct.setPassword(rabbitPassword);
 
-        return connectionFactory;
+        return fct;
+    }
+
+    /**
+     * Configures a {@code SimpleRabbitListenerContainerFactory} bean for handling RabbitMQ message listeners.
+     * This factory is responsible for creating {@code SimpleRabbitListenerContainer} instances used to
+     * asynchronously consume messages from RabbitMQ queues.
+     *
+     * @param connectionFactory       The {@code ConnectionFactory} used for creating connections to RabbitMQ.
+     * @param configurer              The {@code SimpleRabbitListenerContainerFactoryConfigurer} for configuring the factory.
+     * @param errorHandler            The custom {@code RabbitErrorHandler} for handling errors during message consumption.
+     * @return A configured {@code SimpleRabbitListenerContainerFactory} bean.
+     * @see SimpleRabbitListenerContainerFactory
+     * @see SimpleRabbitListenerContainerFactoryConfigurer
+     * @see RabbitErrorHandler
+     */
+    @Bean
+    SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(
+            ConnectionFactory connectionFactory,
+            SimpleRabbitListenerContainerFactoryConfigurer configurer,
+            RabbitErrorHandler errorHandler
+    ) {
+        var factory = new SimpleRabbitListenerContainerFactory();
+        configurer.configure(factory, connectionFactory);
+        factory.setErrorHandler(errorHandler);
+        return factory;
     }
 
 
