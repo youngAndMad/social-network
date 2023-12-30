@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: mail-service
+  mail:
+    host: ${SMTP_HOST:smtp.gmail.com}
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    sender:
+      email: no-reply@social-network.com
+    port: 587
+  freemarker:
+    template-loader-path: "classpath:/templates"
