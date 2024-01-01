@@ -9,7 +9,6 @@
         <relativePath/>
     </parent>
 
-
     <groupId>social-app</groupId>
     <artifactId>social-network</artifactId>
     <packaging>pom</packaging>
