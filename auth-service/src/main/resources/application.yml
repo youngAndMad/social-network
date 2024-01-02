@@ -1,0 +1,21 @@
+server:
+  port: 8080
+spring:
+  security:
+    oauth2:
+      authorizationserver:
+        client:
+          demo-client:
+            require-authorization-consent: true
+            registration:
+              client-id: demo
+              client-secret: "{noop}secret"
+              authorization-grant-types: client_credentials,authorization_code,refresh_token
+              redirect-uris: http://localhost:8082/login/oauth2/code/reg-client
+              scopes: user.read,user.write,openid
+              client-authentication-methods: client_secret_basic
+logging:
+  level:
+    org.springframework:
+      web: debug
+      security: debug

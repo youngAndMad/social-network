@@ -4,7 +4,14 @@ qr:
   charset: UTF-8
 server:
   port: 7070
+  servlet:
+    context-path: /api/v1/qr
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080
   application:
     name: qr-service
 logging:

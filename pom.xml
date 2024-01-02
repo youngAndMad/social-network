@@ -77,6 +77,7 @@
     <modules>
         <module>mail-service</module>
         <module>qr-service</module>
+        <module>auth-service</module>
     </modules>
 
     <build>

@@ -18,7 +18,7 @@ public class QrController {
 
     private final QrService qrService;
 
-    @GetMapping("qr")
+    @GetMapping("generate")
     @Operation(summary = "Generates a QR code for the provided link.")
     public CompletableFuture<Void> generateQR(
             HttpServletResponse response,
@@ -26,5 +26,6 @@ public class QrController {
     ) {
         return qrService.generateQRAsync(response, link);
     }
+
 
 }
