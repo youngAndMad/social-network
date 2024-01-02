@@ -4,26 +4,22 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.5</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>social-app</groupId>
+        <artifactId>social-network</artifactId>
+        <version>1.0-SNAPSHOT</version>
     </parent>
 
-
+    <packaging>jar</packaging>
     <artifactId>auth-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>auth-service</name>
     <description>auth-service</description>
 
-    <properties>
-        <java.version>17</java.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-authorization-server</artifactId>
+            <version>3.1.2</version>
         </dependency>
     </dependencies>
 
