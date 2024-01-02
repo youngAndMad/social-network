@@ -1,4 +1,20 @@
 qr:
+  width: 600
+  height: 600
   charset: UTF-8
 server:
   port: 7070
+spring:
+  application:
+    name: qr-service
+logging:
+  level:
+    org.springframework.web: debug
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,health,info

@@ -25,6 +25,10 @@ public class QrServiceImpl implements QrService {
 
     @Value("${qr.charset}")
     private String charset;
+    @Value("${qr.height}")
+    private Integer height;
+    @Value("${qr.width}")
+    private Integer width;
 
     /**
      * Asynchronously generates a QR code for the provided link and writes it
@@ -50,7 +54,7 @@ public class QrServiceImpl implements QrService {
                 matrix = new MultiFormatWriter()
                         .encode(
                                 new String(link.getBytes(charset), charset),
-                                BarcodeFormat.QR_CODE, 600, 600
+                                BarcodeFormat.QR_CODE, width, height
                         );
 
 
