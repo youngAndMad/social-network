@@ -1,0 +1,4 @@
+qr:
+  charset: UTF-8
+server:
+  port: 7070
