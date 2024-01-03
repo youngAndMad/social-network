@@ -39,8 +39,8 @@ jobs:
           SERVICES: ${{ steps.changes.outputs.services }}
     outputs:
       api-gateway: ${{ steps.changes.outputs.api-gateway }}
-      auth-service: ${{ steps.changes.outputs.auth-server }}
-      mail-service: ${{ steps.changes.outputs.mail-sender}}
+      auth-service: ${{ steps.changes.outputs.auth-service }}
+      mail-service: ${{ steps.changes.outputs.mail-service }}
       qr-service: ${{ steps.changes.outputs.qr-service }}
       storage-service: ${{ steps.changes.outputs.storage-service }}
 
