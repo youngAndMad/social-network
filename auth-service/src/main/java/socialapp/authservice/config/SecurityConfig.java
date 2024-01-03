@@ -15,7 +15,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-
   @Bean
   UserDetailsService inMemoryUserDetailsManager() {
     var userBuilder = User.builder();
