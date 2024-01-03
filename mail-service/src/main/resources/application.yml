@@ -49,5 +49,6 @@ spring:
   freemarker:
     template-loader-path: "classpath:/templates"
 
+
 server:
-  port: 8780
+  port: 8781
