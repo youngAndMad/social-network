@@ -2,7 +2,7 @@ name: Continuous Integration
 
 on:
   push:
-    branches: [master]
+    branches: [ master ]
     paths:
       - 'api-gateway/**'
       - 'auth-service/**'
@@ -65,7 +65,10 @@ jobs:
         run: docker build -t daneker/qr-service -f qr-service/Dockerfile qr-service/
 
       - name: Log in to Docker Hub
-        run: docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
 
       - name: Push Docker Image Qr service
         run: docker push daneker/qr-service
@@ -119,7 +122,10 @@ jobs:
         run: docker build -t daneker/auth-service -f auth-service/Dockerfile auth-service/
 
       - name: Log in to Docker Hub
-        run: docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
 
       - name: Push Docker Image Qr service
         run: docker push daneker/auth-service
@@ -144,7 +150,10 @@ jobs:
         run: docker build -t daneker/api-gateway -f api-gateway/Dockerfile api-gateway/
 
       - name: Log in to Docker Hub
-        run: docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
 
       - name: Push Docker Image Qr service
         run: docker push daneker/api-gateway
