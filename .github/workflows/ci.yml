@@ -91,9 +91,12 @@ jobs:
         run: docker build -t daneker/mail-service -f mail-service/Dockerfile mail-service/
 
       - name: Log in to Docker Hub
-        run: docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
 
-      - name: Push Docker Image Qr service
+      - name: Push Docker Image Mail service
         run: docker push daneker/mail-service
   auth-service:
     needs: changes
