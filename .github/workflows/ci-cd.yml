@@ -1,0 +1,157 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'api-gateway/**'
+      - 'auth-service/**'
+      - 'mail-service/**'
+      - 'qr-service/**'
+      - 'storage-service/**'
+
+jobs:
+  changes:
+    name: Trigger build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            api-gateway:
+              - 'api-gateway/**'
+            auth-service:
+              - 'auth-service/**'
+            mail-service:
+              - 'mail-service/**'
+            qr-service:
+              - 'qr-service/**'
+            storage-service:
+              - 'storage-service/**'
+      - name: Check changes for each service
+        run: |
+          echo "Changed files: ${{ github.event_name }} ${{ github.event.before }}...${{ github.sha }}"
+          echo "Changed services: ${{ steps.changes.outputs.services }}"
+        env:
+          SERVICES: ${{ steps.changes.outputs.services }}
+    outputs:
+      api-gateway: ${{ steps.changes.outputs.api-gateway }}
+      auth-service: ${{ steps.changes.outputs.auth-server }}
+      mail-service: ${{ steps.changes.outputs.mail-sender}}
+      qr-service: ${{ steps.changes.outputs.qr-service }}
+      storage-service: ${{ steps.changes.outputs.storage-service }}
+
+  qr-service:
+    needs: changes
+    if: ${{ needs.changes.outputs.qr-service == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository Qr service
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Maven clean install
+        run: mvn clean install -f qr-service/pom.xml -DskipTests
+
+      - name: Build Docker Image Qr service
+        run: docker build -t daneker/qr-service -f qr-service/Dockerfile qr-service/
+
+      - name: Log in to Docker Hub
+        run: docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push Docker Image Qr service
+        run: docker push daneker/qr-service
+
+  mail-service:
+    needs: changes
+    if: ${{ needs.changes.outputs.mail-service == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository Mail service
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Maven clean install
+        run: mvn clean install -f mail-service/pom.xml -DskipTests
+
+      - name: Build Docker Image Mail service
+        run: docker build -t daneker/mail-service -f mail-service/Dockerfile mail-service/
+
+      - name: Log in to Docker Hub
+        run: docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push Docker Image Qr service
+        run: docker push daneker/mail-service
+  auth-service:
+    needs: changes
+    if: ${{ needs.changes.outputs.auth-service == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository Auth service
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Maven clean install
+        run: mvn clean install -f auth-service/pom.xml -DskipTests
+
+      - name: Build Docker Image Qr service
+        run: docker build -t daneker/auth-service -f auth-service/Dockerfile auth-service/
+
+      - name: Log in to Docker Hub
+        run: docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push Docker Image Qr service
+        run: docker push daneker/auth-service
+  api-gateway:
+    needs: changes
+    if: ${{ needs.changes.outputs.api-gateway == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository Api gateway
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Maven clean install
+        run: mvn clean install -f api-gateway/pom.xml -DskipTests
+
+      - name: Build Docker Image Qr service
+        run: docker build -t daneker/api-gateway -f api-gateway/Dockerfile api-gateway/
+
+      - name: Log in to Docker Hub
+        run: docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push Docker Image Qr service
+        run: docker push daneker/api-gateway
+  storage-service:
+    needs: changes
+    if: ${{ needs.changes.outputs.storage-service == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: To be implemented
+        run: echo "To be implemented"
+
+
+
