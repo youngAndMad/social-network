@@ -1,5 +1,9 @@
 server:
   port: 8082
+  servlet:
+    session:
+      cookie:
+        name: GATEWAY-CLIENT
 spring:
   main:
     web-application-type: reactive
@@ -21,6 +25,11 @@ spring:
       client:
         provider:
           spring:
+            authorization-uri: http://localhost:8080/oauth2/authorize
+            token-uri: http://localhost:8080/oauth2/token
+            jwk-set-uri: http://localhost:8080/oauth2/jwks
+            user-info-uri: http://localhost:8080/userinfo
+            user-name-attribute: sub
             issuer-uri: http://localhost:8080
         registration:
           reg-client:
@@ -33,7 +42,15 @@ spring:
             scope: user.read,user.write,openid
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
-
+  data:
+    redis:
+      host: 51.250.91.198
+      port: 6379
+      password: qwerfvp.o654ijnQWE.RFVP654O.IJN
+  session:
+    redis:
+      flush-mode: on_save # session refresh mode
+      namespace: gateway:session # namespace for keys used to store sessions
 logging:
   level:
     org.springframework:

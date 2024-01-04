@@ -4,7 +4,7 @@ import (
 	"context"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"storage-service/config"
+	"storage-service/config
 )
 
 var MongoClient *mongo.Client
