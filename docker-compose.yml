@@ -24,3 +24,14 @@ services:
     ports:
       - "15672:15672"
       - "5672:5672"
+  mongo:
+    container_name: mongo-db
+    image: mongo
+    restart: no
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo:/data/mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongouser
+      MONGO_INITDB_ROOT_PASSWORD: mongopassword
