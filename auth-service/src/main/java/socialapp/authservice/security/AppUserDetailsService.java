@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import socialapp.authservice.common.exception.EmailNotVerifiedException;
 import socialapp.authservice.repository.UserRepository;
 
 @Service
@@ -28,6 +29,11 @@ public class AppUserDetailsService implements UserDetailsService {
         }
 
         var user = optionalUser.get();
+
+        if (!user.getEmailVerified()){
+            throw new EmailNotVerifiedException(user.getEmail());
+        }
+
         log.debug("successfully authenticated user email = {}, id = {}", user.getEmail(), user.getId());
 
         return new AppUserDetails(user);
