@@ -7,6 +7,9 @@ logging:
       security: debug
 
 spring:
+  liquibase:
+    enabled: true
+    change-log: classpath:db.changelog/db.changelog-master.yaml
   main:
     banner-mode: off
   datasource:
@@ -17,7 +20,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     open-in-view: true
     properties:
       hibernate:
