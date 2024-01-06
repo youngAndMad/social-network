@@ -34,3 +34,5 @@ spring:
   output:
     ansi:
       enabled: ALWAYS
+app:
+  otp-ttl: 300

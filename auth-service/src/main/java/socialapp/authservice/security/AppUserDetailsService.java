@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import socialapp.authservice.common.exception.EmailNotVerifiedException;
+import socialapp.authservice.common.exception.InvalidCredentialsException;
 import socialapp.authservice.repository.UserRepository;
 
 @Service
@@ -25,7 +26,7 @@ public class AppUserDetailsService implements UserDetailsService {
 
         if (optionalUser.isEmpty()) {
             log.warn("invalid user credentials email = {}", email);
-            throw new UsernameNotFoundException("invalid user credentials email %s".formatted(email));
+            throw new InvalidCredentialsException();
         }
 
         var user = optionalUser.get();

@@ -15,7 +15,7 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 public class SecurityConfig {
 
     @Bean
-    RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder){
+    RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder) {
         var registeredClient = RegisteredClient.withId("demo")
                 .clientId("demo")
                 .clientSecret(passwordEncoder.encode("secret"))
@@ -33,7 +33,7 @@ public class SecurityConfig {
 
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().requestMatchers("/registration");
+        return web -> web.ignoring().requestMatchers("/registration", "/confirm-email");
     }
 
     @Bean
