@@ -7,6 +7,20 @@ logging:
       security: debug
 
 spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auth_service
+    password: postgres
+    username: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    open-in-view: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
   output.ansi.enabled: ALWAYS
   security:
     oauth2:
@@ -16,8 +30,8 @@ spring:
             require-authorization-consent: true
             registration:
               client-id: demo
-              client-secret: "{noop}secret"
               authorization-grant-types: client_credentials,authorization_code,refresh_token
+              client-secret: "{bcrypt}$2a$10$UrTQ2bLb7dPy9VFqjMh5YeipGS.5grdXbJE7p3m3bJaUwyRmf0vOq"
               redirect-uris: http://127.0.0.1:8082/login/oauth2/code/reg-client
               scopes: user.read,user.write,openid
               client-authentication-methods: client_secret_basic

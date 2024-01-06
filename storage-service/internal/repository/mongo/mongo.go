@@ -2,24 +2,30 @@ package mongo
 
 import (
 	"context"
+	"fmt"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"storage-service/config
+	"storage-service/config"
 )
 
-var MongoClient *mongo.Client
+const (
+	Database = "test"
+	FileCollection = "_file"
+)
 
-func InitMongo() error {
-	mongoConfig := config.NewMongoConfig()
+func InitMongo(mongoConfig *config.MongoConfig) (*mongo.Client, error) {
+	fmt.Println("mongo initialization Url = ", mongoConfig.Url)
 	clientOptions := options.Client().ApplyURI(mongoConfig.Url)
-	client, err := mongo.Connect(context.TODO(), clientOptions)
+	mongoClient, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	err = client.Ping(context.TODO(), nil)
+
+	err = mongoClient.Ping(context.TODO(), nil)
+
 	if err != nil {
-		return err
+		return nil, err
 	}
-	MongoClient = client
-	return nil
+
+	return mongoClient, nil
 }

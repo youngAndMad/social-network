@@ -10,7 +10,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration(proxyBeanMethods = false)
 @EnableWebFluxSecurity
-public class OAuth2LoginSecurityConfig {
+public class SecurityConfig {
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
