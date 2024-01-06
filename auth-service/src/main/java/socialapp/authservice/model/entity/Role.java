@@ -22,6 +22,6 @@ public class Role extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private AppRole role;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Authority> authorities;
 }

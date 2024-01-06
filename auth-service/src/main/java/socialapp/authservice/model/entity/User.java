@@ -31,6 +31,6 @@ public class User extends BaseEntity {
     private Integer otp;
     private LocalDateTime otpCreationTime;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user" ,fetch = FetchType.EAGER)
     private List<Role> roles;
 }

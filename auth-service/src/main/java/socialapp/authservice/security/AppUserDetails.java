@@ -1,5 +1,6 @@
 package socialapp.authservice.security;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +10,7 @@ import socialapp.authservice.model.entity.User;
 import java.util.Collection;
 
 @RequiredArgsConstructor
+@Getter
 public class AppUserDetails implements UserDetails {
     private final User user;
 

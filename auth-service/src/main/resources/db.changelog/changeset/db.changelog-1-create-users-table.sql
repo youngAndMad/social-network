@@ -10,7 +10,7 @@ CREATE TABLE users
     tag        varchar(255) UNIQUE NOT NULL,
     email      varchar(255) UNIQUE NOT NULL,
     phone      varchar(255),
-    created_at timestamp with time zone,
-    updated_at timestamp with time zone
+    created_time timestamp with time zone,
+    last_modified_time timestamp with time zone
 );
 --rollback drop table users;
