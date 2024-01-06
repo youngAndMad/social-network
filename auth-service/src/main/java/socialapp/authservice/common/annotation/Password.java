@@ -1,6 +1,7 @@
 package socialapp.authservice.common.annotation;
 
 import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
 import socialapp.authservice.common.validation.PasswordValidator;
 
 import java.lang.annotation.*;
@@ -22,4 +23,8 @@ public @interface Password {
     boolean requireDigit() default true;
 
     boolean requireSpecialChar() default true;
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
 }

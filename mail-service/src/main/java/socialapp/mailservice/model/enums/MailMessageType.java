@@ -16,7 +16,8 @@ public enum MailMessageType {
      * - Subject: "Newsletter"
      * - Template: "newsletter.ftl" (FreeMarker template)
      */
-    NEWSLETTER("Newsletter", "newsletter.ftl");
+    NEWSLETTER("Newsletter", "newsletter.ftl"),
+    EMAIL_VERIFICATION("Email verification", "email_verification.ftl");
 
     /**
      * The subject of the email message.

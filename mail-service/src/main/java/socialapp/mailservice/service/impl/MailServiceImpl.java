@@ -43,7 +43,8 @@ public class MailServiceImpl implements MailService {
             var template = ftl.getTemplate(type.getTemplate());
 
             String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, Map.of(
-                    "content", message.message()
+                    "content", message.message(),
+                    "subject" , type.getSubject()
             ));
 
             helper.setText(html, true);

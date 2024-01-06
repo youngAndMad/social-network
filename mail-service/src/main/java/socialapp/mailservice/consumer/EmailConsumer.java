@@ -33,4 +33,11 @@ public class EmailConsumer {
         mailService.send(message, MailMessageType.NEWSLETTER);
     }
 
+    @RabbitListener(queues = {"${spring.rabbitmq.queues.email-verification-name}"})
+    public void consumeEmailVerification(EmailMessageDto message){
+        log.info("Consuming email: {}", message);
+        mailService.send(message,MailMessageType.EMAIL_VERIFICATION);
+    }
+
+
 }

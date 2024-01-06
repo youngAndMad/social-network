@@ -32,6 +32,9 @@ public class RabbitProperties {
         private String newsLetterName;
         private String newsLetterExchange;
         private String newsLetterRoutingKey;
+        private String emailVerificationName;
+        private String emailVerificationExchange;
+        private String emailVerificationRoutingKey;
     }
 
 }

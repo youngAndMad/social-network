@@ -118,7 +118,7 @@ jobs:
       - name: Maven clean install
         run: mvn clean install -f auth-service/pom.xml -DskipTests
 
-      - name: Build Docker Image Qr service
+      - name: Build Docker Image Auth service
         run: docker build -t daneker/auth-service -f auth-service/Dockerfile auth-service/
 
       - name: Log in to Docker Hub
@@ -146,7 +146,7 @@ jobs:
       - name: Maven clean install
         run: mvn clean install -f api-gateway/pom.xml -DskipTests
 
-      - name: Build Docker Image Qr service
+      - name: Build Docker Image Api Gateway
         run: docker build -t daneker/api-gateway -f api-gateway/Dockerfile api-gateway/
 
       - name: Log in to Docker Hub

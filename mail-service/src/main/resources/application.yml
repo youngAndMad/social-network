@@ -4,6 +4,9 @@ spring:
       x-dead-letter-exchange: dead-letter.exchange
       x-dead-letter-routing-key: dead-letter.routing-key
     queues:
+      email-verification-name: email-verification.queue
+      email-verification-routing-key: email-verification.routing-key
+      email-verification-exchange: email-verification.exchange
       news-letter-name: news-letter.queue
       news-letter-routing-key: news-letter.routing-key
       news-letter-exchange: news-letter.exchange

@@ -1,12 +1,17 @@
-server:
-  port: 8080
 logging:
   level:
     org.springframework:
       web: debug
       security: debug
-
 spring:
+  rabbitmq:
+    queues:
+      email-verification-name: email-verification.queue
+      email-verification-routing-key: email-verification.routing-key
+      email-verification-exchange: email-verification.exchange
+    username: user
+    password: password
+    host: localhost
   liquibase:
     enabled: true
     change-log: classpath:db.changelog/db.changelog-master.yaml

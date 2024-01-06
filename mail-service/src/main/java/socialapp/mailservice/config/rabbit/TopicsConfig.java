@@ -32,6 +32,11 @@ public class TopicsConfig {
         return new Queue(rabbitProperties.getQueues().getNewsLetterName(), true);
     }
 
+    @Bean
+    Queue emailVerificationQueue() {
+        return new Queue(rabbitProperties.getQueues().getEmailVerificationName(), true);
+    }
+
 
     /**
      * Represents a Spring bean for creating a direct exchange named "newsLetterExchange" with durability enabled.
@@ -42,6 +47,14 @@ public class TopicsConfig {
     Exchange newsLetterExchange() {
         return ExchangeBuilder
                 .directExchange(rabbitProperties.getQueues().getNewsLetterExchange())
+                .durable(true)
+                .build();
+    }
+
+    @Bean
+    Exchange emailVerificationExchange() {
+        return ExchangeBuilder
+                .directExchange(rabbitProperties.getQueues().getEmailVerificationExchange())
                 .durable(true)
                 .build();
     }
@@ -67,4 +80,15 @@ public class TopicsConfig {
                 .noargs();
     }
 
+    @Bean
+    Binding emailVerificationBinding(
+            @Qualifier("emailVerificationQueue") Queue queue,
+            @Qualifier("emailVerificationExchange") Exchange exchange
+    ) {
+        return BindingBuilder
+                .bind(queue)
+                .to(exchange)
+                .with(rabbitProperties.getQueues().getEmailVerificationRoutingKey())
+                .noargs();
+    }
 }
