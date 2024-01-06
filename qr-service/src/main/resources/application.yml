@@ -7,6 +7,8 @@ server:
   servlet:
     context-path: /api/v1/qr
 spring:
+  main:
+    banner-mode: off
   security:
     oauth2:
       resourceserver:

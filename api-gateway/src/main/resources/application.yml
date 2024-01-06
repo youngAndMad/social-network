@@ -7,6 +7,7 @@ server:
 spring:
   main:
     web-application-type: reactive
+    banner-mode: off
   output.ansi.enabled: ALWAYS
   cloud:
     gateway:
@@ -41,7 +42,10 @@ spring:
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope: user.read,user.write,openid
   autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
+    exclude:
+     - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+     - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
+     - org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
   data:
     redis:
       host: 51.250.91.198
