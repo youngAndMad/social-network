@@ -41,6 +41,23 @@ spring:
   output:
     ansi:
       enabled: ALWAYS
+oauth2:
+  client:
+    id: demo
+    secret: secret
+    authentication-method: CLIENT_SECRET_BASIC
+    grant-types:
+      - AUTHORIZATION_CODE
+      - REFRESH_TOKEN
+      - CLIENT_CREDENTIALS
+    redirect-uri: http://127.0.0.1:8082/login/oauth2/code/reg-client
+    scopes:
+      - user.read
+      - user.write
+      - openid
+    token-settings:
+      access-token-time-to-live: 30m
+      refresh-token-time-to-live: 180m
 app:
   password-reset-token-ttl: 1800 #  30 min
   otp-ttl: 300 # 5min
