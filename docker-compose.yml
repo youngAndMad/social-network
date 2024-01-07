@@ -35,3 +35,11 @@ services:
 #    environment:
 #      MONGO_INITDB_ROOT_USERNAME: mongouser
 #      MONGO_INITDB_ROOT_PASSWORD: mongopassword
+  redis:
+    image: "redis:alpine"
+    restart: always
+    expose:
+      - "6379"
+    volumes:
+      - ./redis/redis-data:/data
+      - ./redis/redis-conf:/usr/local/etc/redis/redis.conf
