@@ -9,15 +9,26 @@ import java.time.Duration;
 
 import static org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
 
+/**
+ * Configuration class for setting up Redis caching in the application.
+ */
 @Configuration
 public class RedisCacheConfig {
 
-    private static final int CACHE_TTL_MINUTES = 20;
+    /**
+     * The default time-to-live (TTL) for cached entries in minutes.
+     */
+    private static final int CACHE_TTL_MINUTES = 60;
 
+    /**
+     * Bean definition for configuring Redis cache with the specified TTL and serialization settings.
+     *
+     * @return RedisCacheConfiguration instance with the configured settings.
+     */
     @Bean
     public RedisCacheConfiguration cacheConfiguration() {
         return RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofSeconds(CACHE_TTL_MINUTES))
+                .entryTtl(Duration.ofMinutes(CACHE_TTL_MINUTES))
                 .disableCachingNullValues()
                 .serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
     }

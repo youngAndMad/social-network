@@ -14,12 +14,14 @@ import socialapp.urlshortenerservice.service.URLShortenerService;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
 public class URLShortenerServiceImpl implements URLShortenerService {
 
     private final StringRedisTemplate redisTemplate;
+    private static final int ACTIVATION_TIME_IN_MINUTES = 10;
 
     @Override
     public URLResponse createShortURL(URLRequest urlRequest) {
@@ -27,6 +29,7 @@ public class URLShortenerServiceImpl implements URLShortenerService {
         if (urlIsValid(URL)) {
             String id = generateId(URL);
             redisTemplate.opsForValue().set(id, URL);
+            redisTemplate.expire(id, ACTIVATION_TIME_IN_MINUTES, TimeUnit.MINUTES);
             return new URLResponse(id);
         } else {
             throw new RuntimeException("URL invalid " + URL);

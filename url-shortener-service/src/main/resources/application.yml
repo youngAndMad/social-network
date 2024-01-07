@@ -5,3 +5,7 @@ spring:
     redis:
       host: localhost
       port: 6379
+springdoc:
+  api-docs:
+    enabled: true
+    path:  /swagger-ui.html
