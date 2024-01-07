@@ -12,10 +12,12 @@ import static org.springframework.data.redis.serializer.RedisSerializationContex
 @Configuration
 public class RedisCacheConfig {
 
+    private static final int CACHE_TTL_MINUTES = 20;
+
     @Bean
     public RedisCacheConfiguration cacheConfiguration() {
         return RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofSeconds(20))
+                .entryTtl(Duration.ofSeconds(CACHE_TTL_MINUTES))
                 .disableCachingNullValues()
                 .serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
     }

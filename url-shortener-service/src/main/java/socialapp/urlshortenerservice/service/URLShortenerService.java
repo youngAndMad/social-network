@@ -1,26 +1,16 @@
 package socialapp.urlshortenerservice.service;
 
-import com.google.common.hash.Hashing;
-import org.apache.commons.validator.routines.UrlValidator;
-import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.view.RedirectView;
+import socialapp.urlshortenerservice.model.dto.URLRequest;
+import socialapp.urlshortenerservice.model.dto.URLResponse;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
+public interface URLShortenerService {
 
-@Service
-public class URLShortenerService {
+    public URLResponse createShortURL(URLRequest urlRequest);
 
-    public String generateId(String url) {
-        byte[] hash = Hashing.sha256().hashString(url, StandardCharsets.UTF_8).asBytes();
-        String base64Encoded = Base64.getUrlEncoder().encodeToString(hash);
-        int desiredLength = 8;
-        return base64Encoded.substring(0, desiredLength);
-    }
+    public RedirectView redirect(String shortURL);
 
-    public Boolean urlIsValid(String url) {
-        UrlValidator urlValidator = new UrlValidator(
-                new String[]{"http", "https"}
-        );
-        return urlValidator.isValid(url);
-    }
+    public String generateId(String URL);
+
+    public Boolean urlIsValid(String URL);
 }
