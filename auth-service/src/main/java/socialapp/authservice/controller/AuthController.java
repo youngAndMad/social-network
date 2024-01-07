@@ -4,12 +4,16 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import socialapp.authservice.model.dto.RegistrationDto;
 import socialapp.authservice.model.dto.ResetPasswordRequestDto;
 import socialapp.authservice.security.AppUserDetails;
 import socialapp.authservice.service.AuthService;
 import socialapp.authservice.service.ResetPasswordService;
+
+import java.security.Principal;
+import java.util.Map;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
@@ -58,8 +62,9 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    ResponseEntity<?> me(@AuthenticationPrincipal AppUserDetails userDetails) {
-        return ResponseEntity.ok(userDetails);
+    ResponseEntity<?> me(Principal principal) {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        return ResponseEntity.ok(Map.of("response", auth));
     }
 
 }

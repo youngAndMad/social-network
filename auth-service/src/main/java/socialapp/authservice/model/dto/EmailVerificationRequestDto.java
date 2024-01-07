@@ -5,8 +5,6 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
-import static socialapp.authservice.common.AppConstants.*;
-
 public record EmailVerificationRequestDto(
         @Email
         String email,

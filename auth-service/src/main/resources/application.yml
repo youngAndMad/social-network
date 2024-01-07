@@ -2,7 +2,7 @@ logging:
   level:
     org.springframework:
       web: debug
-      security: debug
+      security: trace
 server:
   port: 8080
   scheme: http
@@ -38,9 +38,6 @@ spring:
       hibernate:
 #        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
-  output:
-    ansi:
-      enabled: ALWAYS
 oauth2:
   client:
     id: demo

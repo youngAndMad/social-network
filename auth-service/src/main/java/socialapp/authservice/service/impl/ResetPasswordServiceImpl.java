@@ -20,7 +20,7 @@ import socialapp.authservice.service.ResetPasswordService;
 import java.util.UUID;
 
 import static java.time.LocalDateTime.now;
-import static socialapp.authservice.common.AppConstants.RESET_PASSWORD_ENDPOINT;
+import static socialapp.authservice.common.utils.AppConstants.RESET_PASSWORD_ENDPOINT;
 
 @Service
 @RequiredArgsConstructor

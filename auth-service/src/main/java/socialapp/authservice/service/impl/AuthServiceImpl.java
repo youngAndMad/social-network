@@ -19,10 +19,9 @@ import socialapp.authservice.security.AppUserDetails;
 import socialapp.authservice.service.AuthService;
 
 import java.security.SecureRandom;
-import java.time.LocalDateTime;
 
-import static socialapp.authservice.common.AppConstants.OTP_BOUND;
-import static socialapp.authservice.common.AppConstants.OTP_ORIGIN;
+import static java.time.LocalDateTime.now;
+import static socialapp.authservice.common.utils.AppConstants.*;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +35,7 @@ public class AuthServiceImpl implements AuthService {
     private final RabbitProperties rabbitProperties;
 
     private final SecureRandom random = new SecureRandom();
+
     @Value("${app.otp-ttl}")
     private Integer otpTtl;
 
@@ -60,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
     public void confirmEmail(Integer otp, AppUserDetails userDetails) {
         var currentUser = userDetails.user();
 
-        if (currentUser.getOtpCreationTime().isBefore(LocalDateTime.now().minusSeconds(otpTtl))) {
+        if (currentUser.getOtpCreationTime().isBefore(now().minusSeconds(otpTtl))) {
             throw new OtpExpiredException();
         }
 
