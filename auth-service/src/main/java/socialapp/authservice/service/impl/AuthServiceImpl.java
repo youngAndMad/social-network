@@ -58,7 +58,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void confirmEmail(Integer otp, AppUserDetails userDetails) {
-        var currentUser = userDetails.getUser();
+        var currentUser = userDetails.user();
 
         if (currentUser.getOtpCreationTime().isBefore(LocalDateTime.now().minusSeconds(otpTtl))) {
             throw new OtpExpiredException();

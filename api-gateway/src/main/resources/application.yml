@@ -48,7 +48,7 @@ spring:
      - org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
   data:
     redis:
-      host: 51.250.91.198
+      host: localhost
       port: 6379
       password: qwerfvp.o654ijnQWE.RFVP654O.IJN
   session:

@@ -44,7 +44,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
         var token = UUID.randomUUID().toString();
         var resetPasswordToken = resetPasswordTokenMapper
-                .toModel(userDetails.getUser(),token, now().plusSeconds(resetPasswordTokenTtl));
+                .toModel(userDetails.user(),token, now().plusSeconds(resetPasswordTokenTtl));
 
         resetPasswordTokenRepository.save(resetPasswordToken);
 
@@ -57,7 +57,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     @Override
     public void resetAttempt(AppUserDetails userDetails, ResetPasswordRequestDto resetPasswordRequestDto) {
-        var currentUser = userDetails.getUser();
+        var currentUser = userDetails.user();
         var optionalToken = resetPasswordTokenRepository.findByToken(resetPasswordRequestDto.token());
 
         if (optionalToken.isEmpty()){

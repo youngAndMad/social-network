@@ -14,6 +14,10 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 @Configuration
 public class SecurityConfig {
 
+    private final static String [] WHITE_LIST = {
+            "/api/v1/auth/register","/api/v1/auth/confirm-email",  "/v3/api-docs/**", "/swagger-ui/**"
+    };
+
     @Bean
     RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder) {
         var registeredClient = RegisteredClient.withId("demo")
@@ -33,8 +37,8 @@ public class SecurityConfig {
 
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().requestMatchers("/registration", "/confirm-email",  "/v3/api-docs/**",
-                "/swagger-ui/**");
+        return web -> web.ignoring().
+                requestMatchers(WHITE_LIST);
     }
 
     @Bean
