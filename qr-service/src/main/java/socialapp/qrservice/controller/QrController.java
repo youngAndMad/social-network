@@ -20,7 +20,7 @@ public class QrController {
 
     @GetMapping("generate")
     @Operation(summary = "Generates a QR code for the provided link.")
-    public CompletableFuture<Void> generateQR(
+    CompletableFuture<Void> generateQR(
             HttpServletResponse response,
             @RequestParam String link
     ) {

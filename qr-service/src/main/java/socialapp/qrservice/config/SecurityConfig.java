@@ -15,17 +15,25 @@ public class SecurityConfig {
     @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
     private String issuerLocation;
 
+    private final String WHITE_LIST[] = {
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
+    };
+
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+                .authorizeHttpRequests(
+                        auth -> auth
+                                .requestMatchers(WHITE_LIST).permitAll()
+                                .anyRequest().authenticated()
+                )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
-
         return http.build();
     }
 
     @Bean
-    JwtDecoder jwtDecoder(){
+    JwtDecoder jwtDecoder() {
         return JwtDecoders.fromIssuerLocation(issuerLocation);
     }
 

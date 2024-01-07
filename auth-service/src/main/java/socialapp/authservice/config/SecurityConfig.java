@@ -33,7 +33,8 @@ public class SecurityConfig {
 
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().requestMatchers("/registration", "/confirm-email");
+        return web -> web.ignoring().requestMatchers("/registration", "/confirm-email",  "/v3/api-docs/**",
+                "/swagger-ui/**");
     }
 
     @Bean

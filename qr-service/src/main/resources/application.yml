@@ -18,7 +18,9 @@ spring:
     name: qr-service
 logging:
   level:
-    org.springframework.web: debug
+    org.springframework:
+      web: debug
+      security: debug
 management:
   endpoint:
     health:
