@@ -3,24 +3,19 @@ package socialapp.authservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.AmqpException;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import socialapp.authservice.common.exception.InvalidCredentialsException;
 import socialapp.authservice.common.exception.InvalidOtpException;
 import socialapp.authservice.common.exception.OtpExpiredException;
 import socialapp.authservice.common.mapper.UserMapper;
 import socialapp.authservice.config.rabbit.RabbitProperties;
 import socialapp.authservice.model.dto.EmailMessageDto;
-import socialapp.authservice.model.dto.EmailVerificationRequestDto;
 import socialapp.authservice.model.dto.RegistrationDto;
 import socialapp.authservice.model.entity.User;
 import socialapp.authservice.repository.UserRepository;
+import socialapp.authservice.security.AppUserDetails;
 import socialapp.authservice.service.AuthService;
 
 import java.security.SecureRandom;
@@ -62,20 +57,19 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void confirmEmail(EmailVerificationRequestDto emailVerificationRequestDto) {
-        var user = userRepository.findByEmail(emailVerificationRequestDto.email())
-                .orElseThrow(InvalidCredentialsException::new);
+    public void confirmEmail(Integer otp, AppUserDetails userDetails) {
+        var currentUser = userDetails.getUser();
 
-        if (user.getOtpCreationTime().isBefore(LocalDateTime.now().minusSeconds(otpTtl))) {
+        if (currentUser.getOtpCreationTime().isBefore(LocalDateTime.now().minusSeconds(otpTtl))) {
             throw new OtpExpiredException();
         }
 
-        if (!user.getOtp().equals(emailVerificationRequestDto.otp())) {
+        if (!currentUser.getOtp().equals(otp)) {
             throw new InvalidOtpException();
         }
 
-        user.setEmailVerified(true);
-        userRepository.save(user);
+        currentUser.setEmailVerified(true);
+        userRepository.save(currentUser);
     }
 
     private Integer randomOtp() {

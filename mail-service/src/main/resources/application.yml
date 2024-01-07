@@ -10,6 +10,9 @@ spring:
       news-letter-name: news-letter.queue
       news-letter-routing-key: news-letter.routing-key
       news-letter-exchange: news-letter.exchange
+      reset-password-name: reset-password.queue
+      reset-password-routing-key: reset-password.routing-key
+      reset-password-exchange: reset-password.exchange
     username: ${RABBIT_USERNAME:user}
     password: ${RABBIT_PASSWORD:password}
     host: ${RABBIT_HOST:localhost}

@@ -3,12 +3,19 @@ logging:
     org.springframework:
       web: debug
       security: debug
+server:
+  port: 8080
+  scheme: http
+  host: localhost
 spring:
   rabbitmq:
     queues:
       email-verification-name: email-verification.queue
       email-verification-routing-key: email-verification.routing-key
       email-verification-exchange: email-verification.exchange
+      reset-password-name: reset-password.queue
+      reset-password-routing-key: reset-password.routing-key
+      reset-password-exchange: reset-password.exchange
     username: user
     password: password
     host: localhost
@@ -35,4 +42,5 @@ spring:
     ansi:
       enabled: ALWAYS
 app:
-  otp-ttl: 300
+  password-reset-token-ttl: 1800 #  30 min
+  otp-ttl: 300 # 5min
