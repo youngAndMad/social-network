@@ -24,20 +24,4 @@ public interface URLShortenerService {
      * @return RedirectView to the original long URL.
      */
     public RedirectView redirect(String shortURL);
-
-    /**
-     * Generates a unique identifier for a given URL.
-     *
-     * @param URL The URL for which the identifier is generated.
-     * @return The generated unique identifier.
-     */
-    public String generateId(String URL);
-
-    /**
-     * Checks if a given URL is valid.
-     *
-     * @param URL The URL to be validated.
-     * @return true if the URL is valid, false otherwise.
-     */
-    public Boolean urlIsValid(String URL);
 }

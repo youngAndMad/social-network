@@ -1,11 +1,13 @@
-server:
-  port: 10091
 spring:
   data:
     redis:
       host: localhost
       port: 6379
+  application:
+    name: url-shortener-service
 springdoc:
   api-docs:
     enabled: true
     path:  /swagger-ui.html
+server:
+  port: 10091

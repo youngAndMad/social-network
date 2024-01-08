@@ -42,6 +42,7 @@ build/
 ### VS Code ###
 .vscode/
 data/
+redis/
 ### Mac OS ###
 .DS_Store
 *.env

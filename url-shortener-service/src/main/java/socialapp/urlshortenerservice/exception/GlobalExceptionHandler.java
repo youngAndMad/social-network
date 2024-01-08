@@ -25,4 +25,30 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred." + e);
     }
+
+    /**
+     * Handles URLNotFoundException by logging the error and returning a not found response.
+     *
+     * @param e The URLNotFoundException that occurred.
+     * @return ResponseEntity with a not found status and an error message.
+     */
+    @ExceptionHandler(URLNotFoundException.class)
+    public ResponseEntity<String> handleURLNotFoundException(Exception e) {
+        log.error("URL not found:", e);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("URL not found." + e.getMessage());
+    }
+
+    /**
+     * Handles URLNotValidException by logging the error and returning a bad request response.
+     *
+     * @param e The URLNotValidException that occurred.
+     * @return ResponseEntity with a bad request status and an error message.
+     */
+    @ExceptionHandler(URLNotValidException.class)
+    public ResponseEntity<String> handleURLNotValidException(URLNotValidException e) {
+        log.error("Invalid URL:", e);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid URL." + e.getMessage());
+    }
 }
