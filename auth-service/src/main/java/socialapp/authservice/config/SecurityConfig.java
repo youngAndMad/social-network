@@ -1,6 +1,7 @@
 package socialapp.authservice.config;
 
 import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
@@ -69,7 +71,7 @@ public class SecurityConfig {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
         http.authorizeHttpRequests(auth ->
-                        auth.requestMatchers(WHITE_LIST).permitAll().anyRequest().permitAll()
+                        auth.requestMatchers(WHITE_LIST).permitAll().anyRequest().authenticated()
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .formLogin(Customizer.withDefaults());
@@ -102,8 +104,7 @@ public class SecurityConfig {
                 .redirectUri(oauth2ClientProperties.getRedirectUri())
                 .redirectUri("http://127.0.0.1:4200")
                 .scopes(scopes -> scopes.addAll(oauth2ClientProperties.getScopes()))
-                .clientSettings(
-                        ClientSettings.builder()
+                .clientSettings(ClientSettings.builder()
                         .requireProofKey(true)
                         .requireAuthorizationConsent(true)
                         .build())
@@ -140,13 +141,15 @@ public class SecurityConfig {
 
 
     @Bean
-    AuthorizationServerSettings authorizationServerSettings() {
+    AuthorizationServerSettings authorizationServerSettings(){
         return AuthorizationServerSettings.builder().build();
     }
 
     @Bean
-    JWKSource<SecurityContext> jwkSource() {
-        return (jwkSelector, securityContext) -> jwkSelector.select(new JWKSet(keyManager.generateRsa()));
+    public JWKSource<SecurityContext> jwkSource() {
+        var rsaKey = keyManager.generateRsa();
+        var jwkSet = new JWKSet(rsaKey);
+        return (jwkSelector, securityContext) -> jwkSelector.select(jwkSet);
     }
 
     @Bean

@@ -1,10 +1,14 @@
 package socialapp.authservice.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
+import org.springframework.security.oauth2.server.resource.authentication.JwtBearerTokenAuthenticationConverter;
 import org.springframework.web.bind.annotation.*;
 import socialapp.authservice.model.dto.RegistrationDto;
 import socialapp.authservice.model.dto.ResetPasswordRequestDto;
@@ -14,6 +18,7 @@ import socialapp.authservice.service.ResetPasswordService;
 
 import java.security.Principal;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
@@ -61,10 +66,10 @@ public class AuthController {
                 .build();
     }
 
+
     @GetMapping("/me")
-    ResponseEntity<?> me(Principal principal) {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        return ResponseEntity.ok(Map.of("response", auth));
+    ResponseEntity<?> me(HttpServletRequest request) {
+        return ResponseEntity.ok(Map.of("response", request.getUserPrincipal()));
     }
 
 }
