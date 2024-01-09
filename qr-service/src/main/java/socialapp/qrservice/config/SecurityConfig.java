@@ -17,7 +17,7 @@ public class SecurityConfig {
 
     private final String WHITE_LIST[] = {
             "/v3/api-docs/**",
-            "/swagger-ui/**"
+            "/swagger-ui/**","/**"
     };
 
     @Bean
@@ -26,8 +26,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         auth -> auth
                                 .requestMatchers(WHITE_LIST).permitAll()
-                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 )
+                .cors().disable()
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
         return http.build();
     }

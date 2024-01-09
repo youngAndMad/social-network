@@ -4,6 +4,7 @@ server:
     session:
       cookie:
         name: GATEWAY-CLIENT
+  forward-headers-strategy: framework
 spring:
   main:
     web-application-type: reactive
@@ -58,6 +59,7 @@ spring:
 logging:
   level:
     org.springframework:
+      cloud.gateway: debug
       web: debug
       security: debug
 
