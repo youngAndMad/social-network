@@ -25,7 +25,6 @@ public class UrlShortenerController {
      */
     private final URLShortenerService service;
 
-
     /**
      * Handles GET requests for redirection based on the provided short URL.
      *

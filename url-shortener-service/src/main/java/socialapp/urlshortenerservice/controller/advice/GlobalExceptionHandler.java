@@ -16,19 +16,6 @@ import socialapp.urlshortenerservice.exception.URLNotValidException;
 public class GlobalExceptionHandler {
 
     /**
-     * Handles general exceptions by logging the error and returning an internal server error response.
-     *
-     * @param e The exception that occurred.
-     * @return ResponseEntity with an internal server error status and an error message.
-     */
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(Exception e) {
-        log.error("An error occurred:", e);
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred." + e);
-    }
-
-    /**
      * Handles URLNotFoundException by logging the error and returning a not found response.
      *
      * @param e The URLNotFoundException that occurred.
