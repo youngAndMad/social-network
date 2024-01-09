@@ -29,9 +29,7 @@ func (s *CommentService) AddComment(request model.AddCommentRequest) (err error)
 		Content: request.Content,
 	}
 
-	result := s.DB.Create(comment)
-
-	return result.Error
+	return s.DB.Create(comment).Error
 }
 
 func (s *CommentService) DeleteComment(commentId uint64) (err error) {
@@ -42,8 +40,7 @@ func (s *CommentService) DeleteComment(commentId uint64) (err error) {
 		return result.Error
 	}
 
-	result = s.DB.Delete(&comment)
-	return result.Error
+	return s.DB.Delete(&comment).Error
 }
 
 func (s *CommentService) UpdateCommentContent(commentId uint64, content string) error {
@@ -54,6 +51,5 @@ func (s *CommentService) UpdateCommentContent(commentId uint64, content string) 
 	}
 
 	comment.Content = content
-	result = s.DB.Save(&comment)
-	return result.Error
+	return s.DB.Save(&comment).Error
 }

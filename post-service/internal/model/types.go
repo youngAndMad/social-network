@@ -18,3 +18,9 @@ type UpdatePostRequest struct {
 type UpdateCommentRequest struct {
 	Content string `json:"content"`
 }
+
+type AddPostReactionRequest struct {
+	PostId           uint64 `json:"postId"`
+	PostReactionType `json:"reactionType"`
+	AuthorId         uint `json:"authorId"`
+}

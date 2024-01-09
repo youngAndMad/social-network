@@ -10,9 +10,10 @@ const (
 )
 
 type Post struct {
-	gorm.Model           // adds ID, created_at, etc.
-	Content    string    `json:"content"`
-	Type       PostType  `json:"type"`
-	AuthorID   uint64    `json:"authorId"`
-	Comments  []Comment  `json:"comments"`
+	gorm.Model                // adds ID, created_at, etc.
+	Content    string         `json:"content"`
+	Type       PostType       `json:"type"`
+	AuthorID   uint64         `json:"authorId"`
+	Comments   []Comment      `json:"comments"`
+	Reactions  []PostReaction `json:"reactions"`
 }

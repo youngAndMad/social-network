@@ -22,18 +22,12 @@ func (h *PostHandler) AddPost(c *gin.Context) {
 		return
 	}
 
-	var post model.Post
-
-	post.Content = body.Content
-	post.AuthorID = body.AuthorID
-	post.Type = body.Type
-
-	if err := h.PostService.CreatePost(&post); err != nil {
+	if err := h.PostService.CreatePost(&body); err != nil {
 		bindError(c, http.StatusInternalServerError, err)
 		return
 	}
 
-	c.JSON(http.StatusCreated, &post)
+	c.Status(http.StatusCreated)
 }
 
 func (h *PostHandler) GetAuthorPost(c *gin.Context) {
@@ -106,14 +100,6 @@ func (h *PostHandler) DeletePost(c *gin.Context) {
 	}
 
 	c.Status(http.StatusNoContent)
-}
-
-func bindError(c *gin.Context, status int, err error) {
-	_err := c.AbortWithError(status, err)
-
-	if _err != nil {
-		log.Fatal(err)
-	}
 }
 
 func RegisterPostRoutes(r *gin.Engine, db *gorm.DB) {

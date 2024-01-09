@@ -6,14 +6,14 @@ import (
 )
 
 type Env struct {
-	Port  string `mapstructure:"PORT"`
-	DBUrl string `mapstructure:"DB_URL"`
+	Port  string
+	DBUrl string
 }
 
 func LoadConfig() (env Env, err error) {
-	viper.AddConfigPath("./.env")
+	viper.AddConfigPath("./")
 	// viper.SetConfigName("dev")
-	// viper.SetConfigType("env")
+	viper.SetConfigType(".env")
 
 	viper.AutomaticEnv()
 

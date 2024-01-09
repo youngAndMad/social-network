@@ -15,9 +15,14 @@ func NewPostService(db *gorm.DB) *PostService {
 	}
 }
 
-func (s *PostService) CreatePost(post *model.Post) error {
-	result := s.DB.Create(post)
-	return result.Error
+func (s *PostService) CreatePost(request *model.AddPostRequest) error {
+	var post model.Post
+
+	post.Content = request.Content
+	post.AuthorID = request.AuthorID
+	post.Type = request.Type
+
+	return s.DB.Create(post).Error
 }
 
 func (s *PostService) GetAuthorPosts(authorID uint64, postType model.PostType) ([]model.Post, error) {
@@ -34,8 +39,7 @@ func (s *PostService) UpdatePostContent(postID uint64, content string) error {
 	}
 
 	post.Content = content
-	result = s.DB.Save(&post)
-	return result.Error
+	return s.DB.Save(&post).Error
 }
 
 func (s *PostService) GetPostByID(postID uint64) (*model.Post, error) {
@@ -51,6 +55,5 @@ func (s *PostService) DeletePost(postID uint64) error {
 		return result.Error
 	}
 
-	result = s.DB.Delete(&post)
-	return result.Error
+	return s.DB.Delete(&post).Error
 }
