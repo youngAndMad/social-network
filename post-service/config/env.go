@@ -1,26 +1,33 @@
 package config
 
-import "github.com/spf13/viper"
+import (
+	"github.com/spf13/viper"
+	"log"
+)
 
 type Env struct {
-    Port  string `mapstructure:"PORT"`
-    DBUrl string `mapstructure:"DB_URL"`
+	Port  string `mapstructure:"PORT"`
+	DBUrl string `mapstructure:"DB_URL"`
 }
 
-func LoadConfig() (c Env, err error) {
-    viper.AddConfigPath("")
-    viper.SetConfigName("dev")
-    viper.SetConfigType("env")
+func LoadConfig() (env Env, err error) {
+	viper.AddConfigPath("./.env")
+	// viper.SetConfigName("dev")
+	// viper.SetConfigType("env")
 
-    viper.AutomaticEnv()
+	viper.AutomaticEnv()
 
-    err = viper.ReadInConfig()
+	err = viper.ReadInConfig()
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
 
-    if err != nil {
-        return
-    }
+	err = viper.Unmarshal(&env)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
 
-    err = viper.Unmarshal(&c)
-
-    return
+	return env, nil
 }
