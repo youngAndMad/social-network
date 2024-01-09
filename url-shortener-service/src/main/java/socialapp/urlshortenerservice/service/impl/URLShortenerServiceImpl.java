@@ -30,7 +30,7 @@ public class URLShortenerServiceImpl implements URLShortenerService {
         if (urlIsValid(URL)) {
             String id = generateId(URL);
             redisTemplate.opsForValue().set(id, URL);
-            redisTemplate.expire(id, ACTIVATION_TIME_IN_MINUTES, TimeUnit.SECONDS);
+            redisTemplate.expire(id, ACTIVATION_TIME_IN_MINUTES, TimeUnit.MINUTES);
             return new URLResponse(id);
         } else {
             throw new URLNotValidException(URL);
