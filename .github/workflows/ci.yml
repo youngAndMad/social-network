@@ -9,6 +9,7 @@ on:
       - 'mail-service/**'
       - 'qr-service/**'
       - 'storage-service/**'
+      - 'url-shortener-service/**'
 
 jobs:
   changes:
@@ -31,6 +32,9 @@ jobs:
               - 'qr-service/**'
             storage-service:
               - 'storage-service/**'
+            url-shortener-service:
+              - 'url-shortener-service/**'
+
       - name: Check changes for each service
         run: |
           echo "Changed files: ${{ github.event_name }} ${{ github.event.before }}...${{ github.sha }}"
@@ -43,6 +47,7 @@ jobs:
       mail-service: ${{ steps.changes.outputs.mail-service }}
       qr-service: ${{ steps.changes.outputs.qr-service }}
       storage-service: ${{ steps.changes.outputs.storage-service }}
+      url-shortener-service: ${{ steps.changes.outputs.url-shortener-service }}
 
   qr-service:
     needs: changes
@@ -101,6 +106,7 @@ jobs:
 
       - name: Push Docker Image Mail service
         run: docker push daneker/mail-service
+
   auth-service:
     needs: changes
     if: ${{ needs.changes.outputs.auth-service == 'true' }}
@@ -127,7 +133,7 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
 
-      - name: Push Docker Image Qr service
+      - name: Push Docker Image Auth service service
         run: docker push daneker/auth-service
   api-gateway:
     needs: changes
@@ -155,8 +161,37 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
 
-      - name: Push Docker Image Qr service
+      - name: Push Docker Image Api gateway service
         run: docker push daneker/api-gateway
+  url-shortener-service:
+    needs: changes
+    if: ${{ needs.changes.outputs.url-shortener-service == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository Url shortener
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Maven clean install
+        run: mvn clean install -f url-shortener-service/pom.xml -DskipTests
+
+      - name: Build Docker Image Url Shortener
+        run: docker build -t daneker/url-shortener-service -f url-shortener-service/Dockerfile url-shortener-service/
+
+      - name: Log in to Docker Hub
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+
+      - name: Push Docker Image Url shortener service
+        run: docker push daneker/url-shortener-service
+
   storage-service:
     needs: changes
     if: ${{ needs.changes.outputs.storage-service == 'true' }}

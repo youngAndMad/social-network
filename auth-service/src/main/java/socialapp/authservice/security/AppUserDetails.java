@@ -1,7 +1,6 @@
 package socialapp.authservice.security;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import socialapp.authservice.model.entity.Role;
@@ -9,10 +8,10 @@ import socialapp.authservice.model.entity.User;
 
 import java.util.Collection;
 
-@RequiredArgsConstructor
-@Getter
-public class AppUserDetails implements UserDetails {
-    private final User user;
+@JsonIgnoreProperties({
+        "username","password" , "accountNonExpired", "credentialsNonExpired", "accountNonLocked"
+})
+public record AppUserDetails(User user) implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

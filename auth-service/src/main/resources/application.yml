@@ -2,13 +2,20 @@ logging:
   level:
     org.springframework:
       web: debug
-      security: debug
+      security: trace
+server:
+  port: 8080
+  scheme: http
+  host: localhost
 spring:
   rabbitmq:
     queues:
       email-verification-name: email-verification.queue
       email-verification-routing-key: email-verification.routing-key
       email-verification-exchange: email-verification.exchange
+      reset-password-name: reset-password.queue
+      reset-password-routing-key: reset-password.routing-key
+      reset-password-exchange: reset-password.exchange
     username: user
     password: password
     host: localhost
@@ -29,10 +36,25 @@ spring:
     open-in-view: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
-  output:
-    ansi:
-      enabled: ALWAYS
+oauth2:
+  client:
+    id: demo
+    secret: secret
+    authentication-method: CLIENT_SECRET_BASIC
+    grant-types:
+      - AUTHORIZATION_CODE
+      - REFRESH_TOKEN
+      - CLIENT_CREDENTIALS
+    redirect-uri: http://127.0.0.1:8082/login/oauth2/code/reg-client
+    scopes:
+      - user.read
+      - user.write
+      - openid
+    token-settings:
+      access-token-time-to-live: 30m
+      refresh-token-time-to-live: 180m
 app:
-  otp-ttl: 300
+  password-reset-token-ttl: 1800 #  30 min
+  otp-ttl: 300 # 5min

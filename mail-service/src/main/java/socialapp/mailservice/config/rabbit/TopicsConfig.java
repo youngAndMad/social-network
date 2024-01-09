@@ -37,6 +37,8 @@ public class TopicsConfig {
         return new Queue(rabbitProperties.getQueues().getEmailVerificationName(), true);
     }
 
+    @Bean
+    Queue resetPasswordQueue(){return new Queue(rabbitProperties.getQueues().getResetPasswordName(),true);}
 
     /**
      * Represents a Spring bean for creating a direct exchange named "newsLetterExchange" with durability enabled.
@@ -58,6 +60,15 @@ public class TopicsConfig {
                 .durable(true)
                 .build();
     }
+
+    @Bean
+    Exchange resetPasswordExchange(){
+        return ExchangeBuilder
+                .directExchange(rabbitProperties.getQueues().getResetPasswordExchange())
+                .durable(true)
+                .build();
+    }
+
 
 
     /**
@@ -89,6 +100,18 @@ public class TopicsConfig {
                 .bind(queue)
                 .to(exchange)
                 .with(rabbitProperties.getQueues().getEmailVerificationRoutingKey())
+                .noargs();
+    }
+
+    @Bean
+    Binding resetPasswordBinding(
+            @Qualifier("resetPasswordQueue") Queue queue,
+            @Qualifier("resetPasswordExchange") Exchange exchange
+    ) {
+        return BindingBuilder
+                .bind(queue)
+                .to(exchange)
+                .with(rabbitProperties.getQueues().getResetPasswordRoutingKey())
                 .noargs();
     }
 }

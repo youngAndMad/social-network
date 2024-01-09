@@ -10,6 +10,7 @@ import socialapp.urlshortenerservice.model.dto.URLRequest;
 import socialapp.urlshortenerservice.model.dto.URLResponse;
 import socialapp.urlshortenerservice.service.URLShortenerService;
 
+
 /**
  * Controller class for handling URL shortening and redirection operations.
  */
@@ -23,6 +24,7 @@ public class UrlShortenerController {
      * The service responsible for URL shortening and redirection logic.
      */
     private final URLShortenerService service;
+
 
     /**
      * Handles GET requests for redirection based on the provided short URL.
