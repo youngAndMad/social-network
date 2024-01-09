@@ -14,18 +14,8 @@ type PostHandler struct {
 	PostService *service.PostService
 }
 
-type AddPostRequest struct {
-	Content  string         `json:"content"`
-	Type     model.PostType `json:"type"`
-	AuthorID uint64         `json:"authorId"`
-}
-
-type UpdatePostRequest struct {
-	Content string `json:"content"`
-}
-
 func (h *PostHandler) AddPost(c *gin.Context) {
-	body := AddPostRequest{}
+	body := model.AddPostRequest{}
 
 	if err := c.BindJSON(&body); err != nil {
 		bindError(c, http.StatusBadRequest, err)
@@ -65,7 +55,7 @@ func (h *PostHandler) GetAuthorPost(c *gin.Context) {
 }
 
 func (h *PostHandler) UpdatePost(c *gin.Context) {
-	body := UpdatePostRequest{}
+	body := model.UpdatePostRequest{}
 
 	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
 	if err != nil {

@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"log"
-	"post-service/internal/db"
+	"post-service/config"
 	"post-service/internal/transport/http"
 )
 
@@ -11,11 +11,12 @@ func main() {
 
 	port := ":1212"
 
-	r := gin.Default()
-	g := db.Init("postgres://postgres:postgres@localhost:5432/sn_post_service")
+	server := gin.Default()
+	db := config.Init("postgres://postgres:postgres@localhost:5432/sn_post_service")
 
-	http.RegisterPostRoutes(r, g)
-	err := r.Run(port)
+	http.RegisterPostRoutes(server, db)
+	http.RegisterCommentRoutes(server, db)
+	err := server.Run(port)
 
 	if err != nil {
 		log.Fatal(err)
