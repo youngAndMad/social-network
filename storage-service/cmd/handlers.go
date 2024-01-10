@@ -35,3 +35,34 @@ func UploadFileHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "file uploaded successfully", "url": fileURL})
 }
+
+func GetFileHandler(c *gin.Context) {
+	fileID := c.Query("fileID")
+
+	if fileID == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "fileID is required"})
+		return
+	}
+
+	fileService := entity.NewFileService()
+	file, err := fileService.GetFile(fileID)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "file not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"file": file})
+}
+
+func DeleteFileHandler(c *gin.Context) {
+	fileID := c.Query("fileID")
+
+	fileService := entity.NewFileService()
+	err := fileService.DeleteFile(fileID)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "failed to delete file"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "file deleted successfully"})
+}
