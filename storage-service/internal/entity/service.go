@@ -31,7 +31,12 @@ func (s *FileService) UploadFile(attachmentSource string, entityID int, file *mu
 	if err != nil {
 		return "", err
 	}
-	defer src.Close()
+
+	defer func(src multipart.File) {
+		err := src.Close()
+		if err != nil {
+		}
+	}(src)
 
 	bucketName := config.MinioBucket
 	objectName := targetPath + "/" + file.Filename

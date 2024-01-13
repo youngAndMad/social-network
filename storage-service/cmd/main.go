@@ -7,6 +7,11 @@ import (
 
 func main() {
 	r := gin.Default()
+	//env, err := config.LoadEnv(".")
+	//
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
 	r.GET("/get", GetFileHandler)
 	r.POST("/upload", UploadFileHandler)
 	r.DELETE("/delete", DeleteFileHandler)
