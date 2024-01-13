@@ -4,16 +4,6 @@ import (
 	"time"
 )
 
-type AttachmentSource string
-
-const (
-	UserProfileImage   AttachmentSource = "USER_PROFILE_IMAGE"
-	ChatMessageContent AttachmentSource = "CHAT_MESSAGE_CONTENT"
-	ChatAvatarImage    AttachmentSource = "CHAT_AVATAR_IMAGE"
-	ChannelAvatarImage AttachmentSource = "CHANNEL_AVATAR_IMAGE"
-	PostContent        AttachmentSource = "POST_CONTENT"
-)
-
 type File struct {
 	ID           string           `bson:"_id,omitempty" json:"id"`
 	Bucket       string           `bson:"bucket" json:"bucket"`
