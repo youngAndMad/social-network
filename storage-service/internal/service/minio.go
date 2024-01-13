@@ -20,7 +20,8 @@ func NewMinioService(minio *minio.Client) *MinioService {
 }
 
 func (s *MinioService) UploadFile(source entity.AttachmentSource, target int, file *multipart.FileHeader) (entity.File, error) {
-	targetPath := fmt.Sprintf("%s/%d", source, target)
+
+	targetPath := fmt.Sprintf("%s/%d", entity.GetBucket(source).Name, target)
 
 	src, err := file.Open()
 	if err != nil {
@@ -29,11 +30,11 @@ func (s *MinioService) UploadFile(source entity.AttachmentSource, target int, fi
 	defer src.Close()
 
 	objectName := targetPath + "/" + file.Filename
-
-	_, err = s.minio.PutObject(context.Background(), string(source), objectName, src, file.Size, minio.PutObjectOptions{
+	_, err = s.minio.PutObject(context.Background(), entity.GetBucket(source).Name, objectName, src, file.Size, minio.PutObjectOptions{
 		ContentType: file.Header.Get("Content-Type"),
 	})
 	if err != nil {
+		fmt.Println(err)
 		return entity.File{}, err
 	}
 
@@ -52,5 +53,5 @@ func (s *MinioService) UploadFile(source entity.AttachmentSource, target int, fi
 
 func (s *MinioService) RemoveFile(source entity.AttachmentSource, fileName string, target int64) error {
 	targetPath := fmt.Sprintf("%d/%s", target, fileName)
-	return s.minio.RemoveObject(context.Background(), string(source), targetPath, minio.RemoveObjectOptions{})
+	return s.minio.RemoveObject(context.Background(), entity.GetBucket(source).Name, targetPath, minio.RemoveObjectOptions{})
 }

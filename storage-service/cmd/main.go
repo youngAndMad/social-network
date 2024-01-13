@@ -38,20 +38,19 @@ func main() {
 
 func checkMinioBuckets(m *minio.Client) {
 	for _, bucket := range entity.Buckets {
-
-		exists, err := m.BucketExists(context.Background(), bucket)
+		exists, err := m.BucketExists(context.Background(), bucket.Name)
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		if !exists {
-			err = m.MakeBucket(context.Background(), bucket, minio.MakeBucketOptions{})
+			err = m.MakeBucket(context.Background(), bucket.Name, minio.MakeBucketOptions{})
 			if err != nil {
 				log.Fatal(err)
 			}
-			log.Printf("Bucket '%s' created successfully.", bucket)
+			log.Printf("Bucket '%s' created successfully.", bucket.Name)
 		} else {
-			log.Printf("Bucket '%s' already exists.", bucket)
+			log.Printf("Bucket '%s' already exists.", bucket.Name)
 		}
 	}
 }
