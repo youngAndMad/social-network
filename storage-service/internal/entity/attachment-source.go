@@ -12,6 +12,7 @@ const (
 	ChatAvatarImage    AttachmentSource = "CHAT_AVATAR_IMAGE"
 	ChannelAvatarImage AttachmentSource = "CHANNEL_AVATAR_IMAGE"
 	PostContent        AttachmentSource = "POST_CONTENT"
+	CommentContent     AttachmentSource = "COMMENT_CONTENT"
 )
 
 type Bucket struct {

@@ -1,8 +1,8 @@
 package config
 
 import (
+	"fmt"
 	"github.com/spf13/viper"
-	"log"
 )
 
 type Env struct {
@@ -10,24 +10,19 @@ type Env struct {
 	DBUrl string
 }
 
-func LoadConfig() (env Env, err error) {
-	viper.AddConfigPath("./")
-	// viper.SetConfigName("dev")
-	viper.SetConfigType(".env")
-
+func LoadEnv(path string) (env Env, err error) {
+	viper.AddConfigPath(path)
+	viper.SetConfigName("app")
+	viper.SetConfigType("env")
 	viper.AutomaticEnv()
 
 	err = viper.ReadInConfig()
 	if err != nil {
-		log.Fatal(err)
 		return
 	}
 
 	err = viper.Unmarshal(&env)
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
 
-	return env, nil
+	fmt.Print(env)
+	return
 }

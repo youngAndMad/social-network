@@ -9,7 +9,7 @@ import (
 
 func main() {
 	port := ":1212"
-	env, err := config.LoadConfig()
+	env, err := config.LoadEnv(".")
 
 	if err != nil {
 		log.Fatal(err)
@@ -19,7 +19,7 @@ func main() {
 	log.Print(env.Port)
 
 	server := gin.Default()
-	db := config.Init("postgres://postgres:postgres@localhost:5432/sn_post_service")
+	db := config.Init(env.DBUrl)
 
 	http.RegisterPostRoutes(server, db)
 	http.RegisterCommentRoutes(server, db)
