@@ -2,27 +2,44 @@ package service
 
 import (
 	"gorm.io/gorm"
+	"mime/multipart"
 	"post-service/internal/model"
+	"post-service/internal/transport/http/client"
 )
 
 type PostService struct {
-	DB *gorm.DB
+	DB            *gorm.DB
+	storageClient *client.StorageClient
 }
 
-func NewPostService(db *gorm.DB) *PostService {
+func NewPostService(db *gorm.DB, storageClient *client.StorageClient) *PostService {
 	return &PostService{
-		DB: db,
+		DB:            db,
+		storageClient: storageClient,
 	}
 }
 
-func (s *PostService) CreatePost(request *model.AddPostRequest) error {
+func (s *PostService) CreatePost(request *model.AddPostRequest, files []*multipart.FileHeader) error {
 	var post model.Post
 
 	post.Content = request.Content
 	post.AuthorID = request.AuthorID
 	post.Type = request.Type
 
-	return s.DB.Create(post).Error
+	// Create the post
+	if err := s.DB.Create(&post).Error; err != nil {
+		return err
+	}
+
+	// Upload files if any
+	for _, file := range files {
+		err := s.storageClient.UploadFile("POST_CONTENT", int(post.ID), file)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func (s *PostService) GetAuthorPosts(authorID uint64, postType model.PostType) ([]model.Post, error) {

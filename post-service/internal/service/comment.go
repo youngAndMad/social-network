@@ -2,7 +2,9 @@ package service
 
 import (
 	"gorm.io/gorm"
+	"net/http"
 	"post-service/internal/model"
+	"post-service/internal/transport/http/client"
 )
 
 type CommentService struct {
@@ -13,7 +15,7 @@ type CommentService struct {
 func NewCommentService(DB *gorm.DB) *CommentService {
 	return &CommentService{
 		DB:          DB,
-		postService: NewPostService(DB),
+		postService: NewPostService(DB, client.NewStorageClient(http.Client{})),
 	}
 }
 

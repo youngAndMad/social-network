@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"post-service/internal/model"
 	"post-service/internal/service"
+	"post-service/internal/transport/http/client"
 	"strconv"
 )
 
@@ -15,14 +16,31 @@ type PostHandler struct {
 }
 
 func (h *PostHandler) AddPost(c *gin.Context) {
-	body := model.AddPostRequest{}
+	content := c.PostForm("content")
+	authorId, err := strconv.ParseUint(c.PostForm("authorId"), 10, 64)
 
-	if err := c.BindJSON(&body); err != nil {
+	if err != nil {
 		bindError(c, http.StatusBadRequest, err)
 		return
 	}
 
-	if err := h.PostService.CreatePost(&body); err != nil {
+	postType := model.PostType(c.PostForm("type"))
+
+	body := model.AddPostRequest{
+		Content:  content,
+		AuthorID: authorId,
+		Type:     postType,
+	}
+
+	form, err := c.MultipartForm()
+	if err != nil {
+		bindError(c, http.StatusBadRequest, err)
+		return
+	}
+
+	files := form.File["file"]
+
+	if err := h.PostService.CreatePost(&body, files); err != nil {
 		bindError(c, http.StatusInternalServerError, err)
 		return
 	}
@@ -103,7 +121,8 @@ func (h *PostHandler) DeletePost(c *gin.Context) {
 }
 
 func RegisterPostRoutes(r *gin.Engine, db *gorm.DB) {
-	postService := service.NewPostService(db)
+	storageClient := client.NewStorageClient(http.Client{})
+	postService := service.NewPostService(db, storageClient)
 	h := &PostHandler{
 		PostService: postService,
 	}

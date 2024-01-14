@@ -4,48 +4,76 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"mime/multipart"
 	"net/http"
-	"os"
+	"strconv"
 )
 
 type StorageClient struct {
 	client http.Client
 }
 
-func (c *StorageClient) UploadFile(source string, target int, file *os.File) error {
-	var requestBody bytes.Buffer
-	writer := multipart.NewWriter(&requestBody)
-	fieldName := "file"
+func NewStorageClient(client http.Client) *StorageClient {
+	return &StorageClient{
+		client: client,
+	}
+}
 
-	part, err := writer.CreateFormFile(fieldName, file.Name())
+func (c *StorageClient) UploadFile(source string, target int, fileHeader *multipart.FileHeader) error {
+	form := multipart.NewWriter(bytes.NewBuffer(nil))
+
+	fileWriter, err := form.CreateFormFile("file", fileHeader.Filename)
 	if err != nil {
-		return fmt.Errorf("failed to create form file: %v", err)
+		panic(err)
 	}
 
-	_, err = io.Copy(part, file)
+	// Open the file using the file header
+	file, err := fileHeader.Open()
 	if err != nil {
-		return fmt.Errorf("failed to copy file content: %v", err)
+		panic(err)
 	}
+	defer file.Close()
 
-	writer.Close()
-
-	request, err := http.NewRequest("POST", "http://localhost:7070/api/v1/file", &requestBody)
+	// Copy the file contents to the form field
+	_, err = io.Copy(fileWriter, file)
 	if err != nil {
-		return fmt.Errorf("failed to create HTTP request: %v", err)
+		panic(err)
 	}
 
-	request.Header.Set("Content-Type", writer.FormDataContentType())
-
-	response, err := c.client.Do(request)
+	err = form.WriteField("target", strconv.Itoa(target))
 	if err != nil {
-		return fmt.Errorf("failed to perform HTTP request: %v", err)
+		return err
 	}
-	defer response.Body.Close()
-
-	if response.StatusCode != http.StatusOK {
-		return fmt.Errorf("unexpected status code: %d", response.StatusCode)
+	err = form.WriteField("source", source)
+	if err != nil {
+		return err
 	}
 
-	return nil
+	err = form.Close()
+
+	if err != nil {
+		return err
+	}
+
+	req, err := http.NewRequest("POST", "http://your-second-app-address/upload", form.FormData()) // Replace with the actual URL
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Content-Type", form.FormDataContentType())
+
+	resp, err := c.client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	// Check the response status
+	if resp.StatusCode != http.StatusOK {
+		// Handle non-200 status codes
+		body, _ := ioutil.ReadAll(resp.Body)
+		return fmt.Errorf("upload failed with status %d: %s", resp.StatusCode, body)
+	}
+
+	return nil // Upload successful
 }

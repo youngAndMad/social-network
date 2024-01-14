@@ -6,5 +6,5 @@ type Comment struct {
 	gorm.Model
 	Content string `json:"content"`
 	PostID  uint   `json:"postId"`
-	Files   []File `json:"files"`
+	//Files   []File `json:"files"`
 }
