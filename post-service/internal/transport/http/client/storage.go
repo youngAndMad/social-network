@@ -47,7 +47,5 @@ func (c *StorageClient) UploadFile(source string, target int, file *os.File) err
 		return fmt.Errorf("unexpected status code: %d", response.StatusCode)
 	}
 
-	// You can further process the response if needed
-
 	return nil
 }

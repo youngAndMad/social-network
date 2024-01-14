@@ -15,7 +15,7 @@ type FileHandler struct {
 	minioService *service.MinioService
 }
 
-func (h *FileHandler) UploadFile(c *gin.Context) {
+func (h *FileHandler) UploadFiles(c *gin.Context) {
 	source := c.PostForm("source")
 	target, err := strconv.Atoi(c.PostForm("target"))
 
@@ -24,29 +24,44 @@ func (h *FileHandler) UploadFile(c *gin.Context) {
 		return
 	}
 
-	file, err := c.FormFile("file")
+	form, err := c.MultipartForm()
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "file is required"})
+		bindError(c, http.StatusBadRequest, err)
 		return
 	}
 
-	fileEntity, err := h.minioService.UploadFile(entity.AttachmentSource(source), target, file)
+	files := form.File["file"]
 
-	if err != nil {
-		bindError(c, http.StatusInternalServerError, err)
+	if len(files) == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "at least one file is required"})
 		return
 	}
 
-	err = h.fileService.SaveFile(fileEntity)
+	var fileEntities []entity.File
 
-	if err != nil {
-		bindError(c, http.StatusInternalServerError, err)
-		return
+	for _, file := range files {
+		fileEntity, err := h.minioService.UploadFile(entity.AttachmentSource(source), target, file)
+		if err != nil {
+			bindError(c, http.StatusInternalServerError, err)
+			return
+		}
+
+		fileEntities = append(fileEntities, fileEntity)
 	}
+
+	for _, fileEntity := range fileEntities {
+		err := h.fileService.SaveFile(fileEntity)
+		if err != nil {
+			bindError(c, http.StatusInternalServerError, err)
+			return
+		}
+	}
+
+	c.JSON(http.StatusOK, fileEntities)
 }
 
 func (h *FileHandler) RemoveFile(c *gin.Context) {
-	fileID := c.Query("fileID")
+	fileID := c.Query("id")
 
 	file, err := h.fileService.RemoveFile(fileID)
 
@@ -66,7 +81,7 @@ func (h *FileHandler) RemoveFile(c *gin.Context) {
 }
 
 func (h *FileHandler) GetFile(c *gin.Context) {
-	fileID := c.Query("fileID")
+	fileID := c.Query("id")
 
 	file, err := h.fileService.GetFile(fileID)
 
@@ -92,5 +107,5 @@ func NewFileRoutes(r *gin.Engine, collection *mongo.Collection, mongo *mongo.Cli
 
 	routes.DELETE(":id", h.RemoveFile)
 	routes.GET(":id", h.GetFile)
-	routes.POST("", h.UploadFile)
+	routes.POST("", h.UploadFiles)
 }

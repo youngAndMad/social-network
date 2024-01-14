@@ -26,6 +26,7 @@ var Buckets = []Bucket{
 	{ChatAvatarImage, strings.ToLower(strings.Replace(string(ChatAvatarImage), "_", "-", -1))},
 	{ChannelAvatarImage, strings.ToLower(strings.Replace(string(ChannelAvatarImage), "_", "-", -1))},
 	{PostContent, strings.ToLower(strings.Replace(string(PostContent), "_", "-", -1))},
+	{CommentContent, strings.ToLower(strings.Replace(string(CommentContent), "_", "-", -1))},
 }
 
 func GetBucket(source AttachmentSource) Bucket {
