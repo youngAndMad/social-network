@@ -9,7 +9,7 @@ import socialapp.userservice.model.enums.Gender;
 @Getter
 @Setter
 @Table(name = "users")
-public class User {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +19,7 @@ public class User {
     private String lastName;
     private String email;
     private Integer age;
+    @Enumerated(EnumType.STRING)
     private Gender gender;
     @OneToOne
     @JoinColumn
