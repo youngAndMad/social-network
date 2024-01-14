@@ -10,6 +10,8 @@ on:
       - 'qr-service/**'
       - 'storage-service/**'
       - 'url-shortener-service/**'
+      - 'post-service/**'
+      - 'user-service/**'
 
 jobs:
   changes:
@@ -34,6 +36,10 @@ jobs:
               - 'storage-service/**'
             url-shortener-service:
               - 'url-shortener-service/**'
+            user-service:
+              - 'user-service/**'
+            post-service:
+              - 'post-service/**'            
 
       - name: Check changes for each service
         run: |
@@ -191,7 +197,41 @@ jobs:
 
       - name: Push Docker Image Url shortener service
         run: docker push daneker/url-shortener-service
+  user-service:
+    needs: changes
+    if: ${{ needs.changes.outputs.user-service == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository Url shortener
+        uses: actions/checkout@v2
 
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Maven clean install
+        run: mvn clean install -f user-service/pom.xml -DskipTests
+
+      - name: Build Docker User service Shortener
+        run: docker build -t daneker/user-service -f user-service/Dockerfile user-service/
+
+      - name: Log in to Docker Hub
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+
+      - name: Push Docker Image user service
+        run: docker push daneker/user-service
+  post-service:
+    needs: changes
+    if: ${{ needs.changes.outputs.post-service == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: To be implemented
+        run: echo "To be implemented"
   storage-service:
     needs: changes
     if: ${{ needs.changes.outputs.storage-service == 'true' }}
