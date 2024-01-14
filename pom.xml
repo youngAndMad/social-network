@@ -78,7 +78,7 @@
         <module>mail-service</module>
         <module>qr-service</module>
         <module>api-gateway</module>
-        <module>auth-service</module>
+        <module>user-service</module>
         <module>url-shortener-service</module>
     </modules>
 
