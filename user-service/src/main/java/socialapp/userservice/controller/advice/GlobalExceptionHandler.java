@@ -6,14 +6,23 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import socialapp.userservice.common.exception.EmailRegisteredYetException;
 import socialapp.userservice.common.exception.EntityNotFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(EntityNotFoundException.class)
+    @ExceptionHandler({EntityNotFoundException.class})
     ResponseEntity<ProblemDetail> handleEntityNotFoundException(EntityNotFoundException e) {
         var problemDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(404), e.getLocalizedMessage());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(problemDetail);
+    }
+
+    @ExceptionHandler({EmailRegisteredYetException.class})
+    ResponseEntity<ProblemDetail> handleEmailRegisteredException(EmailRegisteredYetException e) {
+        var problemDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(400), e.getLocalizedMessage());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(problemDetail);
