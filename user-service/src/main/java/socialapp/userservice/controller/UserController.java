@@ -29,4 +29,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .build();
     }
+
+    @GetMapping("suggest")
+    ResponseEntity<?> fetchSuggestions(
+            @RequestParam String query
+    ){
+        return ResponseEntity.ok(userService.fetchSuggestions(query));
+    }
 }

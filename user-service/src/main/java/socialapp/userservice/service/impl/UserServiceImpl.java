@@ -6,6 +6,7 @@ import org.springframework.data.elasticsearch.client.elc.QueryBuilders;
 import org.springframework.data.elasticsearch.client.erhlc.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.Criteria;
 import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
 import org.springframework.stereotype.Service;
@@ -53,11 +54,12 @@ public class UserServiceImpl implements UserService {
                 .contains(query)
                 .or(new Criteria("last_name").contains(query));
 
-        var suggestionResult = elasticsearchOperations.search(new CriteriaQuery(fullNameCriteria), SuggestionResponse.class);
+        var suggestionResult = elasticsearchOperations.search(new CriteriaQuery(fullNameCriteria), User.class,IndexCoordinates.of("user"));
 
         return suggestionResult.getSearchHits()
                 .stream()
                 .map(SearchHit::getContent)
+                .map(user -> new SuggestionResponse(user.getId(), user.getFirstName(), user.getLastName()))
                 .collect(Collectors.toSet());
     }
 
