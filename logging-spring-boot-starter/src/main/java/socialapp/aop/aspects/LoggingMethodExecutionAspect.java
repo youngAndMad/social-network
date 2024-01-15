@@ -40,7 +40,7 @@ public class LoggingMethodExecutionAspect {
     public Object logMethodExecution(ProceedingJoinPoint pjp) throws Throwable {
         var methodSignature = (MethodSignature) pjp.getSignature();
         var methodName = methodSignature.getName();
-        String className = methodSignature.getDeclaringType().getSimpleName();
+        var className = methodSignature.getDeclaringType().getSimpleName();
 
         log.info("Executing method " + methodName + " in class " + className);
 
