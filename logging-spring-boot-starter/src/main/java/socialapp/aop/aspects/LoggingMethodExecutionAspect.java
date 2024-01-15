@@ -36,6 +36,7 @@ public class LoggingMethodExecutionAspect {
     public void annotatedByLoggable() {
     }
 
+
     @Around("annotatedByLoggable()")
     public Object logMethodExecution(ProceedingJoinPoint pjp) throws Throwable {
         MethodSignature methodSignature = (MethodSignature) pjp.getSignature();
