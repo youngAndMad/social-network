@@ -27,7 +27,6 @@
         <testcontainers.version>1.19.3</testcontainers.version>
     </properties>
 
-
     <distributionManagement>
         <repository>
             <id>mine-nexus-snapshots</id>
