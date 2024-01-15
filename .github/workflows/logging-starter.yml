@@ -41,5 +41,12 @@ jobs:
     needs: changes
     if: ${{ needs.changes.outputs.logging-starter == 'true' }}
     steps:
+      - name: Checkout Repository Api gateway
+        uses: actions/checkout@v2
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
       - name: Push to nexus with maven
         run: mvn clean deploy -f logging-spring-boot-starter/pom.xml -DskipTests -Dmaven.install.skip=true -X -Dnexus.host=${{ secrets.NEXUS_URL }}
