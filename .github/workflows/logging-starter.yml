@@ -9,7 +9,7 @@ on:
     inputs:
       manual_trigger:
         description: 'Manually trigger the workflow'
-        default: 'true'
+        default: 'false'
 
 
 jobs:
@@ -49,4 +49,4 @@ jobs:
           distribution: 'adopt'
           java-version: '17'
       - name: Push to nexus with maven
-        run: mvn clean deploy -f logging-spring-boot-starter/pom.xml -DskipTests -Dmaven.install.skip=true -X -Dnexus.host=${{ secrets.NEXUS_URL }}
+        run: mvn clean deploy -DskipTests -Dmaven.install.skip=true -X -Dnexus.host=${{ secrets.NEXUS_URL }} -Dnexus.username=${{ secrets.NEXUS_USERNAME }} -Dnexus.password=${{ secrets.NEXUS_PASSWORD }}
