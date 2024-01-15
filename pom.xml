@@ -18,12 +18,27 @@
     <url>http://maven.apache.org</url>
 
     <properties>
+        <!--suppress UnresolvedMavenProperty -->
+        <nexus.host>${env.NEXUS_URL}</nexus.host>
         <spring-cloud.version>2022.0.1</spring-cloud.version>
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <testcontainers.version>1.19.3</testcontainers.version>
     </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>mine-nexus-snapshots</id>
+            <name>Nexus private maven repository for releases</name>
+            <url>${nexus.host}/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>mine-nexus-releases</id>
+            <name>Nexus private maven repository for snapshots</name>
+            <url>${nexus.host}/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>

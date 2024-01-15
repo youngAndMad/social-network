@@ -52,7 +52,8 @@ jobs:
       - name: Push to nexus with maven
         run: |
           mvn clean --batch-mode deploy 
-          -Dmaven.multiModuleProjectDirectory=social-network\logging-spring-boot-starter -DskipTests -Dmaven.install.skip=true  
+          -f logging-spring-boot-starter/pom.xml
+          -Dmaven.multiModuleProjectDirectory=social-network/logging-spring-boot-starter -DskipTests -Dmaven.install.skip=true  
           -Dnexus.host=${{ secrets.NEXUS_URL }} -Dnexus.username=${{ secrets.NEXUS_USERNAME }}
           -Dnexus.password=${{ secrets.NEXUS_PASSWORD }}
           -DaltDeploymentRepository=mine-nexus-releases::default::${{ secrets.NEXUS_URL }}/nexus/content/repositories/releases/
