@@ -43,7 +43,7 @@ public class LoggingTimeExecutionAspect {
 
     @Around("annotatedByLoggable()")
     public Object logMethodExecutionTime(ProceedingJoinPoint pjp) throws Throwable {
-        MethodSignature methodSignature = (MethodSignature) pjp.getSignature();
+        var methodSignature = (MethodSignature) pjp.getSignature();
         final var stopWatch = new StopWatch();
 
         stopWatch.start();
