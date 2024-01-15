@@ -54,12 +54,12 @@ jobs:
           NEXUS_URL: ${{ secrets.NEXUS_URL  }}
           NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD  }}
           NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME  }}
+          MAVEN_USERNAME: ${{ secrets.NEXUS_USERNAME  }}
+          MAVEN_PASSWORD: ${{ secrets.NEXUS_PASSWORD  }}
         run: |
           mvn clean --batch-mode deploy \
           -f logging-spring-boot-starter/pom.xml \
           -DskipTests -Dmaven.install.skip=true \
           -Dnexus.host=$NEXUS_URL \
-          -Dnexus.username=$NEXUS_USERNAME \
-          -Dnexus.password=$secrets.NEXUS_PASSWORD \
           -DaltDeploymentRepository=mine-nexus-releases::default::$NEXUS_URL/nexus/content/repositories/releases/
 
