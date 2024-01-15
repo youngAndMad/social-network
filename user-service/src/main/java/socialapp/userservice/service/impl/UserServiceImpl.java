@@ -1,9 +1,7 @@
 package socialapp.userservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.elasticsearch.client.elc.QueryBuilders;
-import org.springframework.data.elasticsearch.client.erhlc.NativeSearchQueryBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
@@ -15,9 +13,7 @@ import socialapp.userservice.common.client.StorageClient;
 import socialapp.userservice.common.exception.EmailRegisteredYetException;
 import socialapp.userservice.common.exception.EntityNotFoundException;
 import socialapp.userservice.common.mapper.UserMapper;
-import socialapp.userservice.model.dto.IsExistsResponse;
-import socialapp.userservice.model.dto.RegistrationDto;
-import socialapp.userservice.model.dto.SuggestionResponse;
+import socialapp.userservice.model.dto.*;
 import socialapp.userservice.model.entity.User;
 import socialapp.userservice.repository.UserRepository;
 import socialapp.userservice.service.AddressService;
@@ -26,8 +22,11 @@ import socialapp.userservice.service.UserService;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static socialapp.userservice.common.AppConstants.*;
+
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
@@ -55,11 +54,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Set<SuggestionResponse> fetchSuggestions(String query) {
-        var fullNameCriteria = new Criteria("first_name")
+        var fullNameCriteria = new Criteria(FIRST_NAME)
                 .contains(query)
-                .or(new Criteria("last_name").contains(query));
+                .or(new Criteria(LAST_NAME).contains(query));
 
-        var suggestionResult = elasticsearchOperations.search(new CriteriaQuery(fullNameCriteria), User.class, IndexCoordinates.of("user"));
+        var suggestionResult = elasticsearchOperations.search(new CriteriaQuery(fullNameCriteria), User.class, IndexCoordinates.of(USER_INDEX));
 
         return suggestionResult.getSearchHits()
                 .stream()
@@ -81,13 +80,43 @@ public class UserServiceImpl implements UserService {
     @Override
     public void uploadAvatar(MultipartFile file, Long id) {
         var user = findById(id);
-        var uploadedAvatar = storageClient.upload("USER_PROFILE_IMAGE", user.getId(), file);
+        var uploadedAvatar = storageClient.upload(USER_PROFILE_IMAGE, user.getId(), file);
 
-        if (uploadedAvatar.getStatusCode().is2xxSuccessful() && uploadedAvatar.getBody() != null){
+        if (uploadedAvatar.getStatusCode().is2xxSuccessful() && uploadedAvatar.getBody() != null) {
             user.setAvatar(uploadedAvatar.getBody().url());
             userRepository.save(user);
+        } else {
+            log.error("storage client error, status =  {}", uploadedAvatar.getStatusCode());
         }
 
+    }
+
+    @Override
+    public void update(UserUpdateDto userUpdateDto, Long id) {
+        var user = findById(id);
+
+        userMapper.update(userUpdateDto, user);
+
+        userRepository.save(user);
+    }
+
+    @Override
+    public Set<User> find(UserSearchCriteria criteria) {
+        var fullNameCriteria = new Criteria(FIRST_NAME).contains(criteria.nameLike())
+                .or(new Criteria(LAST_NAME).contains(criteria.nameLike()));
+
+        var finalCriteria = fullNameCriteria
+                .and(new Criteria(AGE).greaterThan(criteria.ageFrom()))
+                .and(new Criteria(AGE).lessThan(criteria.ageTo()))
+                .and(new Criteria(CITY).contains(criteria.city()))
+                .and(new Criteria(COUNTRY).contains(criteria.country()));
+
+        var searchResult = elasticsearchOperations.search(new CriteriaQuery(fullNameCriteria), User.class, IndexCoordinates.of(USER_INDEX));
+
+        return searchResult
+                .stream()
+                .map(SearchHit::getContent)
+                .collect(Collectors.toSet());
     }
 
 

@@ -10,10 +10,12 @@ import org.springframework.web.multipart.MultipartFile;
 import socialapp.userservice.model.dto.IsExistsResponse;
 import socialapp.userservice.model.dto.RegistrationDto;
 import socialapp.userservice.model.dto.SuggestionResponse;
+import socialapp.userservice.model.dto.UserUpdateDto;
 import socialapp.userservice.model.entity.User;
 import socialapp.userservice.service.UserService;
 
 import java.util.List;
+import java.util.LongSummaryStatistics;
 import java.util.Set;
 
 @RequiredArgsConstructor
@@ -29,6 +31,12 @@ public class UserController {
     ) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(userService.register(registrationDto));
+    }
+
+    @PutMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    void update(@RequestBody @Valid UserUpdateDto userUpdateDto, @PathVariable Long id) {
+        userService.update(userUpdateDto, id);
     }
 
     @DeleteMapping("{id}")

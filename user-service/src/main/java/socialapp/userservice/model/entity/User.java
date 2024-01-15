@@ -6,11 +6,15 @@ import lombok.Setter;
 import org.springframework.data.elasticsearch.annotations.Document;
 import socialapp.userservice.model.enums.Gender;
 
+import java.time.LocalDate;
+
+import static socialapp.userservice.common.AppConstants.USER_INDEX;
+
 @Entity
 @Getter
 @Setter
 @Table(name = "users")
-@Document(indexName = "user")
+@Document(indexName = USER_INDEX)
 public class User extends BaseEntity {
 
     @Id
@@ -20,7 +24,9 @@ public class User extends BaseEntity {
     private String firstName;
     private String lastName;
     private String email;
-    private Integer age;
+    private LocalDate birthDate;
+    @Transient
+    private Integer age = LocalDate.now().getYear() - birthDate.getYear();
     private String avatar;
 
     @Enumerated(EnumType.STRING)

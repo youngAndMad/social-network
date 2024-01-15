@@ -21,20 +21,23 @@ public interface StorageClient {
 
     @PostMapping("single")
     @CircuitBreaker(name = "storageService", fallbackMethod = "circuitBreakerCallback")
-    @Retry(name ="storageService")
-    ResponseEntity<FileUploadResponseDto> upload(@RequestParam(value = "source", required = false, defaultValue = "USER_PROFILE_IMAGE") String source,
-                                                 @RequestParam Long target,
-                                                 @RequestParam("file") MultipartFile file
+    @Retry(name = "storageService")
+    ResponseEntity<FileUploadResponseDto> upload(
+            @RequestParam(value = "source", required = false, defaultValue = "USER_PROFILE_IMAGE") String source,
+            @RequestParam Long target,
+            @RequestParam("file") MultipartFile file
     );
 
-    default  ResponseEntity<FileUploadResponseDto> circuitBreakerCallback(Throwable throwable){
+    default ResponseEntity<FileUploadResponseDto> circuitBreakerCallback(Throwable throwable) {
         log.error("circuitBreakerCallback err = {}", throwable.getMessage());
-        return ResponseEntity.ok(null);
+        return ResponseEntity.internalServerError()
+                .build();
     }
 
 
-    default  ResponseEntity<FileUploadResponseDto> retryCallback(Throwable throwable){
+    default ResponseEntity<FileUploadResponseDto> retryCallback(Throwable throwable) {
         log.error("retryCallback err = {}", throwable.getMessage());
-        return ResponseEntity.ok(null);
+        return ResponseEntity.internalServerError()
+                .build();
     }
 }
