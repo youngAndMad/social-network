@@ -30,7 +30,7 @@ public class URLShortenerServiceImpl implements URLShortenerService {
 
     @Override
     public URLResponse createShortURL(URLRequest urlRequest) {
-        String URL = urlRequest.URL();
+        String URL = urlRequest.url();
         if (urlIsValid(URL)) {
             String id = generateId(URL);
             redisTemplate.opsForValue().set(id, URL);

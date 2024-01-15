@@ -14,29 +14,26 @@ import socialapp.aop.aspects.LoggingTimeExecutionAspect;
 
 @Configuration
 @EnableConfigurationProperties(LoggingProperties.class)
-@ConditionalOnClass(LoggingProperties.class)
 @ConditionalOnProperty(prefix = "app.common.logging", name = "enabled", havingValue = "true")
 @EnableAspectJAutoProxy
 public class LoggingAutoConfiguration {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoggingAutoConfiguration.class);
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @PostConstruct
     void init() {
-        logger.info("LoggingAutoConfiguration initialized");
+        log.info("LoggingAutoConfiguration initialized");
     }
 
     @Bean
-    @ConditionalOnClass(LoggingMethodExecutionAspect.class)
-    public LoggingMethodExecutionAspect loggingMethodExecutionAspect() {
-        logger.info("LoggingMethodExecutionAspect bean start to create.");
+    LoggingMethodExecutionAspect loggingMethodExecutionAspect() {
+        log.info("LoggingMethodExecutionAspect bean start to create.");
         return new LoggingMethodExecutionAspect();
     }
 
     @Bean
-    @ConditionalOnClass(LoggingTimeExecutionAspect.class)
-    public LoggingTimeExecutionAspect loggingTimeExecutionAspect() {
-        logger.info("LoggingTimeExecutionAspect bean start to create.");
+    LoggingTimeExecutionAspect loggingTimeExecutionAspect() {
+        log.info("LoggingTimeExecutionAspect bean start to create.");
         return new LoggingTimeExecutionAspect();
     }
 }

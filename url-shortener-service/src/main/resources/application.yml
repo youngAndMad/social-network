@@ -12,6 +12,6 @@ springdoc:
 server:
   port: 10091
 app:
-  logging:
-    enabled: true
-    level: INFO
+  common:
+    logging:
+      enabled: true
