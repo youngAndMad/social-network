@@ -1,0 +1,45 @@
+name: CI CD Logging starter
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'logging-starter/**'
+  workflow_dispatch:
+    inputs:
+      manual_trigger:
+        description: 'Manually trigger the workflow'
+        default: 'true'
+
+
+jobs:
+  changes:
+    name: Trigger build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            logging-starter:
+              - 'logging-starter/**'
+      - name: Check changes for each service
+        run: |
+          echo "Changed files: ${{ github.event_name }} ${{ github.event.before }}...${{ github.sha }}"
+          echo "Changed services: ${{ steps.changes.outputs.services }}"
+        env:
+          SERVICES: ${{ steps.changes.outputs.services }}
+    outputs:
+      logging-starter: ${{ steps.changes.outputs.logging-starter }}
+
+
+  logging-starter:
+    name: Push to nexus
+    runs-on:  ubuntu-latest
+    needs: changes
+    if: ${{ needs.changes.outputs.logging-starter == 'true' }}
+    steps:
+      - name: Push to nexus with maven
+        run: mvn clean deploy -DskipTests -Dmaven.install.skip=true -X -Dnexus.host=${{ secrets.NEXUS_URL }}
