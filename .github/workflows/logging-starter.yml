@@ -52,7 +52,7 @@ jobs:
       - name: Push to nexus with maven
         run: |
           mvn clean --batch-mode deploy \
-          -f social-network/logging-spring-boot-starter/pom.xml \
+          -f logging-spring-boot-starter/pom.xml \
           -DskipTests -Dmaven.install.skip=true \
           -Dnexus.host=${{ secrets.NEXUS_URL }} \
           -Dnexus.username=${{ secrets.NEXUS_USERNAME }} \
