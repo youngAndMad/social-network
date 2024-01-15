@@ -51,9 +51,11 @@ jobs:
           server-id: mine-nexus-releases
       - name: Push to nexus with maven
         run: |
-          mvn clean --batch-mode deploy 
-          -f logging-spring-boot-starter/pom.xml
-          -Dmaven.multiModuleProjectDirectory=social-network/logging-spring-boot-starter -DskipTests -Dmaven.install.skip=true  
-          -Dnexus.host=${{ secrets.NEXUS_URL }} -Dnexus.username=${{ secrets.NEXUS_USERNAME }}
-          -Dnexus.password=${{ secrets.NEXUS_PASSWORD }}
+          mvn clean --batch-mode deploy \
+          -f social-network/logging-spring-boot-starter/pom.xml \
+          -DskipTests -Dmaven.install.skip=true \
+          -Dnexus.host=${{ secrets.NEXUS_URL }} \
+          -Dnexus.username=${{ secrets.NEXUS_USERNAME }} \
+          -Dnexus.password=${{ secrets.NEXUS_PASSWORD }} \
           -DaltDeploymentRepository=mine-nexus-releases::default::${{ secrets.NEXUS_URL }}/nexus/content/repositories/releases/
+
