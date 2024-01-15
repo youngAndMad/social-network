@@ -45,7 +45,7 @@ public class LoggingMethodExecutionAspect {
         log.info("Executing method " + methodName + " in class " + className);
 
         long startTime = System.currentTimeMillis();
-        Object result = pjp.proceed();
+        var result = pjp.proceed();
         long endTime = System.currentTimeMillis();
 
         log.info("Method " + methodName + " in class " + className + " completed in " + (endTime - startTime) + " ms.");
