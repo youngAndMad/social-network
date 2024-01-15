@@ -4,7 +4,7 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'logging-starter/**'
+      - 'logging-spring-boot-starter/**'
   workflow_dispatch:
     inputs:
       manual_trigger:
@@ -24,7 +24,7 @@ jobs:
         with:
           filters: |
             logging-starter:
-              - 'logging-starter/**'
+              - 'logging-spring-boot-starter/**'
       - name: Check changes for each service
         run: |
           echo "Changed files: ${{ github.event_name }} ${{ github.event.before }}...${{ github.sha }}"
