@@ -39,7 +39,7 @@ public class LoggingMethodExecutionAspect {
     @Around("annotatedByLoggable()")
     public Object logMethodExecution(ProceedingJoinPoint pjp) throws Throwable {
         var methodSignature = (MethodSignature) pjp.getSignature();
-        String methodName = methodSignature.getName();
+        var methodName = methodSignature.getName();
         String className = methodSignature.getDeclaringType().getSimpleName();
 
         log.info("Executing method " + methodName + " in class " + className);
