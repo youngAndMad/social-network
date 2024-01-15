@@ -50,12 +50,16 @@ jobs:
           java-version: '17'
           server-id: mine-nexus-releases
       - name: Push to nexus with maven
+        env:
+          NEXUS_URL: ${{ secrets.NEXUS_URL  }}
+          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD  }}
+          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME  }}
         run: |
           mvn clean --batch-mode deploy \
           -f logging-spring-boot-starter/pom.xml \
           -DskipTests -Dmaven.install.skip=true \
-          -Dnexus.host=${{ secrets.NEXUS_URL }} \
-          -Dnexus.username=${{ secrets.NEXUS_USERNAME }} \
-          -Dnexus.password=${{ secrets.NEXUS_PASSWORD }} \
-          -DaltDeploymentRepository=mine-nexus-releases::default::${{ secrets.NEXUS_URL }}/nexus/content/repositories/releases/
+          -Dnexus.host=$NEXUS_URL \
+          -Dnexus.username=$NEXUS_USERNAME \
+          -Dnexus.password=$secrets.NEXUS_PASSWORD \
+          -DaltDeploymentRepository=mine-nexus-releases::default::$NEXUS_URL/nexus/content/repositories/releases/
 
