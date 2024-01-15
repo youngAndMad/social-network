@@ -21,6 +21,8 @@ public class User extends BaseEntity {
     private String lastName;
     private String email;
     private Integer age;
+    private String avatar;
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
     @OneToOne

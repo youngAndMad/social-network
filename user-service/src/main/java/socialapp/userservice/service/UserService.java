@@ -1,5 +1,7 @@
 package socialapp.userservice.service;
 
+import org.springframework.web.multipart.MultipartFile;
+import socialapp.userservice.model.dto.IsExistsResponse;
 import socialapp.userservice.model.dto.RegistrationDto;
 import socialapp.userservice.model.dto.SuggestionResponse;
 import socialapp.userservice.model.entity.User;
@@ -14,4 +16,9 @@ public interface UserService {
     void delete(Long id);
 
     Set<SuggestionResponse> fetchSuggestions(String query);
+
+    IsExistsResponse isExists(String email);
+
+    void uploadAvatar(MultipartFile file, Long id);
+
 }

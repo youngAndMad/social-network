@@ -1,4 +1,13 @@
 spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          storage-service:
+            url: http://localhost:7070/api/v1/storage/
+            logger-level: full
+            connect-timeout: 1000
+            read-timeout: 2000
   jpa:
     properties:
       hibernate:
