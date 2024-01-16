@@ -68,3 +68,4 @@ volumes:
   mongo:
   minio_storage:
 #  redis:
+

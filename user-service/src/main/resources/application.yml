@@ -1,4 +1,13 @@
 spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          storage-service:
+            url: http://localhost:7070/api/v1/storage/
+            logger-level: full
+            connect-timeout: 1000
+            read-timeout: 2000
   jpa:
     properties:
       hibernate:
@@ -24,3 +33,30 @@ spring:
     allow-bean-definition-overriding: true
   application:
     name: user-service
+resilience4j:
+  retry:
+    metrics:
+      enabled: true
+    instances:
+      storage-service:
+        max-attempts: 2
+        wait-duration:
+          seconds: 2
+        fail-after-max-attempts: false
+  circuitbreaker:
+    metrics:
+      enabled: true
+    instances:
+      storage-service:
+        register-health-indicator: true
+        sliding-window-size: 50
+        sliding-window-type: TIME_BASED
+        slow-call-rate-threshold: 50
+        minimumNumberOfCalls: 5
+        writable-stack-trace-enabled: true
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 5
+        enable-exponential-backoff: true
+        slow-call-duration-threshold:
+          seconds: 1
+

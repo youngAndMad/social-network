@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
+import socialapp.aop.annotations.LoggableTime;
 import socialapp.urlshortenerservice.model.dto.URLRequest;
 import socialapp.urlshortenerservice.model.dto.URLResponse;
 import socialapp.urlshortenerservice.service.URLShortenerService;
@@ -18,6 +19,7 @@ import socialapp.urlshortenerservice.service.URLShortenerService;
 @Tag(name = "URL Shortener REST API", description = "Endpoints for URL shortening and redirection operations.")
 @RequestMapping("/url")
 @RequiredArgsConstructor
+@LoggableTime
 public class UrlShortenerController {
 
     /**

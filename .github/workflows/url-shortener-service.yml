@@ -1,0 +1,58 @@
+name: CI CD Url shortener service
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'url-shortener-service/**'
+
+jobs:
+  changes:
+    name: Trigger build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            url-shortener-service:
+              - 'url-shortener-service/**'
+      - name: Check changes for each service
+        run: |
+          echo "Changed files: ${{ github.event_name }} ${{ github.event.before }}...${{ github.sha }}"
+          echo "Changed services: ${{ steps.changes.outputs.services }}"
+        env:
+          SERVICES: ${{ steps.changes.outputs.services }}
+    outputs:
+      url-shortener-service: ${{ steps.changes.outputs.url-shortener-service }}
+
+  url-shortener-service:
+    needs: changes
+    if: ${{ needs.changes.outputs.url-shortener-service == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository Api gateway
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Maven clean install
+        run: mvn clean install -f url-shortener-service/pom.xml -DskipTests
+
+      - name: Build Docker Image Api Gateway
+        run: docker build -t daneker/url-shortener-service -f url-shortener-service/Dockerfile url-shortener-service/
+
+      - name: Log in to Docker Hub
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+
+      - name: Push Docker Image
+        run: docker push daneker/url-shortener-service

@@ -1,0 +1,58 @@
+name: CI CD Api gateway
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'api-gateway/**'
+
+jobs:
+  changes:
+    name: Trigger build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            api-gateway:
+              - 'api-gateway/**'
+      - name: Check changes for each service
+        run: |
+          echo "Changed files: ${{ github.event_name }} ${{ github.event.before }}...${{ github.sha }}"
+          echo "Changed services: ${{ steps.changes.outputs.services }}"
+        env:
+          SERVICES: ${{ steps.changes.outputs.services }}
+    outputs:
+      api-gateway: ${{ steps.changes.outputs.api-gateway }}
+
+  api-gateway:
+    needs: changes
+    if: ${{ needs.changes.outputs.api-gateway == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository Api gateway
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Maven clean install
+        run: mvn clean install -f api-gateway/pom.xml -DskipTests
+
+      - name: Build Docker Image Api Gateway
+        run: docker build -t daneker/api-gateway -f api-gateway/Dockerfile api-gateway/
+
+      - name: Log in to Docker Hub
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+
+      - name: Push Docker Image
+        run: docker push daneker/api-gateway

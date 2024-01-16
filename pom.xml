@@ -18,6 +18,8 @@
     <url>http://maven.apache.org</url>
 
     <properties>
+        <!--suppress UnresolvedMavenProperty -->
+        <nexus.host>${env.NEXUS_URL}</nexus.host>
         <spring-cloud.version>2022.0.1</spring-cloud.version>
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
@@ -25,12 +27,29 @@
         <testcontainers.version>1.19.3</testcontainers.version>
     </properties>
 
+    <distributionManagement>
+        <repository>
+            <id>mine-nexus-snapshots</id>
+            <name>Nexus private maven repository for releases</name>
+            <url>${nexus.host}/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>mine-nexus-releases</id>
+            <name>Nexus private maven repository for snapshots</name>
+            <url>${nexus.host}/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.30</version>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -81,6 +100,7 @@
         <module>user-service</module>
         <module>url-shortener-service</module>
         <module>news-service</module>
+        <module>logging-spring-boot-starter</module>
     </modules>
 
     <build>
