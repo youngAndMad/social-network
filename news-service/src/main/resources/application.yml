@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: news-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/news
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+server:
+  port: 8888

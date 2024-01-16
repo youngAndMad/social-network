@@ -80,6 +80,7 @@
         <module>api-gateway</module>
         <module>user-service</module>
         <module>url-shortener-service</module>
+        <module>news-service</module>
     </modules>
 
     <build>
