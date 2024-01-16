@@ -24,7 +24,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(URLNotFoundException.class)
     public ResponseEntity<String> handleURLNotFoundException(Exception e) {
         log.error("URL not found:", e);
-
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("URL not found." + e.getMessage());
     }
 
@@ -37,7 +36,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(URLNotValidException.class)
     public ResponseEntity<String> handleURLNotValidException(URLNotValidException e) {
         log.error("Invalid URL:", e);
-
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid URL." + e.getMessage());
     }
 }

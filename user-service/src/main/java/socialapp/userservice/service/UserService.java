@@ -1,7 +1,7 @@
 package socialapp.userservice.service;
 
-import socialapp.userservice.model.dto.RegistrationDto;
-import socialapp.userservice.model.dto.SuggestionResponse;
+import org.springframework.web.multipart.MultipartFile;
+import socialapp.userservice.model.dto.*;
 import socialapp.userservice.model.entity.User;
 
 import java.util.List;
@@ -14,4 +14,13 @@ public interface UserService {
     void delete(Long id);
 
     Set<SuggestionResponse> fetchSuggestions(String query);
+
+    IsExistsResponse isExists(String email);
+
+    void uploadAvatar(MultipartFile file, Long id);
+
+    void update(UserUpdateDto userUpdateDto,Long id);
+
+    Set<User> find(UserSearchCriteria userSearchCriteria);
+
 }

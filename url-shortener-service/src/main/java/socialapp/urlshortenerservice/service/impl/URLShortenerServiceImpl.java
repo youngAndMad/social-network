@@ -6,6 +6,8 @@ import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.view.RedirectView;
+import socialapp.aop.annotations.LoggableInfo;
+import socialapp.aop.annotations.LoggableTime;
 import socialapp.urlshortenerservice.exception.URLNotFoundException;
 import socialapp.urlshortenerservice.exception.URLNotValidException;
 import socialapp.urlshortenerservice.model.dto.URLRequest;
@@ -19,6 +21,8 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
+@LoggableInfo
+@LoggableTime
 public class URLShortenerServiceImpl implements URLShortenerService {
 
     private final StringRedisTemplate redisTemplate;
@@ -26,7 +30,7 @@ public class URLShortenerServiceImpl implements URLShortenerService {
 
     @Override
     public URLResponse createShortURL(URLRequest urlRequest) {
-        String URL = urlRequest.URL();
+        String URL = urlRequest.url();
         if (urlIsValid(URL)) {
             String id = generateId(URL);
             redisTemplate.opsForValue().set(id, URL);

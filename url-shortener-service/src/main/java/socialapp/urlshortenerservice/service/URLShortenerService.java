@@ -15,7 +15,7 @@ public interface URLShortenerService {
      * @param urlRequest The request containing the long URL to be shortened.
      * @return URLResponse with the response containing the short URL.
      */
-    public URLResponse createShortURL(URLRequest urlRequest);
+     URLResponse createShortURL(URLRequest urlRequest);
 
     /**
      * Redirects to the original long URL based on the provided short URL.
@@ -23,5 +23,5 @@ public interface URLShortenerService {
      * @param shortURL The short URL to be redirected.
      * @return RedirectView to the original long URL.
      */
-    public RedirectView redirect(String shortURL);
+     RedirectView redirect(String shortURL);
 }

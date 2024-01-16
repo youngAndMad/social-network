@@ -11,3 +11,7 @@ springdoc:
     path:  /swagger-ui.html
 server:
   port: 10091
+app:
+  common:
+    logging:
+      enabled: true
