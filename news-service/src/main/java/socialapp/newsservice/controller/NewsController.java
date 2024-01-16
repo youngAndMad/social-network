@@ -9,9 +9,9 @@ import socialapp.newsservice.service.NewsService;
 
 import java.util.List;
 
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/news")
 public class NewsController {
     private final NewsService newsService;
     @PostMapping

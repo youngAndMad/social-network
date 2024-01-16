@@ -10,6 +10,7 @@ import socialapp.newsservice.configuration.FeignClientConfiguration;
 
 import java.util.List;
 
+
 @FeignClient(name = "golang-service", url = "http://localhost:7070/api/v1/file", configuration = FeignClientConfiguration.class)
 public interface StorageServiceClient {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
