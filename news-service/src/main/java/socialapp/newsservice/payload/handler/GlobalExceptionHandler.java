@@ -2,12 +2,12 @@ package socialapp.newsservice.payload.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import socialapp.newsservice.payload.exception.EntityNotFoundException;
 import socialapp.newsservice.payload.exception.StorageRequestException;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     ProblemDetail handleTaskNotFoundException(EntityNotFoundException exception){

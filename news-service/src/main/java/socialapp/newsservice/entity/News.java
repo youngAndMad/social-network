@@ -17,6 +17,7 @@ public class News {
     private Long id;
     private String title;
     private String content;
+    private Boolean emailSending;
 
     @OneToMany(mappedBy = "news")
     private Set<FileMetaData> files;

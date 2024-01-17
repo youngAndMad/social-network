@@ -20,27 +20,24 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class NewsServiceImpl implements NewsService {
+    private static final String NEWS_CONTENT = "NEWS_CONTENT";
     private final NewsRepository newsRepository;
     private final StorageServiceClient storageServiceClient;
     private final FileMetaDataRepository fileMetaDataRepository;
 
     @Override
-    public News saveNews(String title, String content, List<MultipartFile> multipartFiles) {
+    public News saveNews(String title, String content, List<MultipartFile> multipartFiles, Boolean emailSending) {
         News newNews = News.builder()
                 .title(title)
                 .content(content)
+                .emailSending(emailSending)
                 .build();
         News savedNews = newsRepository.save(newNews);
-        var fileUploadResponse = storageServiceClient.uploadFiles("NEWS_CONTENT", savedNews.getId(), multipartFiles);
+        var fileUploadResponse = storageServiceClient.uploadFiles(NEWS_CONTENT, savedNews.getId(), multipartFiles);
 
         var files = Arrays.stream(fileUploadResponse.getBody())
-                .map(f -> {
-                    var fileMetadata = new FileMetaData();
-                    fileMetadata.setNews(savedNews);
-                    fileMetadata.setUrl(f.url());
-                    fileMetadata.setFileId(f.id());
-                    return fileMetadata;
-                }).map(fileMetaDataRepository::save)
+                .map(f -> new FileMetaData(f.url(),f.id(),savedNews))
+                .map(fileMetaDataRepository::save)
                 .collect(Collectors.toSet());
 
         savedNews.setFiles(files);
@@ -70,19 +67,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public News updateNews(Long id, News news) {
-        Optional<News> optionalNews = newsRepository.findById(id);
-        if (optionalNews.isEmpty()) {
-            throw new EntityNotFoundException("News entity with id: " + id + " not found");
-        }
-
-        News beingUpdated = News.builder()
-                .id(id)
-                .title(news.getTitle())
-                .content(news.getContent())
-                .build();
-
-        newsRepository.save(beingUpdated);
-        return beingUpdated;
+    public News updateNews(News news) {
+        return newsRepository.save(news);
     }
 }

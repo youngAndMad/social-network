@@ -8,7 +8,7 @@ import socialapp.newsservice.entity.News;
 import java.util.List;
 
 public interface NewsService {
-    News saveNews(String title, String content, List<MultipartFile> multipartFiles);
+    News saveNews(String title, String content, List<MultipartFile> multipartFiles, Boolean emailSending);
 
     Page<News> getAll(int page, int pageSize);
 
@@ -16,5 +16,5 @@ public interface NewsService {
 
     void deleteNewsById(Long id);
 
-    News updateNews(Long id, News news);
+    News updateNews(News news);
 }

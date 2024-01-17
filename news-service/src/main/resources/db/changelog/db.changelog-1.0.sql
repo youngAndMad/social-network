@@ -4,7 +4,8 @@ CREATE TABLE news
 (
     id      BIGSERIAL PRIMARY KEY,
     content VARCHAR(255),
-    title   VARCHAR(255)
+    title   VARCHAR(255),
+    emailSending BOOLEAN
 );
 --rollback drop table news;
 
