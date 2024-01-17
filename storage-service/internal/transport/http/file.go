@@ -1,9 +1,11 @@
 package http
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/minio/minio-go/v7"
 	"go.mongodb.org/mongo-driver/mongo"
+	"log"
 	"net/http"
 	"storage-service/internal/entity"
 	"storage-service/internal/service"
@@ -16,15 +18,20 @@ type FileHandler struct {
 }
 
 func (h *FileHandler) UploadFiles(c *gin.Context) {
-	source := c.PostForm("source")
-	target, err := strconv.Atoi(c.PostForm("target"))
-
+	fmt.Println(c.Request)
+	fmt.Println(c.Request)
+	source := c.Query("source")
+	fmt.Println(source)
+	target, err := strconv.Atoi(c.Query("target"))
 	if err != nil {
+		log.Printf("Hello world %d and %s", target, source)
 		bindError(c, http.StatusBadRequest, err)
 		return
 	}
 
 	form, err := c.MultipartForm()
+	log.Println("i am here")
+	log.Println(form)
 	if err != nil {
 		bindError(c, http.StatusBadRequest, err)
 		return
@@ -49,15 +56,18 @@ func (h *FileHandler) UploadFiles(c *gin.Context) {
 		fileEntities = append(fileEntities, fileEntity)
 	}
 
+	var response []entity.FileUploadResponse
+
 	for _, fileEntity := range fileEntities {
 		err := h.fileService.SaveFile(fileEntity)
 		if err != nil {
 			bindError(c, http.StatusInternalServerError, err)
 			return
 		}
+		response = append(response, entity.ToFileUploadResponse(fileEntity))
 	}
 
-	c.JSON(http.StatusOK, fileEntities)
+	c.JSON(http.StatusOK, response)
 }
 
 func (h *FileHandler) RemoveFile(c *gin.Context) {
@@ -103,9 +113,9 @@ func NewFileRoutes(r *gin.Engine, collection *mongo.Collection, mongo *mongo.Cli
 		minioService: minioService,
 	}
 
-	routes := r.Group("/api/v1/file/")
+	routes := r.Group("/api/v1/file")
 
-	routes.DELETE(":id", h.RemoveFile)
-	routes.GET(":id", h.GetFile)
+	routes.DELETE("/:id", h.RemoveFile)
+	routes.GET("/:id", h.GetFile)
 	routes.POST("", h.UploadFiles)
 }

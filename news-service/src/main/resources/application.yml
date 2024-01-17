@@ -1,4 +1,10 @@
 spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          storage-service-client:
+            url: http://localhost:7070/api/v1/file
   application:
     name: news-service
   datasource:
@@ -12,3 +18,9 @@ server:
   port: 8888
   servlet:
     context-path: /api/v1
+logging:
+  level:
+    org.springframework:
+      web: debug
+      cloud:
+        openfeign: debug

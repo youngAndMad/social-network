@@ -17,6 +17,7 @@ public class News {
     private Long id;
     private String title;
     private String content;
-    @ElementCollection
-    private Set<String> fileUrl;
+
+    @OneToMany(mappedBy = "news")
+    private Set<FileMetaData> files;
 }
