@@ -99,6 +99,7 @@
         <module>api-gateway</module>
         <module>user-service</module>
         <module>url-shortener-service</module>
+        <module>news-service</module>
         <module>logging-spring-boot-starter</module>
     </modules>
 

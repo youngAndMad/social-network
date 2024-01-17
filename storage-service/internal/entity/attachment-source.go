@@ -13,6 +13,7 @@ const (
 	ChannelAvatarImage AttachmentSource = "CHANNEL_AVATAR_IMAGE"
 	PostContent        AttachmentSource = "POST_CONTENT"
 	CommentContent     AttachmentSource = "COMMENT_CONTENT"
+	NewsContent        AttachmentSource = "NEWS_CONTENT"
 )
 
 type Bucket struct {
@@ -27,6 +28,7 @@ var Buckets = []Bucket{
 	{ChannelAvatarImage, strings.ToLower(strings.Replace(string(ChannelAvatarImage), "_", "-", -1))},
 	{PostContent, strings.ToLower(strings.Replace(string(PostContent), "_", "-", -1))},
 	{CommentContent, strings.ToLower(strings.Replace(string(CommentContent), "_", "-", -1))},
+	{NewsContent, strings.ToLower(strings.Replace(string(NewsContent), "_", "-", -1))},
 }
 
 func GetBucket(source AttachmentSource) Bucket {
