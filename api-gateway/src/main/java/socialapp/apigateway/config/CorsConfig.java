@@ -13,12 +13,8 @@ import java.util.List;
 
 @Configuration
 public class CorsConfig extends CorsConfiguration implements WebFluxConfigurer {
-
-
-
     @Bean
     public CorsWebFilter corsFilter() {
-
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(false);
         corsConfiguration.setAllowedOrigins(List.of("*"));
