@@ -40,8 +40,6 @@ resilience4j:
     instances:
       storage-service:
         max-attempts: 2
-        wait-duration:
-          seconds: 2
         fail-after-max-attempts: false
   circuitbreaker:
     metrics:
@@ -51,12 +49,11 @@ resilience4j:
         register-health-indicator: true
         sliding-window-size: 50
         sliding-window-type: TIME_BASED
-        slow-call-rate-threshold: 50
+        slow-call-rate-threshold: 2f
         minimumNumberOfCalls: 5
         writable-stack-trace-enabled: true
         waitDurationInOpenState: 10s
         permittedNumberOfCallsInHalfOpenState: 5
         enable-exponential-backoff: true
-        slow-call-duration-threshold:
-          seconds: 1
+        slow-call-duration-threshold: 2s
 

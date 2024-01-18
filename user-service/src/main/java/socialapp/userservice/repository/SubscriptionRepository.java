@@ -1,17 +1,15 @@
 package socialapp.userservice.repository;
 
 import org.springframework.stereotype.Repository;
-import socialapp.userservice.model.entity.User;
+import socialapp.userservice.model.entity.Subscription;
 import socialapp.userservice.repository.common.CommonRepository;
 
 @Repository
-public interface UserRepository extends CommonRepository<User, Long> {
-
-    Boolean existsByEmail(String email);
+public interface SubscriptionRepository extends CommonRepository<Subscription,Long> {
 
     @Override
     default Class<?> entityClass(){
-        return User.class;
+        return Subscription.class;
     };
 
 }
