@@ -1,11 +1,10 @@
 package http
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/minio/minio-go/v7"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"log"
 	"net/http"
 	"storage-service/internal/entity"
 	"storage-service/internal/service"
@@ -18,20 +17,13 @@ type FileHandler struct {
 }
 
 func (h *FileHandler) UploadFiles(c *gin.Context) {
-	fmt.Println(c.Request)
-	fmt.Println(c.Request)
 	source := c.Query("source")
-	fmt.Println(source)
 	target, err := strconv.Atoi(c.Query("target"))
 	if err != nil {
-		log.Printf("Hello world %d and %s", target, source)
 		bindError(c, http.StatusBadRequest, err)
 		return
 	}
-
 	form, err := c.MultipartForm()
-	log.Println("i am here")
-	log.Println(form)
 	if err != nil {
 		bindError(c, http.StatusBadRequest, err)
 		return
@@ -59,10 +51,13 @@ func (h *FileHandler) UploadFiles(c *gin.Context) {
 	var response []entity.FileUploadResponse
 
 	for _, fileEntity := range fileEntities {
-		err := h.fileService.SaveFile(fileEntity)
+		id, err := h.fileService.SaveFile(fileEntity)
 		if err != nil {
 			bindError(c, http.StatusInternalServerError, err)
 			return
+		}
+		if oid, ok := id.(primitive.ObjectID); ok {
+			fileEntity.ID = oid
 		}
 		response = append(response, entity.ToFileUploadResponse(fileEntity))
 	}
@@ -103,6 +98,47 @@ func (h *FileHandler) GetFile(c *gin.Context) {
 	c.JSON(http.StatusOK, file)
 }
 
+func (h *FileHandler) GetFiles(c *gin.Context) {
+
+	fileIDs := c.QueryArray("id")
+
+	if len(fileIDs) == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "at least one file ID is required"})
+		return
+	}
+
+	var files []*entity.File
+	for _, fileID := range fileIDs {
+		file, err := h.fileService.GetFile(fileID)
+
+		if err != nil {
+			bindError(c, http.StatusNotFound, err)
+		}
+
+		files = append(files, file)
+	}
+
+	c.JSON(http.StatusOK, files)
+}
+
+func (h *FileHandler) RemoveFiles(c *gin.Context) {
+	fileIDs := c.QueryArray("id")
+
+	for _, fileID := range fileIDs {
+		file, err := h.fileService.RemoveFile(fileID)
+		if err != nil {
+			bindError(c, http.StatusNotFound, err)
+			return
+		}
+		err = h.minioService.RemoveFile(file.Source, file.FileName, file.Target)
+		if err != nil {
+			bindError(c, http.StatusInternalServerError, err)
+			return
+		}
+	}
+	c.Status(http.StatusNoContent)
+}
+
 func NewFileRoutes(r *gin.Engine, collection *mongo.Collection, mongo *mongo.Client, minio *minio.Client) {
 
 	fileService := service.NewFileService(mongo, collection)
@@ -115,7 +151,9 @@ func NewFileRoutes(r *gin.Engine, collection *mongo.Collection, mongo *mongo.Cli
 
 	routes := r.Group("/api/v1/file")
 
-	routes.DELETE("/:id", h.RemoveFile)
-	routes.GET("/:id", h.GetFile)
+	routes.DELETE("/", h.RemoveFile)
+	routes.GET("/", h.GetFile)
 	routes.POST("", h.UploadFiles)
+	routes.GET("/files", h.GetFiles)
+	routes.DELETE("/files", h.RemoveFiles)
 }

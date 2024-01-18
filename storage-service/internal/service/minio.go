@@ -21,7 +21,7 @@ func NewMinioService(minio *minio.Client) *MinioService {
 
 func (s *MinioService) UploadFile(source entity.AttachmentSource, target int, file *multipart.FileHeader) (entity.File, error) {
 
-	targetPath := fmt.Sprintf("%s/%d", entity.GetBucket(source).Name, target)
+	targetPath := fmt.Sprintf("%d", target)
 
 	src, err := file.Open()
 	if err != nil {

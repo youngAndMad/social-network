@@ -1,6 +1,7 @@
 package socialapp.newsservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class NewsServiceImpl implements NewsService {
     private static final String NEWS_CONTENT = "NEWS_CONTENT";
     private final NewsRepository newsRepository;
@@ -62,6 +64,14 @@ public class NewsServiceImpl implements NewsService {
     public void deleteNewsById(Long id) {
         if (!newsRepository.existsById(id)) {
             throw new EntityNotFoundException("News with ID " + id + " not found");
+        }
+        List<FileMetaData> fileMetaDataList = fileMetaDataRepository.findAllByNews(getById(id));
+        List<String> idList = new ArrayList<>();
+        if (fileMetaDataList.size()>0) {
+            for (FileMetaData fileMetaData: fileMetaDataList){
+                idList.add(fileMetaData.getFileId());
+            }
+            storageServiceClient.removeFiles(idList);
         }
         newsRepository.deleteById(id);
     }
