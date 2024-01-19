@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import socialapp.newsservice.entity.News;
-import socialapp.newsservice.payload.exception.EntityNotFoundException;
 import socialapp.newsservice.service.NewsService;
 
 import java.util.List;

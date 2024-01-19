@@ -18,7 +18,6 @@ public class News {
     private String title;
     private String content;
     private Boolean emailSending;
-
-    @OneToMany(mappedBy = "news")
+    @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
     private Set<FileMetaData> files;
 }

@@ -59,8 +59,8 @@ func (s *FileService) RemoveFile(fileID string) (entity.File, error) {
 	return file, nil
 }
 
-func (s *FileService) SaveFile(file entity.File) error {
-	_, err := s.collection.InsertOne(context.Background(), file)
-
-	return err
+func (s *FileService) SaveFile(file entity.File) (interface{}, error) {
+	result, err := s.collection.InsertOne(context.Background(), file)
+	id := result.InsertedID
+	return id, err
 }
