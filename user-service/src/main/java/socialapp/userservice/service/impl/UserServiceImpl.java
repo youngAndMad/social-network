@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
                 .and(new Criteria(CITY).contains(criteria.city()))
                 .and(new Criteria(COUNTRY).contains(criteria.country()));
 
-        var searchResult = elasticsearchOperations.search(new CriteriaQuery(fullNameCriteria), User.class, IndexCoordinates.of(USER_INDEX));
+        var searchResult = elasticsearchOperations.search(new CriteriaQuery(finalCriteria), User.class, IndexCoordinates.of(USER_INDEX));
 
         return searchResult
                 .stream()
