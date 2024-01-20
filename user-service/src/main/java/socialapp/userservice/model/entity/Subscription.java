@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import socialapp.userservice.model.enums.RelationStatus;
 
@@ -15,6 +16,7 @@ public class Subscription extends Relation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Override
     public RelationStatus getRelationStatus() {
         return RelationStatus.SUBSCRIPTION;

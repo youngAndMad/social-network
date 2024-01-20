@@ -23,4 +23,6 @@ public interface UserService {
 
     Set<User> find(UserSearchCriteria userSearchCriteria);
 
+    User findById(Long id);
+
 }

@@ -1,5 +1,6 @@
 package socialapp.userservice.service.impl;
 
+import jakarta.persistence.Entity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
@@ -72,7 +73,8 @@ public class UserServiceImpl implements UserService {
         return new IsExistsResponse(userRepository.existsByEmail(email));
     }
 
-    private User findById(Long id) {
+    @Override
+    public User findById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(User.class, id));
     }
