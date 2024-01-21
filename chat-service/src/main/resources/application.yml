@@ -1,0 +1,16 @@
+spring:
+  main:
+    banner-mode: off
+  application:
+    name: chat-service
+  data:
+    redis:
+      master:
+        host: localhost
+        port: 6379
+      slaves:
+        - host: localhost
+          port: 6379
+
+server:
+  port: 9393
