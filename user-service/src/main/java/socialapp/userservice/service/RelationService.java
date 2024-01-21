@@ -1,5 +1,7 @@
 package socialapp.userservice.service;
 
+import socialapp.userservice.model.dto.UserRelationsDto;
+
 public interface RelationService {
 
     void deleteBlock(Long id);
@@ -13,4 +15,6 @@ public interface RelationService {
     void subscribeUser(Long sender,Long receiver);
 
     void addFriendship(Long sender,Long receiver);
+
+    UserRelationsDto findUserRelations(Long userId);
 }

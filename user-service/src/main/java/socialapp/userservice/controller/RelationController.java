@@ -2,7 +2,9 @@ package socialapp.userservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import socialapp.userservice.model.dto.UserRelationsDto;
 import socialapp.userservice.service.RelationService;
 
 @RestController
@@ -46,5 +48,12 @@ public class RelationController {
     @ResponseStatus(HttpStatus.CREATED)
     void addFriendship(@RequestParam Long sender, @RequestParam Long receiver) {
         relationService.addFriendship(sender, receiver);
+    }
+
+    @GetMapping("relations")
+    ResponseEntity<UserRelationsDto> userRelations(
+            @RequestParam Long userId // todo get user info from keycloak token
+    ){
+        return ResponseEntity.ok(relationService.findUserRelations(userId));
     }
 }

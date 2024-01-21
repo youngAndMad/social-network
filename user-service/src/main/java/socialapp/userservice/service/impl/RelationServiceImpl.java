@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import socialapp.userservice.common.exception.InvalidSubscription;
+import socialapp.userservice.model.dto.RelationDto;
+import socialapp.userservice.model.dto.UserRelationsDto;
 import socialapp.userservice.model.entity.Block;
 import socialapp.userservice.model.entity.Friendship;
 import socialapp.userservice.model.entity.Subscription;
@@ -12,6 +14,8 @@ import socialapp.userservice.repository.FriendshipRepository;
 import socialapp.userservice.repository.SubscriptionRepository;
 import socialapp.userservice.service.RelationService;
 import socialapp.userservice.service.UserService;
+
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -87,5 +91,22 @@ public class RelationServiceImpl implements RelationService {
         friendShip.setReceiver(subscription.getReceiver());
 
         friendshipRepository.save(friendShip);
+    }
+
+    @Override
+    public UserRelationsDto findUserRelations(Long userId) {
+        var user = userService.findById(userId);
+        var blockSet = blockRepository.findAllBySenderId(user.getId());
+        var incomingSubscriptions = subscriptionRepository.findAllByReceiverId(user.getId());
+        var outgoingSubscriptions = subscriptionRepository.findAllBySenderId(user.getId());
+        var friends = friendshipRepository.findAllByReceiverIdOrSenderId(user.getId(), user.getId());
+
+        return new UserRelationsDto( // never do this // todo refactor code
+                blockSet.stream().map(b -> new RelationDto(b.getReceiver(),b.getCreatedTime().toLocalDate())).collect(Collectors.toSet()),
+                friends.stream().map(f -> new RelationDto(f.getReceiver().getId().equals(user.getId()) ? f.getSender() : f.getReceiver(),f.getCreatedTime().toLocalDate()))
+                        .collect(Collectors.toSet()),
+                outgoingSubscriptions.stream().map(b -> new RelationDto(b.getReceiver(),b.getCreatedTime().toLocalDate())).collect(Collectors.toSet()),
+                incomingSubscriptions.stream().map(b -> new RelationDto(b.getSender(),b.getCreatedTime().toLocalDate())).collect(Collectors.toSet())
+        );
     }
 }
