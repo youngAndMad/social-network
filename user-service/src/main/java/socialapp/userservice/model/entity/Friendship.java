@@ -1,9 +1,6 @@
 package socialapp.userservice.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import socialapp.userservice.model.enums.RelationStatus;
@@ -11,7 +8,7 @@ import socialapp.userservice.model.enums.RelationStatus;
 @Entity
 @Getter
 @Setter
-public class Friendship extends Relation{
+public class Friendship extends Relation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

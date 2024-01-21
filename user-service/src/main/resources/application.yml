@@ -33,6 +33,11 @@ spring:
     allow-bean-definition-overriding: true
   application:
     name: user-service
+  neo4j:
+    authentication:
+      password: strong_password
+      username: neo4j
+
 resilience4j:
   retry:
     metrics:
