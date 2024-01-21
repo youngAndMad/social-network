@@ -14,5 +14,9 @@ public class AppConstants {
     public final static String COUNTRY = "address.country";
     public final static String USER_PROFILE_IMAGE = "USER_PROFILE_IMAGE";
 
+    public static final String REQUEST_START_TIME = "start-time";
+
+    public static final String LOGGING_PATH_PATTERN = "/api/**";
+
 
 }

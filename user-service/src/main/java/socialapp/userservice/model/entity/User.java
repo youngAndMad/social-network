@@ -25,8 +25,6 @@ public class User extends BaseEntity {
     private String lastName;
     private String email;
     private LocalDate birthDate;
-//    @Transient
-//    private Integer age
     private String avatar;
 
     @Enumerated(EnumType.STRING)
@@ -34,9 +32,4 @@ public class User extends BaseEntity {
     @OneToOne
     @JoinColumn
     private Address address;
-
-    public Integer getAge(){
-        return  LocalDate.now().getYear() - birthDate.getYear();
-    }
-
 }

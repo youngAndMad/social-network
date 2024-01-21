@@ -3,14 +3,12 @@ package socialapp.userservice.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import socialapp.userservice.model.dto.IsExistsResponse;
-import socialapp.userservice.model.dto.RegistrationDto;
-import socialapp.userservice.model.dto.SuggestionResponse;
-import socialapp.userservice.model.dto.UserUpdateDto;
+import socialapp.userservice.model.dto.*;
 import socialapp.userservice.model.entity.User;
 import socialapp.userservice.service.UserService;
 
@@ -62,6 +60,15 @@ public class UserController {
                       @PathVariable Long id
     ) {
         userService.uploadAvatar(file, id);
+    }
+
+    @PostMapping("search")
+    ResponseEntity<SearchHits<User>> search(
+            @RequestBody UserSearchCriteria userSearchCriteria,
+            @RequestParam(required = false) int page,
+            @RequestParam(required = false,defaultValue = "10") int pageSize
+    ){
+        return ResponseEntity.ok(userService.find(userSearchCriteria,page,pageSize));
     }
 
 }

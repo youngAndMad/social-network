@@ -3,8 +3,10 @@ package socialapp.userservice.service.impl;
 import jakarta.persistence.Entity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.Criteria;
 import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
@@ -103,7 +105,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Set<User> find(UserSearchCriteria criteria) {
+    public SearchHits<User> find(UserSearchCriteria criteria, int page, int pageSize) {
         var fullNameCriteria = new Criteria(FIRST_NAME).contains(criteria.nameLike())
                 .or(new Criteria(LAST_NAME).contains(criteria.nameLike()));
 
@@ -113,12 +115,8 @@ public class UserServiceImpl implements UserService {
                 .and(new Criteria(CITY).contains(criteria.city()))
                 .and(new Criteria(COUNTRY).contains(criteria.country()));
 
-        var searchResult = elasticsearchOperations.search(new CriteriaQuery(finalCriteria), User.class, IndexCoordinates.of(USER_INDEX));
-
-        return searchResult
-                .stream()
-                .map(SearchHit::getContent)
-                .collect(Collectors.toSet());
+        var criteriaQuery = new CriteriaQuery(finalCriteria).setPageable(PageRequest.of(page,pageSize));
+      return elasticsearchOperations.search(criteriaQuery, User.class, IndexCoordinates.of(USER_INDEX));
     }
 
 

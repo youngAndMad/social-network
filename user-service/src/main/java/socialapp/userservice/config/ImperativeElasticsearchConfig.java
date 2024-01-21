@@ -32,12 +32,12 @@ public class ImperativeElasticsearchConfig extends ElasticsearchConfiguration {
     }
 
     @Bean
-    ApplicationRunner applicationRunner(ElasticsearchOperations elasticsearchOperations) {
+    ApplicationRunner applicationRunner(ElasticsearchOperations elastic) {
         return args -> {
             for (var shouldCreateIndexClass : shouldCreateIndexClasses) {
-                if (!elasticsearchOperations.indexOps(shouldCreateIndexClass).exists()) {
+                if (!elastic.indexOps(shouldCreateIndexClass).exists()) {
                     log.info("index for class {} not found", shouldCreateIndexClass.getSimpleName());
-                    var created = elasticsearchOperations.indexOps(shouldCreateIndexClass).create();
+                    var created = elastic.indexOps(shouldCreateIndexClass).create();
                     log.info("create index attempt for {}, created = {}", shouldCreateIndexClass.getSimpleName(), created);
                 }else {
                     log.info("index for class {} found", shouldCreateIndexClass.getSimpleName());
