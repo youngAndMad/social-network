@@ -7,30 +7,7 @@ on:
       - 'api-gateway/**'
 
 jobs:
-  changes:
-    name: Trigger build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - uses: dorny/paths-filter@v2
-        id: changes
-        with:
-          filters: |
-            api-gateway:
-              - 'api-gateway/**'
-      - name: Check changes for each service
-        run: |
-          echo "Changed files: ${{ github.event_name }} ${{ github.event.before }}...${{ github.sha }}"
-          echo "Changed services: ${{ steps.changes.outputs.services }}"
-        env:
-          SERVICES: ${{ steps.changes.outputs.services }}
-    outputs:
-      api-gateway: ${{ steps.changes.outputs.api-gateway }}
-
   api-gateway:
-    needs: changes
-    if: ${{ needs.changes.outputs.api-gateway == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository Api gateway

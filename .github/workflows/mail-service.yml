@@ -7,30 +7,7 @@ on:
       - 'mail-service/**'
 
 jobs:
-  changes:
-    name: Trigger build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - uses: dorny/paths-filter@v2
-        id: changes
-        with:
-          filters: |
-            mail-service:
-              - 'mail-service/**'
-      - name: Check changes for each service
-        run: |
-          echo "Changed files: ${{ github.event_name }} ${{ github.event.before }}...${{ github.sha }}"
-          echo "Changed services: ${{ steps.changes.outputs.services }}"
-        env:
-          SERVICES: ${{ steps.changes.outputs.services }}
-    outputs:
-      mail-service: ${{ steps.changes.outputs.mail-service }}
-
   mail-service:
-    needs: changes
-    if: ${{ needs.changes.outputs.mail-service == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository Api gateway
