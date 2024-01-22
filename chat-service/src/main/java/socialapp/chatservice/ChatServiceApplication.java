@@ -3,11 +3,11 @@ package socialapp.chatservice;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.security.Principal;
 
 @SpringBootApplication
 @RestController
@@ -19,10 +19,10 @@ public class ChatServiceApplication {
 
     @GetMapping("/user/me")
     @ResponseStatus(HttpStatus.OK)
-    Principal principal(
-            Principal principal
+    Jwt principal(
+            Authentication authentication
     ){
-        return principal;
+        return (Jwt) authentication.getPrincipal();
     }
 
 }
