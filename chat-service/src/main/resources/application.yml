@@ -1,7 +1,12 @@
 spring:
   main:
     banner-mode: off
-
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/auth/realms/socialapp
+          jwk-set-uri: http://localhost:8080/auth/realms/socialapp/protocol/openid-connect/certs
   application:
     name: chat-service
   data:
@@ -12,6 +17,10 @@ spring:
       slaves:
         - host: localhost
           port: 6379
-
 server:
   port: 9393
+logging:
+  level:
+    org.springframework:
+      web: debug
+      security: debug

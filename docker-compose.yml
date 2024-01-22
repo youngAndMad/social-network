@@ -1,12 +1,36 @@
 version: '3'
 services:
-  neo4j:
-    image: neo4j:5.15.0
-    ports:
-      - "7474:7474"
-      - "7687:7687"
+  kc_db:
+    image: postgres:15.1
     environment:
-      NEO4J_AUTH: neo4j/strong_password
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USER: my_admin
+      POSTGRES_PASSWORD: my_password
+      POSTGRES_DB: keycloak_db
+    ports:
+      - "5433:5433"
+  keycloak:
+    image: quay.io/keycloak/keycloak:11.0.1
+    ports:
+      - "8080:8080"
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: kc_db
+      DB_DATABASE: keycloak_db
+      DB_USER: my_admin
+      DB_SCHEMA: public
+      DB_PASSWORD: my_password
+      KEYCLOAK_USER: kc_admin
+      KEYCLOAK_PASSWORD: kc_password
+    depends_on:
+     - kc_db
+#  neo4j:
+#    image: neo4j:5.15.0
+#    ports:
+#      - "7474:7474"
+#      - "7687:7687"
+#    environment:
+#      NEO4J_AUTH: neo4j/strong_password
 #  postgres:
 #    container_name: news
 #    image: postgres
@@ -62,14 +86,10 @@ services:
 #    ports:
 #      - "15672:15672"
 #      - "5672:5672"
-#  redis:
-#    image: "redis/redis-stack:latest"
-#    restart: always
-#    ports:
-#      - "6379:6379"
-#    volumes:
-#      - redis:/redis/redis-data:/data
-#      - redis:/redis/redis-conf:/usr/local/etc/redis/redis.conf
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
 volumes:
   news:
   mongo:
