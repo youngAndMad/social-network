@@ -20,7 +20,7 @@ import socialapp.chatservice.model.entity.AppUser;
 public class AppUserAspect {
 
 
-    @Before("execution(* socialapp.chatservice.controller.TestController.*(..))")
+    @Before("execution(* socialapp.chatservice.controller.UserStatusController.*(..))")
     public void before(JoinPoint joinPoint) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
@@ -29,7 +29,7 @@ public class AppUserAspect {
         }
     }
 
-    @After("execution(* socialapp.chatservice.controller.TestController.*(..))")
+    @After("execution(* socialapp.chatservice.controller.UserStatusController.*(..))")
     public void afterReturning() {
         UserContextHolder.clear();
     }
