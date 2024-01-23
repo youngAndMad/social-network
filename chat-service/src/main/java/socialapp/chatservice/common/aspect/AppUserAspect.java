@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.messaging.SessionConnectEvent;
 import socialapp.chatservice.common.UserContextHolder;
 import socialapp.chatservice.model.entity.AppUser;
 
@@ -27,7 +28,7 @@ public class AppUserAspect {
     }
 
     @After("execution(* socialapp.chatservice.controller.TestController.*(..))")
-    public void afterReturning(JoinPoint joinPoint) {
+    public void afterReturning() {
         UserContextHolder.clear();
     }
 

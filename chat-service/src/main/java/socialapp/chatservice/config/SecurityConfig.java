@@ -32,7 +32,7 @@ public class SecurityConfig {
                                     .anyRequest().authenticated();
                         }
                 )
-                .cors().and().csrf().disable()
+                .cors().disable().csrf().disable()
                 .oauth2ResourceServer().jwt();
 
         return http.build();
