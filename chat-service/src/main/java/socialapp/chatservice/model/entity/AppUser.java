@@ -1,15 +1,16 @@
 package socialapp.chatservice.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@ToString
+@NoArgsConstructor
 public class AppUser {
-    private String username;
+    private String givenName;
     private String email;
     private String familyName;
     private Boolean emailVerified;
+    private String preferredUsername;
 }

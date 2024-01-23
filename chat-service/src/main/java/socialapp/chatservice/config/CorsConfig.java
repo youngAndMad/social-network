@@ -32,7 +32,7 @@ public class CorsConfig  extends CorsConfiguration implements WebMvcConfigurer{
         corsConfiguration.setAllowedOrigins(Arrays.stream(allowedOrigins).toList());
         corsConfiguration.setAllowedMethods(Arrays.stream(allowedMethods).toList());
         corsConfiguration.setAllowedHeaders(Arrays.stream(allowedHeaders).toList());
-        corsConfiguration.setAllowCredentials(false);
+        corsConfiguration.setAllowCredentials(true);
         var source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
         return new CorsFilter(source);

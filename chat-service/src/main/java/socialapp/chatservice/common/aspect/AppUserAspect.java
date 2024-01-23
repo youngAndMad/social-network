@@ -1,5 +1,6 @@
 package socialapp.chatservice.common.aspect;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -14,6 +15,7 @@ import socialapp.chatservice.common.UserContextHolder;
 import socialapp.chatservice.model.entity.AppUser;
 
 @Aspect
+@Slf4j
 @Component
 public class AppUserAspect {
 
@@ -35,14 +37,17 @@ public class AppUserAspect {
     public static AppUser extractAppUser(Authentication authentication) {
         if (authentication != null && authentication.getPrincipal() instanceof Jwt jwt) {
 
-            var username = jwt.getClaimAsString("preferred_username");
+            var givenName = jwt.getClaimAsString("preferred_username");
             var email = jwt.getClaimAsString("email");
             var emailVerified = jwt.getClaimAsBoolean("email_verified");
             var familyName = jwt.getClaimAsString("family_name");
+            var preferredUsername = jwt.getClaimAsString("preferred_username");
 
-            return new AppUser(username, email, familyName, emailVerified);
+            log.info("extractAppUser username: {}", givenName);
+
+            return new AppUser(givenName, email, familyName, emailVerified,preferredUsername);
         }
-
+        log.warn("extractAppUser authentication is null or not instance of Jwt");
         return null;
     }
 
