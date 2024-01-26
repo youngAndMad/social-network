@@ -10,10 +10,10 @@ jobs:
   chat-service:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository Chat service
+      - name: checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up JDK 17
+      - name: set up JDK 17
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
@@ -22,7 +22,7 @@ jobs:
       - name: maven clean install
         run: mvn clean install -f chat-service/pom.xml -DskipTests
 
-      - name: build Docker image chat service
+      - name: build docker image
         run: docker build -t daneker/chat-service -f chat-service/Dockerfile chat-service/
 
       - name: log in to docker Hub

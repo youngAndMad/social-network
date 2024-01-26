@@ -14,18 +14,18 @@ on:
 
 jobs:
   logging-starter:
-    name: Push to nexus
+    name: push to nexus
     runs-on:  ubuntu-latest
     steps:
-      - name: Checkout Repository Logging starter
+      - name: checkout repository logging starter
         uses: actions/checkout@v2
-      - name: Set up JDK 17
+      - name: set up JDK 17
         uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
           java-version: '17'
           server-id: mine-nexus-releases
-      - name: Push to nexus with maven
+      - name: push to nexus with maven
         env:
           NEXUS_URL: ${{ secrets.NEXUS_URL  }}
           NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD  }}

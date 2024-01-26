@@ -10,26 +10,26 @@ jobs:
   qr-service:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository Api gateway
+      - name: checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up JDK 17
+      - name: set up JDK 17
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '17'
 
-      - name: Maven clean install
+      - name: maven clean install
         run: mvn clean install -f qr-service/pom.xml -DskipTests
 
-      - name: Build Docker Image Api Gateway
+      - name: build docker image
         run: docker build -t daneker/qr-service -f qr-service/Dockerfile qr-service/
 
-      - name: Log in to Docker Hub
+      - name: log in to docker hub
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
 
-      - name: Push Docker Image
+      - name: push docker image
         run: docker push daneker/qr-service
