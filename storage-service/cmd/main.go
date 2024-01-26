@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/minio/minio-go/v7"
 	"log"
@@ -13,6 +14,7 @@ import (
 func main() {
 	env, err := config.LoadEnv(".")
 
+	fmt.Println(env)
 	if err != nil {
 		log.Fatal(err)
 		return

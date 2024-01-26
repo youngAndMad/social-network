@@ -3,6 +3,7 @@ package socialapp.newsservice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -20,4 +21,5 @@ public class News {
     private Boolean emailSending;
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
     private Set<FileMetaData> files;
+    private LocalDateTime publishDate;
 }

@@ -6,6 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"log"
 	"storage-service/internal/entity"
 )
 
@@ -60,7 +61,13 @@ func (s *FileService) RemoveFile(fileID string) (entity.File, error) {
 }
 
 func (s *FileService) SaveFile(file entity.File) (interface{}, error) {
+	fmt.Println(s.collection.Name())
 	result, err := s.collection.InsertOne(context.Background(), file)
+	if err != nil {
+		log.Printf("Error inserting file: %v", err)
+		return nil, err
+	}
+
 	id := result.InsertedID
-	return id, err
+	return id, nil
 }

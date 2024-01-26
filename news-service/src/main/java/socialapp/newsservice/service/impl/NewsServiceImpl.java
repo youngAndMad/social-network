@@ -15,6 +15,7 @@ import socialapp.newsservice.repository.FileMetaDataRepository;
 import socialapp.newsservice.repository.NewsRepository;
 import socialapp.newsservice.service.NewsService;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,6 +34,7 @@ public class NewsServiceImpl implements NewsService {
                 .title(title)
                 .content(content)
                 .emailSending(emailSending)
+                .publishDate(LocalDateTime.now())
                 .build();
         News savedNews = newsRepository.save(newNews);
         var fileUploadResponse = storageServiceClient.uploadFiles(NEWS_CONTENT, savedNews.getId(), multipartFiles);
@@ -67,7 +69,7 @@ public class NewsServiceImpl implements NewsService {
         }
         List<FileMetaData> fileMetaDataList = fileMetaDataRepository.findAllByNews(getById(id));
         List<String> idList = new ArrayList<>();
-        if (fileMetaDataList.size()>0) {
+        if (!fileMetaDataList.isEmpty()) {
             for (FileMetaData fileMetaData: fileMetaDataList){
                 idList.add(fileMetaData.getFileId());
             }

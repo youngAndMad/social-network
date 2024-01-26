@@ -14,11 +14,13 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/news")
+@CrossOrigin(origins = "http://localhost:4200")
 public class NewsController {
 
     private final NewsService newsService;
 
     @PostMapping
+    @CrossOrigin(origins = "http://localhost:4200")
     ResponseEntity<News> uploadNews(
             @RequestParam String title,
             @RequestParam String content,

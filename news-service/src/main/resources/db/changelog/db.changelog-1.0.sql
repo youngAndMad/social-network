@@ -5,7 +5,8 @@ CREATE TABLE news
     id      BIGSERIAL PRIMARY KEY,
     content VARCHAR(255),
     title   VARCHAR(255),
-    email_sending BOOLEAN
+    email_sending BOOLEAN,
+    publish_date TIMESTAMP with time zone
 );
 --rollback drop table news;
 
