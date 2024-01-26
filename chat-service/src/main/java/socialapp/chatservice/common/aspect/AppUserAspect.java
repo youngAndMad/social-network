@@ -1,27 +1,30 @@
 package socialapp.chatservice.common.aspect;
 
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.messaging.SessionConnectEvent;
 import socialapp.chatservice.common.UserContextHolder;
 import socialapp.chatservice.model.entity.AppUser;
+
+import static socialapp.chatservice.common.AppConstants.*;
 
 @Aspect
 @Slf4j
 @Component
 public class AppUserAspect {
 
+    @Pointcut("@annotation(socialapp.chatservice.common.annotation.FetchUserContext)")
+    public void fetchUserContext() {
+    }
 
-    @Before("execution(* socialapp.chatservice.controller.UserStatusController.*(..))")
-    public void before(JoinPoint joinPoint) {
+    @Before("fetchUserContext()")
+    public void before() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             AppUser appUser = extractAppUser(authentication);
@@ -29,7 +32,7 @@ public class AppUserAspect {
         }
     }
 
-    @After("execution(* socialapp.chatservice.controller.UserStatusController.*(..))")
+    @After("fetchUserContext()")
     public void afterReturning() {
         UserContextHolder.clear();
     }
@@ -37,11 +40,11 @@ public class AppUserAspect {
     public static AppUser extractAppUser(Authentication authentication) {
         if (authentication != null && authentication.getPrincipal() instanceof Jwt jwt) {
 
-            var givenName = jwt.getClaimAsString("preferred_username");
-            var email = jwt.getClaimAsString("email");
-            var emailVerified = jwt.getClaimAsBoolean("email_verified");
-            var familyName = jwt.getClaimAsString("family_name");
-            var preferredUsername = jwt.getClaimAsString("preferred_username");
+            var givenName = jwt.getClaimAsString(GIVEN_NAME);
+            var email = jwt.getClaimAsString(EMAIL);
+            var emailVerified = jwt.getClaimAsBoolean(EMAIL_VERIFIED);
+            var familyName = jwt.getClaimAsString(FAMILY_NAME);
+            var preferredUsername = jwt.getClaimAsString(PREFERRED_USERNAME);
 
             log.info("extractAppUser username: {}", givenName);
 

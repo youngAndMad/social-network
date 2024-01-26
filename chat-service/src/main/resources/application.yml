@@ -1,4 +1,13 @@
 spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          storage-service:
+            follow-redirects: true
+            url: http://localhost:8080
+            connectTimeout: 5000
+            readTimeout: 5000
   main:
     banner-mode: off
   security:
