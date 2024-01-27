@@ -1,11 +1,15 @@
 spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   cloud:
     openfeign:
       client:
         config:
           storage-service:
             follow-redirects: true
-            url: http://localhost:8080
+            url: http://localhost:7070/api/v1/storage-service/
             connectTimeout: 5000
             readTimeout: 5000
   main:
@@ -28,11 +32,14 @@ spring:
           port: 6379
 server:
   port: 9393
+  servlet:
+    context-path: /api/v1/chat-service/
 logging:
   level:
     org.springframework:
       web: debug
       security: debug
+
 cors:
   allowCredentials: false
   allowedOrigins: http://localhost:4200,http://127.0.0.1:5500

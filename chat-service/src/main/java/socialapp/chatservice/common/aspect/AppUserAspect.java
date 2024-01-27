@@ -13,6 +13,7 @@ import socialapp.chatservice.common.UserContextHolder;
 import socialapp.chatservice.model.entity.AppUser;
 
 import static socialapp.chatservice.common.AppConstants.*;
+import static socialapp.chatservice.common.AuthenticationConvertUtils.extractAppUser;
 
 @Aspect
 @Slf4j
@@ -36,23 +37,5 @@ public class AppUserAspect {
     public void afterReturning() {
         UserContextHolder.clear();
     }
-
-    public static AppUser extractAppUser(Authentication authentication) {
-        if (authentication != null && authentication.getPrincipal() instanceof Jwt jwt) {
-
-            var givenName = jwt.getClaimAsString(GIVEN_NAME);
-            var email = jwt.getClaimAsString(EMAIL);
-            var emailVerified = jwt.getClaimAsBoolean(EMAIL_VERIFIED);
-            var familyName = jwt.getClaimAsString(FAMILY_NAME);
-            var preferredUsername = jwt.getClaimAsString(PREFERRED_USERNAME);
-
-            log.info("extractAppUser username: {}", givenName);
-
-            return new AppUser(givenName, email, familyName, emailVerified,preferredUsername);
-        }
-        log.warn("extractAppUser authentication is null or not instance of Jwt");
-        return null;
-    }
-
 
 }
