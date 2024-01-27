@@ -3,8 +3,7 @@ package socialapp.ktuserservice.common
 class AppConstants {
     companion object {
         const val USER_INDEX = "user"
-        const val FIRST_NAME = "first_name"
-        const val LAST_NAME = "last_name"
+        const val USERNAME="username"
         const val AGE = "age"
         const val CITY = "address.city"
         const val COUNTRY = "address.country"

@@ -4,7 +4,6 @@ import jakarta.validation.Valid
 import jakarta.validation.constraints.Email
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
-import socialapp.ktuserservice.model.entity.Address
 import socialapp.ktuserservice.model.enums.Gender
 import java.time.LocalDate
 
@@ -14,7 +13,7 @@ data class RegistrationDto(
     val givenName: String,
     @field:NotNull
     @Valid
-    val address: Address,
+    val address: AddressDto,
     @field:NotNull
     @field:NotBlank
     val familyName: String,
