@@ -1,6 +1,6 @@
 package socialapp.chatservice.model.dto;
 
-public record FileUploadResponse(
+public record FileMetadata(
        String url,
        String id
 ) {

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
-import socialapp.chatservice.model.dto.FileUploadResponse;
+import socialapp.chatservice.model.dto.FileMetadata;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
 public interface StorageServiceClient {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    ResponseEntity<FileUploadResponse[]> uploadFiles(
+    ResponseEntity<FileMetadata[]> uploadFiles(
             @RequestParam("source") String source,
             @RequestParam("target") Long target,
             @RequestPart("file") List<MultipartFile> multipartFile

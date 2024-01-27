@@ -16,5 +16,5 @@ public class Chat {
     private String id;
     private ChatType type;
     private LocalDateTime createdAt;
-    private Set<Member> members;
+    private Set<PrivateChatMember> members;
 }
