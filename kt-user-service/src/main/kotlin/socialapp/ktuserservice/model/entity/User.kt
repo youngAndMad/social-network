@@ -15,9 +15,11 @@ class User : BaseEntity() {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
 
-    var firstName: String? = null
-    var lastName: String? = null
+    var givenName: String? = null
+    var preferredUsername: String? = null
+    var familyName: String? = null
     var email: String? = null
+
     var birthDate: LocalDate? = null
     var avatar: String? = null
 
