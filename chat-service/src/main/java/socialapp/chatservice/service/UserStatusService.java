@@ -1,10 +1,12 @@
 package socialapp.chatservice.service;
 
+import socialapp.chatservice.model.entity.AppUser;
+
 public interface UserStatusService {
 
-    void setUserOnline(String email);
+    void setUserOnline(AppUser appUser);
 
-    void setUserOffline(String email);
+    void setUserOffline(AppUser appUser);
 
     boolean isUserOnline(String email);
 

@@ -9,6 +9,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Documented
 @Retention(RUNTIME)
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ElementType.METHOD})
 public @interface FetchUserContext {
 }

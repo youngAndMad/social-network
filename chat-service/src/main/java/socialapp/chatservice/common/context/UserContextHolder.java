@@ -1,4 +1,4 @@
-package socialapp.chatservice.common;
+package socialapp.chatservice.common.context;
 
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;

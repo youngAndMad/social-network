@@ -7,13 +7,11 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
-import socialapp.chatservice.common.UserContextHolder;
+import socialapp.chatservice.common.context.UserContextHolder;
 import socialapp.chatservice.model.entity.AppUser;
 
-import static socialapp.chatservice.common.AppConstants.*;
-import static socialapp.chatservice.common.AuthenticationConvertUtils.extractAppUser;
+import static socialapp.chatservice.common.utils.AuthenticationConvertUtils.extractAppUser;
 
 @Aspect
 @Slf4j
@@ -30,11 +28,16 @@ public class AppUserAspect {
         if (authentication != null) {
             AppUser appUser = extractAppUser(authentication);
             UserContextHolder.setCurrentUser(appUser);
+            log.info("User context set for: {}", appUser);
+        }else {
+            log.info("Authentication from SecurityContextHolder is null, skipping setting user context");
         }
+
     }
 
     @After("fetchUserContext()")
     public void afterReturning() {
+        log.info("Clearing user context");
         UserContextHolder.clear();
     }
 

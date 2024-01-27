@@ -16,13 +16,12 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-import socialapp.chatservice.common.UserContextHolder;
+import socialapp.chatservice.common.context.UserContextHolder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static socialapp.chatservice.common.AppConstants.X_AUTHORIZATION;
-import static socialapp.chatservice.common.AuthenticationConvertUtils.extractAppUser;
+import static socialapp.chatservice.common.utils.AuthenticationConvertUtils.extractAppUser;
 
 
 @Configuration
@@ -54,14 +53,19 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 var headers = message.getHeaders();
                 var multiValueMap = headers.get(StompHeaderAccessor.NATIVE_HEADERS, MultiValueMap.class);
 
-                if (multiValueMap != null && multiValueMap.containsKey(X_AUTHORIZATION)) {
-                    var authorization = (ArrayList<String>) multiValueMap.get(X_AUTHORIZATION);
-                    var jwt = jwtDecoder.decode(authorization.get(0));
-                    var appUser = extractAppUser(jwt);
+                try {
+                    if (multiValueMap != null && multiValueMap.containsKey(X_AUTHORIZATION)) {
+                        var authorization = (ArrayList<String>) multiValueMap.get(X_AUTHORIZATION);
+                        var jwt = jwtDecoder.decode(authorization.get(0));
+                        var appUser = extractAppUser(jwt);
 
-                    UserContextHolder.setCurrentUser(appUser);
+                        UserContextHolder.setCurrentUser(appUser);
+                    }
+                    return message;
+                }catch (Exception e){
+                    log.error("Error occurred while extracting user from jwt", e);
+                    throw e;
                 }
-                return message;
             }
         });
     }

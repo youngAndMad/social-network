@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import socialapp.chatservice.model.entity.AppUser;
 import socialapp.chatservice.service.UserStatusService;
 
 import static socialapp.chatservice.common.AppConstants.USER_ONLINE_KEY;
@@ -16,17 +17,17 @@ public class UserStatusServiceImpl implements UserStatusService {
     private final RedisTemplate<String,Object> redis;
 
     @Override
-    public void setUserOnline(String email) {
-        log.info("User {} is online", email);
+    public void setUserOnline(AppUser appUser) {
+        log.info("User {} is online", appUser);
         redis.opsForSet()
-                .add(USER_ONLINE_KEY, email);
+                .add(USER_ONLINE_KEY, appUser.getEmail());
     }
 
     @Override
-    public void setUserOffline(String email) {
-        log.info("User {} is offline", email);
+    public void setUserOffline(AppUser appUser) {
+        log.info("User {} is offline", appUser);
         redis.opsForSet()
-                .remove(USER_ONLINE_KEY, email);
+                .remove(USER_ONLINE_KEY, appUser.getEmail());
     }
 
     @Override
