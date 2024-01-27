@@ -5,6 +5,7 @@ import org.mapstruct.Mapping
 import org.mapstruct.MappingTarget
 import org.mapstruct.NullValueCheckStrategy
 import org.mapstruct.NullValuePropertyMappingStrategy
+import socialapp.ktuserservice.model.dto.AppUserDto
 import socialapp.ktuserservice.model.dto.RegistrationDto
 import socialapp.ktuserservice.model.dto.UserUpdateDto
 import socialapp.ktuserservice.model.entity.Address
@@ -21,5 +22,7 @@ interface UserMapper {
     fun toModel(registrationDto: RegistrationDto, address: Address): User
 
     fun update(userUpdateDto: UserUpdateDto, @MappingTarget user: User)
+
+    fun toAppUserDto(user: User): AppUserDto
 }
 

@@ -9,6 +9,8 @@ interface UserRepository : CommonRepository<User, Long> {
 
     fun existsByEmail(email: String): Boolean
 
+    fun findByEmail(email: String): User?
+
     override fun entityClass(): Class<*> = User::class.java
 }
 

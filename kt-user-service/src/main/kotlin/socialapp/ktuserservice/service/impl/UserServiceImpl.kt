@@ -16,7 +16,7 @@ import socialapp.ktuserservice.common.AppConstants.Companion.COUNTRY
 import socialapp.ktuserservice.common.AppConstants.Companion.USERNAME
 import socialapp.ktuserservice.common.AppConstants.Companion.USER_INDEX
 import socialapp.ktuserservice.common.AppConstants.Companion.USER_PROFILE_IMAGE
-import socialapp.ktuserservice.common.StorageClient
+import socialapp.ktuserservice.common.client.StorageClient
 import socialapp.ktuserservice.common.exception.EmailRegisteredYetException
 import socialapp.ktuserservice.common.mapper.UserMapper
 import socialapp.ktuserservice.model.dto.IsExistsResponse
@@ -43,51 +43,55 @@ class UserServiceImpl(
     }
 
     override fun register(registrationDto: RegistrationDto): User {
-        val existsByEmail = userRepository.existsByEmail(registrationDto.email);
+        val existsByEmail = userRepository.existsByEmail(registrationDto.email)
 
         if (existsByEmail) {
-            throw EmailRegisteredYetException(registrationDto.email);
+            throw EmailRegisteredYetException(registrationDto.email)
         }
-        val address = addressService.save(registrationDto.address);
-        val user = userMapper.toModel(registrationDto, address);
-        return userRepository.save(user);
+
+        val address = addressService.save(registrationDto.address)
+        val user = userMapper.toModel(registrationDto, address)
+        return userRepository.save(user)
     }
 
-    override fun delete(id: Long) = userRepository.deleteById(id);
+    override fun delete(id: Long) = userRepository.deleteById(id)
 
     override fun fetchSuggestions(query: String): Set<User> {
-        val usernameCriteria =  Criteria.where(USERNAME).contains(query);
+        val usernameCriteria = Criteria.where(USERNAME).contains(query)
         val criteriaQuery = CriteriaQuery(usernameCriteria)
 
         return elasticsearchOperations.search(criteriaQuery, User::class.java, IndexCoordinates.of(USER_INDEX))
             .stream().map { it.content }
-            .collect(Collectors.toSet());
+            .collect(Collectors.toSet())
     }
 
 
-    override fun isExists(email: String): IsExistsResponse =
-        IsExistsResponse(userRepository.existsByEmail(email));
+    override fun isExists(email: String): IsExistsResponse {
+        val user = userRepository.findByEmail(email)
+
+        return IsExistsResponse(user != null, user.let { userMapper.toAppUserDto(it!!) })
+    }
 
 
     override fun uploadAvatar(file: MultipartFile, id: Long) {
-        val user = findById(id);
-        val uploadedAvatar = storageClient.upload(USER_PROFILE_IMAGE, user.id!!, file);
+        val user = findById(id)
+        val uploadedAvatar = storageClient.upload(USER_PROFILE_IMAGE, user.id!!, file)
 
         if (uploadedAvatar.statusCode.is2xxSuccessful && uploadedAvatar.body != null) {
-            user.avatar = uploadedAvatar.body?.url;
-            userRepository.save(user);
+            user.avatar = uploadedAvatar.body?.url
+            userRepository.save(user)
         } else {
-            log.error("storage client error, status =  {}", uploadedAvatar.getStatusCode());
+            log.error("storage client error, status =  {}", uploadedAvatar.statusCode)
         }
 
     }
 
     override fun update(userUpdateDto: UserUpdateDto, id: Long) {
-        val user = findById(id);
+        val user = findById(id)
 
-        userMapper.update(userUpdateDto, user);
+        userMapper.update(userUpdateDto, user)
 
-        userRepository.save(user);
+        userRepository.save(user)
     }
 
     override fun find(userSearchCriteria: UserSearchCriteria, page: Int, pageSize: Int): SearchHits<User> {
@@ -108,5 +112,5 @@ class UserServiceImpl(
         return elasticsearchOperations.search(criteriaQuery, User::class.java, IndexCoordinates.of(USER_INDEX))
     }
 
-    override fun findById(id: Long): User = userRepository.findByID(id);
+    override fun findById(id: Long): User = userRepository.findByID(id)
 }
