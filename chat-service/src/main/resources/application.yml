@@ -7,9 +7,11 @@ spring:
     openfeign:
       client:
         config:
+          user-service:
+            url: http://localhost:8080
           storage-service:
             follow-redirects: true
-            url: http://localhost:7070/api/v1/storage-service/
+            url: http://localhost:7070
             connectTimeout: 5000
             readTimeout: 5000
   main:

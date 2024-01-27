@@ -11,7 +11,7 @@ import socialapp.chatservice.model.dto.FileMetadata;
 
 import java.util.List;
 
-@FeignClient(name = "storage-service")
+@FeignClient(name = "storage-service", path = "api/v1/storage-service/")
 public interface StorageServiceClient {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

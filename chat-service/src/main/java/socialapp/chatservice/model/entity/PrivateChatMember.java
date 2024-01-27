@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PrivateChatMember {
+public class PrivateChatMember implements ChatMember{
     private AppUser appUser;
     private String lastSeenMessageId;
 }

@@ -21,8 +21,8 @@ class ImperativeElasticsearchConfig : ElasticsearchConfiguration() {
     @Value("\${spring.data.elasticsearch.url}")
     private lateinit var url: String
 
-    @delegate:Value("\${spring.data.elasticsearch.connection-timeout}")
-    private var connectionTimeout by Delegates.notNull<Long>()
+    @Value("\${spring.data.elasticsearch.connection-timeout}")
+    private var connectionTimeout:Long = 1000
 
     @Value("\${spring.data.elasticsearch.should-create-index}")
     private lateinit var shouldCreateIndexClasses: Array<Class<*>>

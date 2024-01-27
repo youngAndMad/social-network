@@ -32,7 +32,6 @@ import java.util.stream.Collectors
 @Service
 class UserServiceImpl(
     private var userRepository: UserRepository,
-    private var userMapper: UserMapper,
     private var elasticsearchOperations: ElasticsearchOperations,
     private var addressService: AddressService,
     private var storageClient: StorageClient
@@ -50,7 +49,7 @@ class UserServiceImpl(
         }
 
         val address = addressService.save(registrationDto.address)
-        val user = userMapper.toModel(registrationDto, address)
+        val user = UserMapper.INSTANCE.toModel(registrationDto, address)
         return userRepository.save(user)
     }
 
@@ -69,7 +68,7 @@ class UserServiceImpl(
     override fun isExists(email: String): IsExistsResponse {
         val user = userRepository.findByEmail(email)
 
-        return IsExistsResponse(user != null, user.let { userMapper.toAppUserDto(it!!) })
+        return IsExistsResponse(user != null, user.let { UserMapper.INSTANCE.toAppUserDto(it!!) })
     }
 
 
@@ -89,7 +88,7 @@ class UserServiceImpl(
     override fun update(userUpdateDto: UserUpdateDto, id: Long) {
         val user = findById(id)
 
-        userMapper.update(userUpdateDto, user)
+        UserMapper.INSTANCE.update(userUpdateDto, user)
 
         userRepository.save(user)
     }

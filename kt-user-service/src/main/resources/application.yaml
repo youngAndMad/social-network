@@ -1,4 +1,7 @@
-
+server:
+  servlet:
+    context-path: /api/v1/user/
+  port: 8082
 spring:
   cloud:
     openfeign:
@@ -24,16 +27,14 @@ spring:
   data:
     elasticsearch:
       should-create-index:
-        socialapp.userservice.model.entity.User
+        socialapp.ktuserservice.model.entity.User
       url: localhost:9200
       connection-timeout: 1000 # 1 second
-  #      username: username
-  #      password: password
   main:
     banner-mode: off
     allow-bean-definition-overriding: true
   application:
-    name: user-service
+    name: kt-user-service
   neo4j:
     authentication:
       password: strong_password
