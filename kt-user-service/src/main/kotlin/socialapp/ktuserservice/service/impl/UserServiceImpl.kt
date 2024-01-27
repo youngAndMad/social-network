@@ -1,10 +1,8 @@
 package socialapp.ktuserservice.service.impl
 
-import lombok.extern.slf4j.Slf4j
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations
 import org.springframework.data.elasticsearch.core.SearchHits
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates
@@ -29,6 +27,7 @@ import socialapp.ktuserservice.model.entity.User
 import socialapp.ktuserservice.repository.UserRepository
 import socialapp.ktuserservice.service.AddressService
 import socialapp.ktuserservice.service.UserService
+import java.util.stream.Collectors
 
 @Service
 class UserServiceImpl(
@@ -55,6 +54,15 @@ class UserServiceImpl(
     }
 
     override fun delete(id: Long) = userRepository.deleteById(id);
+
+    override fun fetchSuggestions(query: String): Set<User> {
+        val usernameCriteria =  Criteria.where(USERNAME).contains(query);
+        val criteriaQuery = CriteriaQuery(usernameCriteria)
+
+        return elasticsearchOperations.search(criteriaQuery, User::class.java, IndexCoordinates.of(USER_INDEX))
+            .stream().map { it.content }
+            .collect(Collectors.toSet());
+    }
 
 
     override fun isExists(email: String): IsExistsResponse =

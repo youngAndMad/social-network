@@ -14,7 +14,7 @@ interface UserService {
 
     fun delete(id: Long)
 
-//    fun fetchSuggestions(query: String): Set<SuggestionResponse>
+    fun fetchSuggestions(query: String): Set<User>
 
     fun isExists(email: String): IsExistsResponse
 
