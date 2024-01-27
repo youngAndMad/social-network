@@ -16,7 +16,7 @@ import static socialapp.chatservice.common.utils.AuthenticationConvertUtils.extr
 @Aspect
 @Slf4j
 @Component
-public class AppUserAspect {
+public class FetchUserContextAspect {
 
     @Pointcut("@annotation(socialapp.chatservice.common.annotation.FetchUserContext)")
     public void fetchUserContext() {
@@ -24,9 +24,9 @@ public class AppUserAspect {
 
     @Before("fetchUserContext()")
     public void before() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
-            AppUser appUser = extractAppUser(authentication);
+            var appUser = extractAppUser(authentication);
             UserContextHolder.setCurrentUser(appUser);
             log.info("User context set for: {}", appUser);
         }else {
