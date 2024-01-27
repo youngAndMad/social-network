@@ -17,4 +17,8 @@ public class TokenContextHolder {
     public static void clear() {
         tokenHolder.remove();
     }
+
+    public static boolean isEmpty() {
+        return tokenHolder.get() == null;
+    }
 }
