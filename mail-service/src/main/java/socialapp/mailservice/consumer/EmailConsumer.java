@@ -3,6 +3,7 @@ package socialapp.mailservice.consumer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import socialapp.mailservice.model.dto.EmailMessageDto;
 import socialapp.mailservice.model.enums.MailMessageType;
@@ -15,30 +16,20 @@ public class EmailConsumer {
 
     private final MailService mailService;
 
-    /**
-     * RabbitMQ message listener method that consumes messages from the "newsletter" queue.
-     * The method processes an incoming {@code EmailMessageDto} and sends it as a newsletter email
-     * using the {@code mailService} with the message type set to {@code MailMessageType.NEWSLETTER}.
-     *
-     * @param message The incoming {@code EmailMessageDto} representing the newsletter message.
-     * @see RabbitListener
-     * @see EmailMessageDto
-     * @see MailService
-     * @see MailMessageType
-     */
-    @RabbitListener(queues = {"${spring.rabbitmq.queues.news-letter-name}"})
+
+    @KafkaListener(topics = {"${spring.rabbitmq.queues.news-letter-name}"}, groupId = "")
     public void consumeNewsLetter(EmailMessageDto message) {
         log.info("Consuming email: {}", message);
         mailService.send(message, MailMessageType.NEWSLETTER);
     }
 
-    @RabbitListener(queues = {"${spring.rabbitmq.queues.email-verification-name}"})
+    @KafkaListener(topics = {"${spring.rabbitmq.queues.email-verification-name}"}, groupId = "")
     public void consumeEmailVerification(EmailMessageDto message){
         log.info("Consuming email: {}", message);
         mailService.send(message,MailMessageType.EMAIL_VERIFICATION);
     }
 
-    @RabbitListener(queues = {"${spring.rabbitmq.queues.reset-password-name}"})
+    @KafkaListener(topics = {"${spring.rabbitmq.queues.reset-password-name}"}, groupId = "")
     public void consumeResetPassword(EmailMessageDto message){
         log.info("Consuming email: {}", message);
         mailService.send(message,MailMessageType.RESET_PASSWORD);

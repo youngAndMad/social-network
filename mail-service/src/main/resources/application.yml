@@ -1,42 +1,15 @@
 spring:
-  rabbitmq:
-    headers:
-      x-dead-letter-exchange: dead-letter.exchange
-      x-dead-letter-routing-key: dead-letter.routing-key
-    queues:
-      email-verification-name: email-verification.queue
-      email-verification-routing-key: email-verification.routing-key
-      email-verification-exchange: email-verification.exchange
-      news-letter-name: news-letter.queue
-      news-letter-routing-key: news-letter.routing-key
-      news-letter-exchange: news-letter.exchange
-      reset-password-name: reset-password.queue
-      reset-password-routing-key: reset-password.routing-key
-      reset-password-exchange: reset-password.exchange
-    username: ${RABBIT_USERNAME:user}
-    password: ${RABBIT_PASSWORD:password}
-    host: ${RABBIT_HOST:localhost}
-    listener:
-      direct:
-        retry:
-          enabled: true
-          initial-interval: 3000 # 3 seconds
-          max-attempts: 3
-          max-interval: 10000 # 10 seconds
-          multiplier: 2
-          stateless: true
-        acknowledge-mode: auto
-      simple:
-        retry:
-          enabled: true
-          initial-interval: 3000 # 3 seconds
-          max-attempts: 3
-          max-interval: 10000 # 10 seconds
-          multiplier: 2
-          stateless: true
-        acknowledge-mode: auto
-    ssl:
-      validate-server-certificate: false
+  kafka:
+    consumer:
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+      bootstrap-servers: http://localhost:9092
   application:
     name: mail-service
   mail:
