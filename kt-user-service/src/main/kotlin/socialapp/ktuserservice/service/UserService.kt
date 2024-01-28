@@ -2,10 +2,7 @@ package socialapp.ktuserservice.service
 
 import org.springframework.data.elasticsearch.core.SearchHits
 import org.springframework.web.multipart.MultipartFile
-import socialapp.ktuserservice.model.dto.IsExistsResponse
-import socialapp.ktuserservice.model.dto.RegistrationDto
-import socialapp.ktuserservice.model.dto.UserSearchCriteria
-import socialapp.ktuserservice.model.dto.UserUpdateDto
+import socialapp.ktuserservice.model.dto.*
 import socialapp.ktuserservice.model.entity.User
 
 interface UserService {
@@ -25,4 +22,6 @@ interface UserService {
     fun find(userSearchCriteria: UserSearchCriteria, page: Int, pageSize: Int): SearchHits<User>
 
     fun findById(id: Long): User
+
+    fun getEmailList(page: Int,pageSize: Int): List<EmailResponseDto>
 }

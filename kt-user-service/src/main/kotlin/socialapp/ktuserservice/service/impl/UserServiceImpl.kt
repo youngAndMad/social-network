@@ -17,12 +17,8 @@ import socialapp.ktuserservice.common.AppConstants.Companion.USERNAME
 import socialapp.ktuserservice.common.AppConstants.Companion.USER_INDEX
 import socialapp.ktuserservice.common.AppConstants.Companion.USER_PROFILE_IMAGE
 import socialapp.ktuserservice.common.client.StorageClient
-import socialapp.ktuserservice.common.exception.EmailRegisteredYetException
 import socialapp.ktuserservice.common.mapper.UserMapper
-import socialapp.ktuserservice.model.dto.IsExistsResponse
-import socialapp.ktuserservice.model.dto.RegistrationDto
-import socialapp.ktuserservice.model.dto.UserSearchCriteria
-import socialapp.ktuserservice.model.dto.UserUpdateDto
+import socialapp.ktuserservice.model.dto.*
 import socialapp.ktuserservice.model.entity.User
 import socialapp.ktuserservice.repository.UserRepository
 import socialapp.ktuserservice.service.AddressService
@@ -45,7 +41,7 @@ class UserServiceImpl(
         val existsByEmail = userRepository.existsByEmail(registrationDto.email)
 
         if (existsByEmail) {
-            throw EmailRegisteredYetException(registrationDto.email)
+            return userRepository.findByEmail(registrationDto.email)!! // ???
         }
 
         val address = addressService.save(registrationDto.address)
@@ -112,4 +108,9 @@ class UserServiceImpl(
     }
 
     override fun findById(id: Long): User = userRepository.findByID(id)
+
+    override fun getEmailList(page: Int, pageSize: Int): List<EmailResponseDto> =
+        userRepository.findAll(PageRequest.of(page, pageSize))
+            .content
+            .map { socialapp.ktuserservice.model.dto.EmailResponseDto(it.email!!) }.toList()
 }

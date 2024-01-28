@@ -56,4 +56,11 @@ class UserController(
         @RequestParam(required = false, defaultValue = "10") pageSize: Int
     ): ResponseEntity<SearchHits<User>> = ResponseEntity.ok(userService.find(userSearchCriteria, page, pageSize))
 
+    @GetMapping("emails")
+    fun fetchEmails(
+        @RequestParam(required = false) page: Int,
+        @RequestParam(required = false, defaultValue = "100") pageSize: Int
+    ): ResponseEntity<List<EmailResponseDto>> = ResponseEntity.ok(userService.getEmailList(page, pageSize))
+
+
 }

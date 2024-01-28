@@ -22,6 +22,9 @@ services:
       DB_PASSWORD: my_password
       KEYCLOAK_USER: kc_admin
       KEYCLOAK_PASSWORD: kc_password
+    command: [ "-b", "0.0.0.0", "--server-config", "standalone-ha.xml", "-Dkeycloak.import=/opt/keycloak/data/import/social-app-realm.json" ]
+    volumes:
+      -  ./docker/keycloak/:/opt/keycloak/data/import/
     depends_on:
      - kc_db
 #  neo4j:
