@@ -17,8 +17,7 @@ public enum MailMessageType {
      * - Template: "newsletter.ftl" (FreeMarker template)
      */
     NEWSLETTER("Newsletter", "newsletter.ftl"),
-    RESET_PASSWORD("Reset password" , "reset_password.ftl"),
-    EMAIL_VERIFICATION("Email verification", "email_verification.ftl");
+    RESET_PASSWORD("Reset password" , "reset_password.ftl");
 
     /**
      * The subject of the email message.

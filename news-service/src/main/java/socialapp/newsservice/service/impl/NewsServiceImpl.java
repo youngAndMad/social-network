@@ -4,13 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import socialapp.newsservice.client.StorageServiceClient;
-import socialapp.newsservice.entity.FileMetaData;
-import socialapp.newsservice.entity.News;
-import socialapp.newsservice.payload.exception.EntityNotFoundException;
+import socialapp.newsservice.common.client.StorageServiceClient;
+import socialapp.newsservice.model.entity.FileMetaData;
+import socialapp.newsservice.model.entity.News;
+import socialapp.newsservice.common.exception.EntityNotFoundException;
 import socialapp.newsservice.repository.FileMetaDataRepository;
 import socialapp.newsservice.repository.NewsRepository;
 import socialapp.newsservice.service.NewsService;
@@ -30,17 +29,18 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public News saveNews(String title, String content, List<MultipartFile> multipartFiles, Boolean emailSending) {
-        News newNews = News.builder()
+        var newNews = News.builder()
                 .title(title)
                 .content(content)
                 .emailSending(emailSending)
+                .emailListInitialized(false)
                 .publishDate(LocalDateTime.now())
                 .build();
-        News savedNews = newsRepository.save(newNews);
+        var savedNews = newsRepository.save(newNews);
         var fileUploadResponse = storageServiceClient.uploadFiles(NEWS_CONTENT, savedNews.getId(), multipartFiles);
 
-        var files = Arrays.stream(fileUploadResponse.getBody())
-                .map(f -> new FileMetaData(f.url(),f.id(),savedNews))
+        var files = Arrays.stream(Objects.requireNonNull(fileUploadResponse.getBody()))
+                .map(f -> new FileMetaData(f.url(), f.id(), savedNews))
                 .map(fileMetaDataRepository::save)
                 .collect(Collectors.toSet());
 
@@ -59,22 +59,17 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public News getById(Long id) {
         return newsRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("News entity with id: " + id + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException(News.class, id));
     }
 
     @Override
     public void deleteNewsById(Long id) {
-        if (!newsRepository.existsById(id)) {
-            throw new EntityNotFoundException("News with ID " + id + " not found");
-        }
-        List<FileMetaData> fileMetaDataList = fileMetaDataRepository.findAllByNews(getById(id));
-        List<String> idList = new ArrayList<>();
-        if (!fileMetaDataList.isEmpty()) {
-            for (FileMetaData fileMetaData: fileMetaDataList){
-                idList.add(fileMetaData.getFileId());
-            }
-            storageServiceClient.removeFiles(idList);
-        }
+        var news = getById(id);
+
+        storageServiceClient.removeFiles(
+                news.getFiles().stream().map(FileMetaData::getFileId).toList()
+        );
+
         newsRepository.deleteById(id);
     }
 

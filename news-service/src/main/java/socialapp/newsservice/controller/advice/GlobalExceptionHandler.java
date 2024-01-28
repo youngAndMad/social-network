@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import socialapp.newsservice.payload.exception.EntityNotFoundException;
-import socialapp.newsservice.payload.exception.StorageRequestException;
+import socialapp.newsservice.common.exception.EntityNotFoundException;
+import socialapp.newsservice.common.exception.StorageRequestException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

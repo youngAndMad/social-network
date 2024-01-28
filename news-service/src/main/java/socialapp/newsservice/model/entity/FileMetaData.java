@@ -1,4 +1,4 @@
-package socialapp.newsservice.entity;
+package socialapp.newsservice.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;

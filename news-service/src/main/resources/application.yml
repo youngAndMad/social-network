@@ -1,8 +1,21 @@
 spring:
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      bootstrap-servers: http://localhost:9092
+      properties:
+        spring:
+          json:
+            add:
+              type:
+                headers: false
   cloud:
     openfeign:
       client:
         config:
+          user-service:
+            url: http://localhost:8082
           storage-service-client:
             url: http://localhost:7070/api/v1/file
   application:
@@ -24,3 +37,7 @@ logging:
       web: debug
       cloud:
         openfeign: debug
+app:
+  email-sending-cron: "*/5 * * * *" # every hour
+  default-page-size: 1000
+  email-sending-queue: email-sending-news-content-queue

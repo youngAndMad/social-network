@@ -1,4 +1,4 @@
-package socialapp.newsservice.entity;
+package socialapp.newsservice.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,6 +19,7 @@ public class News {
     private String title;
     private String content;
     private Boolean emailSending;
+    private Boolean emailListInitialized;
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL)
     private Set<FileMetaData> files;
     private LocalDateTime publishDate;

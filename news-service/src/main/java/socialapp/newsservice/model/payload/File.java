@@ -1,4 +1,4 @@
-package socialapp.newsservice.payload;
+package socialapp.newsservice.model.payload;
 
 import java.time.LocalDateTime;
 

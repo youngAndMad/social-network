@@ -1,4 +1,4 @@
-package socialapp.newsservice.payload;
+package socialapp.newsservice.model.payload;
 
 public record FileUploadResponse(
        String url,

@@ -3,7 +3,7 @@ package socialapp.newsservice.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
-import socialapp.newsservice.entity.News;
+import socialapp.newsservice.model.entity.News;
 
 import java.util.List;
 

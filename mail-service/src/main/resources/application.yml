@@ -1,5 +1,8 @@
 spring:
   kafka:
+    queues:
+      news-letter: email-sending-news-content-queue
+      reset-password: email-sending-reset-password-queue
     consumer:
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
