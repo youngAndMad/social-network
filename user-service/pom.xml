@@ -7,10 +7,10 @@
         <artifactId>social-network</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>kt-user-service</artifactId>
+    <artifactId>user-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>kt-user-service</name>
-    <description>kt-user-service</description>
+    <name>user-service</name>
+    <description>user-service</description>
 
     <properties>
         <java.version>17</java.version>

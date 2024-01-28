@@ -1,4 +1,4 @@
-package socialapp.newsservice.payload.handler;
+package socialapp.newsservice.controller.advice;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;

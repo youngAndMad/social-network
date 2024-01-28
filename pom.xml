@@ -100,7 +100,7 @@
         <module>qr-service</module>
         <module>chat-service</module>
         <module>api-gateway</module>
-        <module>kt-user-service</module>
+        <module>user-service</module>
         <module>url-shortener-service</module>
         <module>news-service</module>
         <module>logging-spring-boot-starter</module>

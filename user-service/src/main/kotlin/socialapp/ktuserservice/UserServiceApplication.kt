@@ -6,8 +6,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients
 
 @SpringBootApplication
 @EnableFeignClients
-class KtUserServiceApplication
+class UserServiceApplication
 
 fun main(args: Array<String>) {
-    runApplication<KtUserServiceApplication>(*args)
+    runApplication<UserServiceApplication>(*args)
 }
