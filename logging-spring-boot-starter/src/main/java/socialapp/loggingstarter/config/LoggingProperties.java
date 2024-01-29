@@ -1,4 +1,4 @@
-package socialapp.aop.config;
+package socialapp.loggingstarter.config;
 
 import jakarta.annotation.PostConstruct;
 import lombok.Data;

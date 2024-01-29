@@ -1,4 +1,4 @@
-package socialapp.aop.aspects;
+package socialapp.loggingstarter.aspects;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.StopWatch;
@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * The {@code LoggableAspect} class is an AspectJ aspect responsible for logging method executions
- * of classes or methods annotated with the {@link socialapp.aop.annotations.LoggableTime} annotation.
+ * of classes or methods annotated with the {@link socialapp.loggingstarter.annotations.LoggableTime} annotation.
  *
  * <p>This aspect intercepts method calls and logs information about the method execution, including
  * the method name, execution time, and a message indicating the start and end of execution.
@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class LoggingTimeExecutionAspect {
 
-    @Pointcut("within(@socialapp.aop.annotations.LoggableTime *) && execution(* *(..))")
+    @Pointcut("within(@socialapp.loggingstarter.annotations.LoggableTime *) && execution(* *(..))")
     public void annotatedByLoggable() {
     }
 

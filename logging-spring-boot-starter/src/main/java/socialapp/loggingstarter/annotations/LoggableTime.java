@@ -1,4 +1,4 @@
-package socialapp.aop.annotations;
+package socialapp.loggingstarter.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

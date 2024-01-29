@@ -1,4 +1,4 @@
-package socialapp.aop.aspects;
+package socialapp.loggingstarter.aspects;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -32,7 +32,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 @Slf4j
 public class LoggingMethodExecutionAspect {
 
-    @Pointcut("within(@socialapp.aop.annotations.LoggableInfo *) && execution(* *(..))")
+    @Pointcut("within(@socialapp.loggingstarter.annotations.LoggableInfo *) && execution(* *(..))")
     public void annotatedByLoggable() {
     }
 

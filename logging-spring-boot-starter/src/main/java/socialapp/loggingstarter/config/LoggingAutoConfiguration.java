@@ -1,16 +1,15 @@
-package socialapp.aop.config;
+package socialapp.loggingstarter.config;
 
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import socialapp.aop.aspects.LoggingMethodExecutionAspect;
-import socialapp.aop.aspects.LoggingTimeExecutionAspect;
+import socialapp.loggingstarter.aspects.LoggingMethodExecutionAspect;
+import socialapp.loggingstarter.aspects.LoggingTimeExecutionAspect;
 
 @Configuration
 @EnableConfigurationProperties(LoggingProperties.class)
