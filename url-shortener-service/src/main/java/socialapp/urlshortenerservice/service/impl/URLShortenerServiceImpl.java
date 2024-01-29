@@ -21,8 +21,8 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
-@LoggableInfo
 @LoggableTime
+@LoggableInfo
 public class URLShortenerServiceImpl implements URLShortenerService {
 
     private final StringRedisTemplate redisTemplate;

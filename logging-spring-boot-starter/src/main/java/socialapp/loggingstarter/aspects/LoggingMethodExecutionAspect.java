@@ -7,6 +7,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.util.StopWatch;
+import socialapp.loggingstarter.annotations.LoggableInfo;
 
 /**
  * The {@code LoggingMethodExecutionAspect} class is an AspectJ aspect responsible for logging method executions
@@ -43,12 +44,19 @@ public class LoggingMethodExecutionAspect {
 
         log.info("Executing method {} in class {}", methodName, className);
 
+        LoggableInfo loggableInfo = methodSignature.getMethod().getAnnotation(LoggableInfo.class);
+        if (loggableInfo == null) {
+            loggableInfo = methodSignature.getMethod().getDeclaringClass().getAnnotation(LoggableInfo.class);
+        }
+
+        String name = (loggableInfo != null) ? loggableInfo.name() : "";
+
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         var result = pjp.proceed();
         stopWatch.stop();
 
-        log.info("Method {} in class {} completed in {} ms", methodName, className, stopWatch.getTotalTimeMillis());
+        log.info("Method {} in class {} completed in {} ms | {}", methodName, className, stopWatch.getTotalTimeMillis(), name);
 
         return result;
     }

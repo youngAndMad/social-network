@@ -7,6 +7,8 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import socialapp.loggingstarter.annotations.LoggableInfo;
+import socialapp.loggingstarter.annotations.LoggableTime;
 
 import java.util.concurrent.TimeUnit;
 
@@ -35,10 +37,10 @@ import java.util.concurrent.TimeUnit;
 public class LoggingTimeExecutionAspect {
 
     @Pointcut("within(@socialapp.loggingstarter.annotations.LoggableTime *) && execution(* *(..))")
-    public void annotatedByLoggable() {
+    public void annotatedByLoggableTime() {
     }
 
-    @Around("annotatedByLoggable()")
+    @Around("annotatedByLoggableTime()")
     public Object logMethodExecutionTime(ProceedingJoinPoint pjp) throws Throwable {
         MethodSignature methodSignature = (MethodSignature) pjp.getSignature();
         final var stopWatch = new StopWatch();
@@ -47,11 +49,19 @@ public class LoggingTimeExecutionAspect {
         var result = pjp.proceed();
         stopWatch.stop();
 
+        LoggableTime loggableTime = methodSignature.getMethod().getAnnotation(LoggableTime.class);
+        if (loggableTime == null) {
+            loggableTime = methodSignature.getMethod().getDeclaringClass().getAnnotation(LoggableTime.class);
+        }
+
+        String name = (loggableTime != null) ? loggableTime.name() : "";
+
         log.info(
-                "%s.%s :: %s ms".formatted(
+                "%s.%s :: %s ms | %s".formatted(
                         methodSignature.getDeclaringType().getSimpleName(), // class name
                         methodSignature.getName(), // method name
-                        stopWatch.getTime(TimeUnit.MILLISECONDS) // execution time in milliseconds
+                        stopWatch.getTime(TimeUnit.MILLISECONDS), // execution time in milliseconds
+                        name
                 )
         );
 
