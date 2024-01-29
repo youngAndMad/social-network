@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.util.StopWatch;
 
 /**
  * The {@code LoggingMethodExecutionAspect} class is an AspectJ aspect responsible for logging method executions
@@ -42,13 +43,14 @@ public class LoggingMethodExecutionAspect {
         var methodName = methodSignature.getName();
         var className = methodSignature.getDeclaringType().getSimpleName();
 
-        log.info("Executing method " + methodName + " in class " + className);
+        log.info("Executing method {} in class {}", methodName, className);
 
-        long startTime = System.currentTimeMillis();
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         var result = pjp.proceed();
-        long endTime = System.currentTimeMillis();
+        stopWatch.stop();
 
-        log.info("Method " + methodName + " in class " + className + " completed in " + (endTime - startTime) + " ms.");
+        log.info("Method {} in class {} completed in {} ms.", methodName, className, stopWatch.getTotalTimeMillis());
 
         return result;
     }
