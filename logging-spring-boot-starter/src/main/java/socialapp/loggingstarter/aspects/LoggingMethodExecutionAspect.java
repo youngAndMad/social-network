@@ -10,24 +10,22 @@ import org.springframework.util.StopWatch;
 
 /**
  * The {@code LoggingMethodExecutionAspect} class is an AspectJ aspect responsible for logging method executions
- * in the `org.example.manager` package. It logs information about the start and end of method execution,
+ * in the classes annotated with {@code @LoggableInfo}. It logs information about the start and end of method execution,
  * along with the execution time in milliseconds.
  *
- * <p>This aspect is configured to log method executions for all classes and methods within the `org.example.manager`
- * package. It is designed to work in conjunction with Spring AOP and provides a convenient way to log method
- * execution details for the specified package.
+ * <p>This aspect is designed to work in conjunction with the {@code @LoggableInfo} annotation, providing a convenient
+ * way to log method execution details for the specified classes or methods.
  *
  * <p>Example usage:
  * <pre>
- * // Add this aspect to your Spring application context
- * &lt;context:component-scan base-package="org.example.aspects" /&gt;
- *
- * // Any methods in the 'org.example.manager' package will be automatically logged.
+ * // Apply the @LoggableInfo annotation to classes or methods you want to log
+ * {@literal @}LoggableInfo
+ * public class ExampleClass {
+ *     public void exampleMethod() {
+ *         // code
+ *     }
+ * }
  * </pre>
- * <p>
- * When methods within the `org.example.manager` package are invoked, this aspect will log information about their execution.
- * The aspect can be enabled or disabled globally by enabling or disabling component scanning of the package
- * where this aspect is defined.
  */
 @Aspect
 @Slf4j
@@ -50,7 +48,7 @@ public class LoggingMethodExecutionAspect {
         var result = pjp.proceed();
         stopWatch.stop();
 
-        log.info("Method {} in class {} completed in {} ms.", methodName, className, stopWatch.getTotalTimeMillis());
+        log.info("Method {} in class {} completed in {} ms", methodName, className, stopWatch.getTotalTimeMillis());
 
         return result;
     }

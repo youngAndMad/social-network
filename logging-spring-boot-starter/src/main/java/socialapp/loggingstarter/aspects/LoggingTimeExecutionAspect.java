@@ -11,27 +11,24 @@ import org.aspectj.lang.reflect.MethodSignature;
 import java.util.concurrent.TimeUnit;
 
 /**
- * The {@code LoggableAspect} class is an AspectJ aspect responsible for logging method executions
- * of classes or methods annotated with the {@link socialapp.loggingstarter.annotations.LoggableTime} annotation.
+ * The {@code LoggingTimeExecutionAspect} class is an AspectJ aspect responsible for logging method execution time
+ * in the classes or methods annotated with {@code @LoggableTime}. It logs information about the execution time
+ * in milliseconds.
  *
- * <p>This aspect intercepts method calls and logs information about the method execution, including
- * the method name, execution time, and a message indicating the start and end of execution.
- * It is designed to work in conjunction with Spring AOP.
+ * <p>This aspect is designed to work in conjunction with the {@code @LoggableTime} annotation, providing a convenient
+ * way to log method execution time for the specified classes or methods.
  *
  * <p>Example usage:
  * <pre>
- * // Annotate a class or method with @Loggable
- * @Loggable
- * public class MyService {
- *     public void doSomething() {
- *         // Method implementation
+ * // Apply the @LoggableTime annotation to classes or methods you want to log execution time
+ * {@literal @}LoggableTime
+ * public class ExampleClass {
+ *     {@literal @}LoggableTime
+ *     public void exampleMethod() {
+ *         // code
  *     }
  * }
  * </pre>
- * <p>
- * When methods within the annotated class are invoked, this aspect will log information about their execution.
- * The aspect can be enabled or disabled globally by enabling or disabling component scanning of the package
- * where this aspect is defined.
  */
 @Aspect
 @Slf4j
@@ -60,6 +57,5 @@ public class LoggingTimeExecutionAspect {
 
         return result;
     }
-
 }
 
