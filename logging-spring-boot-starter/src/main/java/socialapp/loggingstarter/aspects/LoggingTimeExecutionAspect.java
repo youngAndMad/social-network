@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class LoggingTimeExecutionAspect {
 
-    @Pointcut("within(@socialapp.loggingstarter.annotations.LoggableTime *) && execution(* *(..))")
+    @Pointcut("(within(@socialapp.loggingstarter.annotations.LoggableTime *) || execution(@socialapp.loggingstarter.annotations.LoggableTime * *(..))) && execution(* *(..))")
     public void annotatedByLoggableTime() {
     }
 

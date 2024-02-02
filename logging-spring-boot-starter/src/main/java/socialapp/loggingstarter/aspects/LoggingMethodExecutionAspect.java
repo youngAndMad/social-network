@@ -32,7 +32,7 @@ import socialapp.loggingstarter.annotations.LoggableInfo;
 @Slf4j
 public class LoggingMethodExecutionAspect {
 
-    @Pointcut("within(@socialapp.loggingstarter.annotations.LoggableInfo *) && execution(* *(..))")
+    @Pointcut("(within(@socialapp.loggingstarter.annotations.LoggableInfo *) || execution(@socialapp.loggingstarter.annotations.LoggableInfo * *(..))) && execution(* *(..))")
     public void annotatedByLoggable() {
     }
 
