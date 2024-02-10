@@ -35,7 +35,6 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf().disable()
                 .oauth2ResourceServer().jwt();
-
         return http.build();
     }
 
