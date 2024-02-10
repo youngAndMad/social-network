@@ -16,7 +16,7 @@ import java.util.List;
 @EnableScheduling
 public class NewsServiceApplication {
 
-    @Bean
+//    @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(false);

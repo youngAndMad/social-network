@@ -28,6 +28,12 @@ spring:
             - Path=/api/v1/news/**
           filters:
             - TokenRelay=
+        - id: storage-service
+          uri: http://localhost:7070
+          predicates:
+            - Path=/api/v1/file/**
+          filters:
+            - TokenRelay=
   security:
     oauth2:
       client:

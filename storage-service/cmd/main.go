@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/minio/minio-go/v7"
+	"github.com/patrick246/go-oauth2-resource-server/pkg/verifier"
 	"log"
 	"storage-service/config"
 	"storage-service/internal/entity"
@@ -13,7 +14,12 @@ import (
 
 func main() {
 	env, err := config.LoadEnv(".")
-
+	cn := verifier.Config{
+		Issuer:      "http://loca",
+		ExpectedAlg: "",
+	}
+	ver, err := verifier.New(cn)
+	ver.VerifyAndParse("")
 	fmt.Println(env)
 	if err != nil {
 		log.Fatal(err)
