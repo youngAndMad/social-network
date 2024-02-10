@@ -26,8 +26,7 @@ public class SecurityConfig {
                             auth.requestMatchers(
                                             "/api-docs/**",
                                             "/swagger-ui/**",
-                                            "/swagger-ui.html",
-                                            "/**"
+                                            "/swagger-ui.html"
                                     ).permitAll()
                                     .requestMatchers("/admin/**").hasRole("ROLE_ADMIN")
                                     .anyRequest().authenticated();
@@ -36,11 +35,6 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf().disable()
                 .oauth2ResourceServer().jwt();
-
-//        http.headers().frameOptions().disable()
-//                .httpStrictTransportSecurity().disable();
-
-
         return http.build();
     }
 

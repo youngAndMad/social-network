@@ -1,5 +1,6 @@
 package socialapp.newsservice.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -16,9 +17,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/news")
-//@CrossOrigin(origins = "http://127.0.0.1:4200", allowedHeaders = "*", methods = {
-//        RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.PATCH
-//},allowCredentials = "false")
 @Slf4j
 public class NewsController {
 

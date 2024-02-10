@@ -15,7 +15,6 @@ import java.util.List;
 @EnableFeignClients
 @EnableScheduling
 public class NewsServiceApplication {
-
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
