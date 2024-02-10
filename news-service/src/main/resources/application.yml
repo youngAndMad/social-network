@@ -18,8 +18,16 @@ spring:
             url: http://localhost:8082
           storage-service-client:
             url: http://localhost:7070/api/v1/file
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/auth/realms/socialapp
+          jwk-set-uri: http://localhost:8080/auth/realms/socialapp/protocol/openid-connect/certs
   application:
     name: news-service
+    admin:
+      enabled: false
   datasource:
     url: jdbc:postgresql://localhost:5432/news
     driver-class-name: org.postgresql.Driver
@@ -37,7 +45,8 @@ logging:
       web: debug
       cloud:
         openfeign: debug
+    root: debug
 app:
-  email-sending-cron: "*/5 * * * *" # every hour
+  email-sending-cron: "*/5 * * * * *" # every hour
   default-page-size: 1000
   email-sending-queue: email-sending-news-content-queue

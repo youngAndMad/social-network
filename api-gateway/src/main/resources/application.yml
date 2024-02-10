@@ -22,6 +22,12 @@ spring:
             - Path=/api/v1/qr/**
           filters:
             - TokenRelay=
+        - id: news-service
+          uri: http://localhost:8888
+          predicates:
+            - Path=/api/v1/news/**
+          filters:
+            - TokenRelay=
   security:
     oauth2:
       client:
@@ -32,7 +38,7 @@ spring:
             jwk-set-uri: http://localhost:8080/oauth2/jwks
             user-info-uri: http://localhost:8080/userinfo
             user-name-attribute: sub
-            issuer-uri: http://localhost:8080
+            issuer-uri: http://localhost:8080/auth/realms/socialapp
         registration:
           reg-client:
             provider: spring
