@@ -10,7 +10,7 @@ import org.springframework.kafka.support.converter.JsonMessageConverter;
 public class MessageConverterConfig {
 
     @Bean
-    public JsonMessageConverter jsonMessageConverter() {
+    JsonMessageConverter jsonMessageConverter() {
         return new ByteArrayJsonMessageConverter();
     }
 

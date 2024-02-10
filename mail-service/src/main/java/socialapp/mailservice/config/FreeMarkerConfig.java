@@ -9,6 +9,7 @@ import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
 /**
  * Configuration class for FreeMarker template engine integration.
  * Configures FreeMarker template loader path.
+ *
  * @author Daneker
  */
 @Configuration
@@ -24,7 +25,7 @@ public class FreeMarkerConfig {
      */
     @Bean
     @Primary
-    public FreeMarkerConfigurationFactoryBean ftl() {
+    FreeMarkerConfigurationFactoryBean ftl() {
         var bean = new FreeMarkerConfigurationFactoryBean();
         bean.setTemplateLoaderPath(ftlLoaderPath);
         return bean;

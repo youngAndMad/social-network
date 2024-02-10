@@ -21,9 +21,6 @@ public interface StorageServiceClient {
             @RequestPart("file") List<MultipartFile> multipartFile
     );
 
-    @GetMapping("/files")
-    ResponseEntity<File[]> getFiles(@RequestParam List<String> id);
-
     @DeleteMapping("/files")
     ResponseEntity<HttpStatus> removeFiles(@RequestParam List<String> id);
 }

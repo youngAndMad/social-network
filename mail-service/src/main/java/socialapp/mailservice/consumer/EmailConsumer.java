@@ -17,15 +17,9 @@ public class EmailConsumer {
 
 
     @KafkaListener(topics = {"${spring.kafka.queues.news-letter}"}, groupId = "")
-    public void consumeNewsLetter(EmailMessageDto message) {
+    void consumeNewsLetter(EmailMessageDto message) {
         log.info("Consuming email: {}", message);
         mailService.send(message, MailMessageType.NEWSLETTER);
-    }
-
-    @KafkaListener(topics = {"${spring.kafka.queues.reset-password}"}, groupId = "")
-    public void consumeResetPassword(EmailMessageDto message){
-        log.info("Consuming email: {}", message);
-        mailService.send(message,MailMessageType.RESET_PASSWORD);
     }
 
 }
