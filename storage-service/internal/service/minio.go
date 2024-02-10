@@ -51,6 +51,11 @@ func (s *MinioService) UploadFile(source entity.AttachmentSource, target int, fi
 	return fileDoc, nil
 }
 
+func (s *MinioService) DownloadFile(source entity.AttachmentSource, id string, fileName string) (*minio.Object, error) {
+	return s.minio.GetObject(context.Background(), entity.GetBucket(source).Name,
+		id+"/"+fileName, minio.GetObjectOptions{})
+}
+
 func (s *MinioService) RemoveFile(source entity.AttachmentSource, fileName string, target int64) error {
 	targetPath := fmt.Sprintf("%d/%s", target, fileName)
 	return s.minio.RemoveObject(context.Background(), entity.GetBucket(source).Name, targetPath, minio.RemoveObjectOptions{})

@@ -38,9 +38,8 @@ public class NewsServiceImpl implements NewsService {
                 .build();
         var savedNews = newsRepository.save(newNews);
         var fileUploadResponse = storageServiceClient.uploadFiles(NEWS_CONTENT, savedNews.getId(), multipartFiles);
-
         var files = Arrays.stream(Objects.requireNonNull(fileUploadResponse.getBody()))
-                .map(f -> new FileMetaData(f.url(), f.id(), savedNews))
+                .map(f -> new FileMetaData(NEWS_CONTENT.concat("/" + f.url()), f.id(), savedNews))
                 .map(fileMetaDataRepository::save)
                 .collect(Collectors.toSet());
 
@@ -65,11 +64,9 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public void deleteNewsById(Long id) {
         var news = getById(id);
-
         storageServiceClient.removeFiles(
                 news.getFiles().stream().map(FileMetaData::getFileId).toList()
         );
-
         newsRepository.deleteById(id);
     }
 

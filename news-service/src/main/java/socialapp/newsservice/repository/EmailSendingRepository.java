@@ -10,11 +10,11 @@ import java.util.List;
 @Repository
 public interface EmailSendingRepository extends JpaRepository<EmailSending, Long> {
 
-    @Query(
-            value = """
-                                     
-                    """
-    )
-    List<EmailSending> test();
+//    @Query(
+//            value = """
+//
+//                    """
+//    )
+//    List<EmailSending> test();
 
 }
