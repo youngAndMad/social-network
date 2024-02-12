@@ -16,7 +16,6 @@ func main() {
 	}
 
 	log.Print(env.DBUrl)
-	log.Print(env.Port)
 
 	server := gin.Default()
 	db := config.Init(env.DBUrl)

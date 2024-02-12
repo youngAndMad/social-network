@@ -121,7 +121,7 @@ func (h *PostHandler) DeletePost(c *gin.Context) {
 }
 
 func RegisterPostRoutes(r *gin.Engine, db *gorm.DB) {
-	storageClient := client.NewStorageClient(http.Client{})
+	storageClient := client.NewStorageClient()
 	postService := service.NewPostService(db, storageClient)
 	h := &PostHandler{
 		PostService: postService,

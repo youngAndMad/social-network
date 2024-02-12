@@ -8,9 +8,7 @@ class AppConstants {
         const val CITY = "address.city"
         const val COUNTRY = "address.country"
         const val USER_PROFILE_IMAGE = "USER_PROFILE_IMAGE"
-
         const val REQUEST_START_TIME = "start-time"
-
         const val LOGGING_PATH_PATTERN = "/api/**"
     }
 }

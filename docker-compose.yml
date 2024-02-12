@@ -115,6 +115,17 @@ services:
     image: redis
     ports:
       - "6379:6379"
+  postgres-post:
+    image: postgres
+    container_name: post-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: post
+    ports:
+      - "5434:5432"
+    volumes:
+      - post-postgres:/var/lib/postgresql/data
 networks:
   social-app:
     driver: bridge
@@ -122,5 +133,4 @@ volumes:
   news:
   mongo:
   minio_storage:
-#  redis:
-
+  post-postgres:

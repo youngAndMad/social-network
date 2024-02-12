@@ -18,6 +18,7 @@ func Init(url string) *gorm.DB {
 	migrate(db, model.Post{})
 	migrate(db, model.Comment{})
 	migrate(db, model.PostReaction{})
+	migrate(db, model.File{})
 	return db
 }
 

@@ -14,11 +14,16 @@ type CommentHandler struct {
 }
 
 func (h *CommentHandler) AddComment(c *gin.Context) {
-	body := model.AddCommentRequest{}
-
-	if err := c.BindJSON(&body); err != nil {
+	content := c.PostForm("content")
+	postId, err := strconv.ParseUint(c.PostForm("postId"), 10, 64)
+	if err != nil {
 		bindError(c, http.StatusBadRequest, err)
 		return
+	}
+
+	body := model.AddCommentRequest{
+		Content: content,
+		PostID:  postId,
 	}
 
 	if err := h.commentService.AddComment(body); err != nil {
