@@ -38,7 +38,6 @@ func (s *PostService) CreatePost(request *model.AddPostRequest, files []*multipa
 			return err
 		}
 	}
-
 	return nil
 }
 
@@ -61,7 +60,7 @@ func (s *PostService) UpdatePostContent(postID uint64, content string) error {
 
 func (s *PostService) GetPostByID(postID uint64) (*model.Post, error) {
 	var post model.Post
-	result := s.DB.First(&post, postID)
+	result := s.DB.Preload("Comments").Preload("Reactions").Preload("Files").First(&post, postID)
 	return &post, result.Error
 }
 

@@ -3,77 +3,59 @@ package client
 import (
 	"bytes"
 	"fmt"
+	"github.com/go-resty/resty/v2"
 	"io"
-	"io/ioutil"
 	"mime/multipart"
-	"net/http"
-	"strconv"
 )
 
 type StorageClient struct {
-	client http.Client
+	client *resty.Client
 }
 
-func NewStorageClient(client http.Client) *StorageClient {
+func NewStorageClient() *StorageClient {
 	return &StorageClient{
-		client: client,
+		client: resty.New(),
 	}
 }
 
 func (c *StorageClient) UploadFile(source string, target int, fileHeader *multipart.FileHeader) error {
-	form := multipart.NewWriter(bytes.NewBuffer(nil))
+	var buf bytes.Buffer
+	form := multipart.NewWriter(&buf)
 
 	fileWriter, err := form.CreateFormFile("file", fileHeader.Filename)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	// Open the file using the file header
 	file, err := fileHeader.Open()
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-
-	// Copy the file contents to the form field
-	_, err = io.Copy(fileWriter, file)
-	if err != nil {
-		panic(err)
-	}
-
-	err = form.WriteField("target", strconv.Itoa(target))
 	if err != nil {
 		return err
 	}
-	err = form.WriteField("source", source)
+	defer file.Close()
+
+	_, err = io.Copy(fileWriter, file)
 	if err != nil {
 		return err
 	}
 
 	err = form.Close()
+	if err != nil {
+		return err
+	}
+
+	resp, err := c.client.R().
+		SetQueryString(fmt.Sprintf("source=%s&target=%d", source, target)).
+		SetBody(buf.Bytes()).
+		SetHeader("Content-Type", form.FormDataContentType()).
+		Post("http://localhost:7070/api/v1/file")
 
 	if err != nil {
 		return err
 	}
 
-	req, err := http.NewRequest("POST", "http://your-second-app-address/upload", form.FormData()) // Replace with the actual URL
-	if err != nil {
-		return err
-	}
-	req.Header.Set("Content-Type", form.FormDataContentType())
-
-	resp, err := c.client.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	// Check the response status
-	if resp.StatusCode != http.StatusOK {
-		// Handle non-200 status codes
-		body, _ := ioutil.ReadAll(resp.Body)
-		return fmt.Errorf("upload failed with status %d: %s", resp.StatusCode, body)
+	if resp.IsError() {
+		return fmt.Errorf("upload failed: %v", resp.Status())
 	}
 
-	return nil // Upload successful
+	return nil
 }
