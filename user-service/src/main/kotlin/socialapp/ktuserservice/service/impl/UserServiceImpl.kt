@@ -56,7 +56,8 @@ class UserServiceImpl(
         val criteriaQuery = CriteriaQuery(usernameCriteria)
 
         return elasticsearchOperations.search(criteriaQuery, User::class.java, IndexCoordinates.of(USER_INDEX))
-            .stream().map { it.content }
+            .stream()
+            .map { it.content }
             .collect(Collectors.toSet())
     }
 
