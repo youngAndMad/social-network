@@ -19,17 +19,9 @@ jobs:
           distribution: 'adopt'
           java-version: '17'
 
-      - name: maven clean install
-        run: mvn clean install -f url-shortener-service/pom.xml -DskipTests
-
-      - name: build docker image
-        run: docker build -t daneker/url-shortener-service -f url-shortener-service/Dockerfile url-shortener-service/
-
-      - name: log in to docker hub
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
-
-      - name: push docker image
-        run: docker push daneker/url-shortener-service
+      - name: Build and Push Docker Image
+        run: |
+          cd url-shortener-service
+          mvn compile jib:build -Pprod -DskipTests\
+            -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} \
+            -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }}
