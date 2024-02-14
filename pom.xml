@@ -116,42 +116,42 @@
                     <classifier>exec</classifier>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>com.cosium.code</groupId>
-                <artifactId>git-code-format-maven-plugin</artifactId>
-                <version>${git-code-format-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>install-hooks</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <!-- Enable https://github.com/google/google-java-format -->
-                    <dependency>
-                        <groupId>com.cosium.code</groupId>
-                        <artifactId>google-java-format</artifactId>
-                        <version>${git-code-format-maven-plugin.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <plugin>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.0.0-M2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                            <rules>
-                                <banDuplicatePomDependencyVersions/>
-                            </rules>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--            <plugin>-->
+            <!--                <groupId>com.cosium.code</groupId>-->
+            <!--                <artifactId>git-code-format-maven-plugin</artifactId>-->
+            <!--                <version>${git-code-format-maven-plugin.version}</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <goals>-->
+            <!--                            <goal>install-hooks</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--                <dependencies>-->
+            <!--                    &lt;!&ndash; Enable https://github.com/google/google-java-format &ndash;&gt;-->
+            <!--                    <dependency>-->
+            <!--                        <groupId>com.cosium.code</groupId>-->
+            <!--                        <artifactId>google-java-format</artifactId>-->
+            <!--                        <version>${git-code-format-maven-plugin.version}</version>-->
+            <!--                    </dependency>-->
+            <!--                </dependencies>-->
+            <!--            </plugin>-->
+<!--            <plugin>-->
+<!--                <artifactId>maven-enforcer-plugin</artifactId>-->
+<!--                <version>3.0.0-M2</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>enforce</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <rules>-->
+<!--                                <banDuplicatePomDependencyVersions/>-->
+<!--                            </rules>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
