@@ -17,13 +17,15 @@ type File struct {
 }
 
 type FileUploadResponse struct {
-	Url string             `json:"url"`
-	ID  primitive.ObjectID `json:"id"`
+	Url       string             `json:"url"`
+	Extension string             `json:"extension"`
+	ID        primitive.ObjectID `json:"id"`
 }
 
 func ToFileUploadResponse(file File) FileUploadResponse {
 	return FileUploadResponse{
-		Url: file.Url,
-		ID:  file.ID,
+		Url:       file.Url,
+		ID:        file.ID,
+		Extension: file.Extension,
 	}
 }

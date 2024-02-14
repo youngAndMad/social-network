@@ -20,6 +20,7 @@ public class FileMetaData {
     private Long id;
     private String url;
     private String fileId;
+    private String extension;
 
     @ManyToOne
     @JoinColumn
@@ -31,8 +32,9 @@ public class FileMetaData {
         return news.getId();
     }
 
-    public FileMetaData(String url, String fileId, News news) {
+    public FileMetaData(String url, String fileId, News news,String extension) {
         this.url = url;
+        this.extension=extension;
         this.fileId = fileId;
         this.news = news;
     }

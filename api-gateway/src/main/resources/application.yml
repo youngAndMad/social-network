@@ -1,14 +1,11 @@
 server:
-  mvc:
-    dispatch-options-request: true
-    log-request-details: true
-    problemdetails:
-      enabled: true
   port: 8082
   servlet:
     session:
       cookie:
         name: GATEWAY-CLIENT
+  netty:
+    max-initial-line-length: 10MB
 spring:
   main:
     web-application-type: reactive
@@ -24,19 +21,19 @@ spring:
           predicates:
             - Path=/api/v1/qr/**
           filters:
-            - TokenRelay=
+#            - TokenRelay=
         - id: news-service
           uri: http://localhost:8888
           predicates:
             - Path=/api/v1/news/**
           filters:
-            - TokenRelay=
+#            - TokenRelay=
         - id: storage-service
           uri: http://localhost:7070
           predicates:
             - Path=/api/v1/file/**
           filters:
-            - TokenRelay=
+#            - TokenRelay=
   security:
     oauth2:
       client:
