@@ -19,7 +19,7 @@ target/
 **/*.cmd
 **/*mvnw
 mvnw
-
+k8s
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -38,7 +38,7 @@ mvnw
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
-
+**/application-prod.yaml
 ### VS Code ###
 .vscode/
 data/

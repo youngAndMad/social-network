@@ -21,7 +21,7 @@ type Env struct {
 
 func LoadEnv(path string) (env Env, err error) {
 	viper.AddConfigPath(path)
-	viper.SetConfigName("app")
+	viper.SetConfigName("socialapp")
 	viper.SetConfigType("env")
 	viper.AutomaticEnv()
 

@@ -22,7 +22,7 @@ services:
       DB_PASSWORD: my_password
       KEYCLOAK_USER: kc_admin
       KEYCLOAK_PASSWORD: kc_password
-    command: [ "-b", "0.0.0.0", "--server-config", "standalone-ha.xml", "-Dkeycloak.import=/opt/keycloak/data/import/social-app-realm.json" ]
+    command: [ "-b", "0.0.0.0", "--server-config", "standalone-ha.xml", "-Dkeycloak.import=/opt/keycloak/data/import/social-socialapp-realm.json" ]
     volumes:
       -  ./docker/keycloak/:/opt/keycloak/data/import/
     depends_on:
@@ -82,14 +82,14 @@ services:
 #  zookeeper:
 #    image: confluentinc/cp-zookeeper:latest
 #    networks:
-#      - social-app
+#      - social-socialapp
 #    environment:
 #      ZOOKEEPER_CLIENT_PORT: 2181
 #      ZOOKEEPER_TICK_TIME: 2000
 #  kafka:
 #    image: confluentinc/cp-kafka:latest
 #    networks:
-#      - social-app
+#      - social-socialapp
 #    depends_on:
 #      - zookeeper
 #    ports:
@@ -104,7 +104,7 @@ services:
 #  kafdrop:
 #    image: obsidiandynamics/kafdrop:latest
 #    networks:
-#      - social-app
+#      - social-socialapp
 #    depends_on:
 #      - kafka
 #    ports:
