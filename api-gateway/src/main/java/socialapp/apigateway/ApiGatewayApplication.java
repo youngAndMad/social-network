@@ -2,6 +2,8 @@ package socialapp.apigateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.multipart.MultipartResolver;
 
 import javax.net.ssl.*;
 import java.security.cert.X509Certificate;
@@ -12,8 +14,6 @@ public class ApiGatewayApplication {
     public static void main(String[] args) {
         SpringApplication.run(ApiGatewayApplication.class, args);
     }
-
-
 
     static {
         disableSslVerification();

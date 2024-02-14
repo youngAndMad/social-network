@@ -1,15 +1,18 @@
 server:
+  mvc:
+    dispatch-options-request: true
+    log-request-details: true
+    problemdetails:
+      enabled: true
   port: 8082
   servlet:
     session:
       cookie:
         name: GATEWAY-CLIENT
-  forward-headers-strategy: framework
 spring:
   main:
     web-application-type: reactive
     banner-mode: off
-  output.ansi.enabled: ALWAYS
   cloud:
     gateway:
       discovery:

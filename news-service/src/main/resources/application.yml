@@ -1,4 +1,9 @@
 spring:
+  mvc:
+    dispatch-options-request: true
+    log-request-details: true
+    problemdetails:
+      enabled: true
   kafka:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -35,6 +40,9 @@ spring:
     password: postgres
   jpa:
     show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 server:
   port: 8888
   servlet:
@@ -42,6 +50,7 @@ server:
 logging:
   level:
     org.springframework.web: debug
+    org.springframework.security: debug
     org.springframework.cloud.openfeign: debug
 app:
   email-sending-cron: "*/5 * * * * *" # every hour
