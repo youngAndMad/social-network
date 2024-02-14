@@ -41,10 +41,8 @@ server:
     context-path: /api/v1
 logging:
   level:
-    org.springframework:
-      web: debug
-      cloud:
-        openfeign: debug
+    org.springframework.web: debug
+    org.springframework.cloud.openfeign: debug
 app:
   email-sending-cron: "*/5 * * * * *" # every hour
   default-page-size: 1000
