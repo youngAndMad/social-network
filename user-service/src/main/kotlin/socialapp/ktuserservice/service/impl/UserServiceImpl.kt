@@ -8,6 +8,8 @@ import org.springframework.data.elasticsearch.core.SearchHits
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates
 import org.springframework.data.elasticsearch.core.query.Criteria
 import org.springframework.data.elasticsearch.core.query.CriteriaQuery
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import socialapp.ktuserservice.common.AppConstants.Companion.AGE
@@ -66,7 +68,7 @@ class UserServiceImpl(
     override fun isExists(email: String): IsExistsResponse {
         val user = userRepository.findByEmail(email)
 
-        return IsExistsResponse(user != null, user )
+        return IsExistsResponse(user != null, user)
     }
 
 
@@ -86,7 +88,7 @@ class UserServiceImpl(
     override fun update(userUpdateDto: UserUpdateDto, id: Long) {
         val user = findById(id)
 
-        val address = addressService.update(userUpdateDto.address,user.address!!)
+        val address = addressService.update(userUpdateDto.address, user.address!!)
         userMapper.update(userUpdateDto, user)
 
         userRepository.save(user)
@@ -116,4 +118,11 @@ class UserServiceImpl(
         userRepository.findAll(PageRequest.of(page, pageSize))
             .content
             .map { socialapp.ktuserservice.model.dto.EmailResponseDto(it.email!!) }.toList()
+
+    override fun me(): User {
+        val auth = SecurityContextHolder.getContext().authentication
+        val jwt = auth.principal as Jwt
+        val email = jwt.getClaimAsString("email")
+        return this.userRepository.findByEmail(email!!)!!
+    }
 }

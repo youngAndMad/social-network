@@ -24,4 +24,6 @@ interface UserService {
     fun findById(id: Long): User
 
     fun getEmailList(page: Int,pageSize: Int): List<EmailResponseDto>
+
+    fun me():User
 }

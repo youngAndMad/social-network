@@ -62,5 +62,6 @@ class UserController(
         @RequestParam(required = false, defaultValue = "100") pageSize: Int
     ): ResponseEntity<List<EmailResponseDto>> = ResponseEntity.ok(userService.getEmailList(page, pageSize))
 
-
+    @GetMapping("me")
+    fun me(): ResponseEntity<User> = ResponseEntity.ok(userService.me())
 }
