@@ -1,6 +1,12 @@
 server:
   port: 8083
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${OAUTH2_SERVER:http://localhost:8080}/auth/realms/socialapp
+          jwk-set-uri: ${OAUTH2_SERVER:http://localhost:8080}/auth/realms/socialapp/protocol/openid-connect/certs
   cloud:
     openfeign:
       client:
