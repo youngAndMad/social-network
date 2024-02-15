@@ -3,15 +3,16 @@ package socialapp.ktuserservice.controller
 import jakarta.validation.Valid
 import jakarta.validation.constraints.Email
 import org.springframework.data.elasticsearch.core.SearchHits
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
-import socialapp.ktuserservice.service.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import socialapp.ktuserservice.model.dto.*
+import socialapp.ktuserservice.model.dto.EmailResponseDto
+import socialapp.ktuserservice.model.dto.IsExistsResponse
+import socialapp.ktuserservice.model.dto.UserDto
+import socialapp.ktuserservice.model.dto.UserSearchCriteria
 import socialapp.ktuserservice.model.entity.User
+import socialapp.ktuserservice.service.UserService
 
 @RestController
 @RequestMapping("api/v1/user")
@@ -20,13 +21,13 @@ class UserController(
 ) {
 
     @PostMapping
-    fun register(@RequestBody @Valid registrationDto: RegistrationDto): ResponseEntity<User> =
-        ResponseEntity.status(HttpStatus.CREATED).body(userService.register(registrationDto))
+    fun register(@RequestBody @Valid userDto: UserDto): ResponseEntity<User> =
+        ResponseEntity.status(HttpStatus.CREATED).body(userService.register(userDto))
 
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun update(@RequestBody @Valid userUpdateDto: UserUpdateDto, @PathVariable id: Long) =
+    fun update(@RequestBody @Valid userUpdateDto: UserDto, @PathVariable id: Long) =
         userService.update(userUpdateDto, id)
 
     @DeleteMapping("{id}")

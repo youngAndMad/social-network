@@ -40,15 +40,15 @@ class UserServiceImpl(
         val log: Logger = LoggerFactory.getLogger(this::class.java)
     }
 
-    override fun register(registrationDto: RegistrationDto): User {
-        val existsByEmail = userRepository.existsByEmail(registrationDto.email)
+    override fun register(userDto: UserDto): User {
+        val existsByEmail = userRepository.existsByEmail(userDto.email)
 
         if (existsByEmail) {
-            return userRepository.findByEmail(registrationDto.email)!! // ???
+            return userRepository.findByEmail(userDto.email)!! // ???
         }
 
-        val address = addressService.save(registrationDto.address)
-        val user = userMapper.toModel(registrationDto, address)
+        val address = addressService.save(userDto.address)
+        val user = userMapper.toModel(userDto, address)
         return userRepository.save(user)
     }
 
@@ -85,12 +85,11 @@ class UserServiceImpl(
 
     }
 
-    override fun update(userUpdateDto: UserUpdateDto, id: Long) {
+    override fun update(userUpdateDto: UserDto, id: Long) {
         val user = findById(id)
 
-        val address = addressService.update(userUpdateDto.address, user.address!!)
-        userMapper.update(userUpdateDto, user)
-
+        addressService.update(userUpdateDto.address, user.address!!)
+        userMapper.update(user,userUpdateDto)
         userRepository.save(user)
     }
 

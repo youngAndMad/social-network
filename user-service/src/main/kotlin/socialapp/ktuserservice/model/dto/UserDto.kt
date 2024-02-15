@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull
 import socialapp.ktuserservice.model.enums.Gender
 import java.time.LocalDate
 
-data class RegistrationDto(
+data class UserDto(
     @field:NotNull
     @field:NotBlank
     val givenName: String,

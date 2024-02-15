@@ -7,7 +7,7 @@ import socialapp.ktuserservice.model.entity.User
 
 interface UserService {
 
-    fun register(registrationDto: RegistrationDto): User
+    fun register(userDto: UserDto): User
 
     fun delete(id: Long)
 
@@ -17,7 +17,7 @@ interface UserService {
 
     fun uploadAvatar(file: MultipartFile, id: Long)
 
-    fun update(userUpdateDto: UserUpdateDto, id: Long)
+    fun update(userUpdateDto: UserDto, id: Long)
 
     fun find(userSearchCriteria: UserSearchCriteria, page: Int, pageSize: Int): SearchHits<User>
 

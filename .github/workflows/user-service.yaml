@@ -24,7 +24,7 @@ jobs:
           cd user-service
           mvn compile jib:build -DskipTests\
             -Djib.to.auth.username=$DOCKER_USERNAME\
-            -Djib.to.auth.password=$DOCKER_ PASSWORD
+            -Djib.to.auth.password=$DOCKER_PASSWORD
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
