@@ -7,7 +7,7 @@ on:
       - 'user-service/**'
 
 jobs:
-  url-shortener-service:
+  user-service:
     runs-on: ubuntu-latest
     steps:
       - name: checkout repository user-service
@@ -24,7 +24,7 @@ jobs:
           cd user-service
           mvn compile jib:build -DskipTests\
             -Djib.to.auth.username=$DOCKER_USERNAME\
-            -Djib.to.auth.password=$DOCKER_PASSWORD
+            -Djib.to.auth.password=$DOCKER_ PASSWORD
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
