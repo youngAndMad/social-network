@@ -10,19 +10,15 @@ import socialapp.ktuserservice.service.AddressService
 @Service
 class AddressServiceImpl(
     private var addressRepository: AddressRepository,
+    private var addressMapper: AddressMapper
 ) : AddressService {
 
-    override fun save(addressDto: AddressDto): Address = addressRepository.save(AddressMapper.INSTANCE.toModel(addressDto));
+    override fun save(addressDto: AddressDto): Address =
+        addressRepository.save(addressMapper.toModel(addressDto));
 
-    override fun update(addressDto: AddressDto, id: Long) {
-        val address = findById(id);
-
-        AddressMapper.INSTANCE.update(address, addressDto);
-
+    override fun update(addressDto: AddressDto,address: Address) {
+        addressMapper.update(address, addressDto);
         addressRepository.save(address);
     }
 
-    private fun findById(id: Long): Address {
-        return addressRepository.findByID(id)
-    }
 }

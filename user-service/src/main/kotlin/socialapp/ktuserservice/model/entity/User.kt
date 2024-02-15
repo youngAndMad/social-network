@@ -28,5 +28,5 @@ class User : BaseEntity() {
 
     @OneToOne
     @JoinColumn
-    var address: Address? = null
+    var address: Address? =null
 }

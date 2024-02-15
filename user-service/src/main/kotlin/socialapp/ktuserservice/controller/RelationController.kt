@@ -10,7 +10,7 @@ import socialapp.ktuserservice.model.dto.UserRelationsDto
 
 
 @RestController
-@RequestMapping("api/v1/user")
+@RequestMapping("api/v1/user/relation")
 class RelationController(
     private var relationService: RelationService
 ) {

@@ -7,5 +7,5 @@ interface AddressService {
 
     fun save(addressDto: AddressDto): Address
 
-    fun update(addressDto: AddressDto, id: Long)
+    fun update(addressDto: AddressDto, address: Address)
 }

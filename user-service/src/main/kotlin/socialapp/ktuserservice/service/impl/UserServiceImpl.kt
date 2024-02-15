@@ -30,7 +30,8 @@ class UserServiceImpl(
     private var userRepository: UserRepository,
     private var elasticsearchOperations: ElasticsearchOperations,
     private var addressService: AddressService,
-    private var storageClient: StorageClient
+    private var storageClient: StorageClient,
+    private var userMapper: UserMapper
 ) : UserService {
 
     private companion object {
@@ -45,7 +46,7 @@ class UserServiceImpl(
         }
 
         val address = addressService.save(registrationDto.address)
-        val user = UserMapper.INSTANCE.toModel(registrationDto, address)
+        val user = userMapper.toModel(registrationDto, address)
         return userRepository.save(user)
     }
 
@@ -85,7 +86,8 @@ class UserServiceImpl(
     override fun update(userUpdateDto: UserUpdateDto, id: Long) {
         val user = findById(id)
 
-        UserMapper.INSTANCE.update(userUpdateDto, user)
+        val address = addressService.update(userUpdateDto.address,user.address!!)
+        userMapper.update(userUpdateDto, user)
 
         userRepository.save(user)
     }

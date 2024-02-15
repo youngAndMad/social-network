@@ -1,6 +1,4 @@
 server:
-  servlet:
-    context-path: /api/v1/user/
   port: 8083
 spring:
   cloud:
@@ -34,12 +32,13 @@ spring:
     banner-mode: off
     allow-bean-definition-overriding: true
   application:
-    name: kt-user-service
+    name: user-service
   neo4j:
     authentication:
       password: strong_password
       username: neo4j
     uri: bolt://${NEO4J_URL:localhost:7687}
+
 
 resilience4j:
   retry:
@@ -64,4 +63,6 @@ resilience4j:
         permittedNumberOfCallsInHalfOpenState: 5
         enable-exponential-backoff: true
         slow-call-duration-threshold: 2s
-
+logging:
+  level:
+    org.springframework.web: debug

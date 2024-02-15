@@ -39,7 +39,7 @@ class UserController(
         ResponseEntity.ok(userService.fetchSuggestions(query))
 
 
-    @GetMapping("is-exist")
+    @GetMapping("is-exists")
     fun isExist(@RequestParam @Email email: String): ResponseEntity<IsExistsResponse> =
         ResponseEntity.ok(userService.isExists(email))
 
