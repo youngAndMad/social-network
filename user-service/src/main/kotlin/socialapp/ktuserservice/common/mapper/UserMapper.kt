@@ -20,7 +20,7 @@ import socialapp.ktuserservice.model.entity.User
 interface UserMapper {
 
     companion object{
-        val INSTANCE = Mappers.getMapper(UserMapper::class.java)
+        val INSTANCE: UserMapper = Mappers.getMapper(UserMapper::class.java)
     }
 
     @Mapping(target = "id", ignore = true)

@@ -10,7 +10,7 @@ import socialapp.ktuserservice.model.entity.Address
 interface AddressMapper {
 
     companion object{
-        val INSTANCE = Mappers.getMapper(AddressMapper::class.java)
+        val INSTANCE: AddressMapper = Mappers.getMapper(AddressMapper::class.java)
     }
 
     fun toModel(addressDto: AddressDto): Address

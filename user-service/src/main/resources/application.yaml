@@ -1,7 +1,7 @@
 server:
   servlet:
     context-path: /api/v1/user/
-  port: 8082
+  port: 8083
 spring:
   cloud:
     openfeign:
@@ -28,7 +28,7 @@ spring:
     elasticsearch:
       should-create-index:
         socialapp.ktuserservice.model.entity.User
-      url: localhost:9200
+      url: ${ELASTIC_URL:localhost:9200}
       connection-timeout: 1000 # 1 second
   main:
     banner-mode: off
@@ -39,6 +39,7 @@ spring:
     authentication:
       password: strong_password
       username: neo4j
+    uri: bolt://${NEO4J_URL:localhost:7687}
 
 resilience4j:
   retry:

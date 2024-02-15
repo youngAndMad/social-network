@@ -65,7 +65,7 @@ class UserServiceImpl(
     override fun isExists(email: String): IsExistsResponse {
         val user = userRepository.findByEmail(email)
 
-        return IsExistsResponse(user != null, user.let { UserMapper.INSTANCE.toAppUserDto(it!!) })
+        return IsExistsResponse(user != null, user )
     }
 
 

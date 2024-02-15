@@ -23,7 +23,7 @@ interface StorageClient {
     @CircuitBreaker(name = "storageService", fallbackMethod = "circuitBreakerCallback")
     @Retry(name = "storageService")
     fun upload(
-        @RequestParam(value = "source", required = false, defaultValue = "USER_PROFILE_IMAGE") source: String,
+        @RequestParam(value = "source") source: String="USER_PROFILE_IMAGE",
         @RequestParam target: Long,
         @RequestParam("file") file: MultipartFile
     ): ResponseEntity<FileUploadResponseDto>
