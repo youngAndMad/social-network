@@ -1,10 +1,10 @@
-name: CI CD Url shortener service
+name: CI CD User service
 
 on:
   push:
     branches: [ master ]
     paths:
-      - 'url-shortener-service/**'
+      - 'user-service/**'
 
 jobs:
   url-shortener-service:
@@ -21,7 +21,7 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          cd url-shortener-service
+          cd user-service
           mvn compile jib:build -DskipTests\
             -Djib.to.auth.username=$DOCKER_USERNAME\
             -Djib.to.auth.password=$DOCKER_PASSWORD
