@@ -21,51 +21,50 @@ import socialapp.loggingstarter.annotations.LoggableTime
 @LoggableInfo
 @LoggableTime
 class UserController(
-    private var userService: UserService
+        private var userService: UserService
 ) {
 
     @PostMapping
-    fun register(@RequestBody @Valid userDto: UserDto): ResponseEntity<User> =
-        ResponseEntity.status(HttpStatus.CREATED).body(userService.register(userDto))
-
+    @ResponseStatus(HttpStatus.CREATED)
+    fun register(@RequestBody @Valid userDto: UserDto): User =
+            userService.register(userDto)
 
     @PutMapping("{id}")
-    @ResponseStatus(HttpStatus.OK)
     fun update(@RequestBody @Valid userUpdateDto: UserDto, @PathVariable id: Long) =
-        userService.update(userUpdateDto, id)
+            userService.update(userUpdateDto, id)
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun delete(@PathVariable id: Long) = userService.delete(id)
 
     @GetMapping("suggest")
-    fun fetchSuggestions(@RequestParam query: String): ResponseEntity<Set<User>> =
-        ResponseEntity.ok(userService.fetchSuggestions(query))
+    fun fetchSuggestions(@RequestParam query: String): Set<User> =
+            userService.fetchSuggestions(query)
 
 
     @GetMapping("is-exists")
-    fun isExist(@RequestParam @Email email: String): ResponseEntity<IsExistsResponse> =
-        ResponseEntity.ok(userService.isExists(email))
+    fun isExist(@RequestParam @Email email: String) =
+            userService.isExists(email)
 
 
     @PatchMapping("{id}/avatar")
     fun uploadAvatar(@RequestParam("file") file: MultipartFile, @PathVariable id: Long) =
-        userService.uploadAvatar(file, id)
+            userService.uploadAvatar(file, id)
 
 
     @PostMapping("search")
     fun search(
-        @RequestBody userSearchCriteria: UserSearchCriteria,
-        @RequestParam(required = false) page: Int,
-        @RequestParam(required = false, defaultValue = "10") pageSize: Int
-    ): ResponseEntity<SearchHits<User>> = ResponseEntity.ok(userService.find(userSearchCriteria, page, pageSize))
+            @RequestBody userSearchCriteria: UserSearchCriteria,
+            @RequestParam(required = false) page: Int,
+            @RequestParam(required = false, defaultValue = "10") pageSize: Int
+    ): SearchHits<User> = userService.find(userSearchCriteria, page, pageSize)
 
     @GetMapping("emails")
     fun fetchEmails(
-        @RequestParam(required = false) page: Int,
-        @RequestParam(required = false, defaultValue = "100") pageSize: Int
-    ): ResponseEntity<List<EmailResponseDto>> = ResponseEntity.ok(userService.getEmailList(page, pageSize))
+            @RequestParam(required = false) page: Int = 0,
+            @RequestParam(required = false) pageSize: Int = 100
+    ): List<EmailResponseDto> = userService.getEmailList(page, pageSize)
 
     @GetMapping("me")
-    fun me(): ResponseEntity<User> = ResponseEntity.ok(userService.me())
+    fun me(): User = userService.me()
 }
