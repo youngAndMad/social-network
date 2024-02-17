@@ -8,14 +8,10 @@ import (
 )
 
 func main() {
-	port := ":1212"
 	env, err := config.LoadEnv(".")
-
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	log.Print(env.DBUrl)
 
 	server := gin.Default()
 	db := config.Init(env.DBUrl)
@@ -24,7 +20,7 @@ func main() {
 	http.RegisterCommentRoutes(server, db)
 	http.RegisterPostReactionRoutes(server, db)
 
-	_err := server.Run(port)
+	_err := server.Run(env.Port)
 
 	if _err != nil {
 		log.Fatal(err)

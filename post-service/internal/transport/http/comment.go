@@ -15,6 +15,7 @@ type CommentHandler struct {
 
 func (h *CommentHandler) AddComment(c *gin.Context) {
 	content := c.PostForm("content")
+	authorId, err := strconv.ParseUint(c.PostForm("authorId"), 10, 64)
 	postId, err := strconv.ParseUint(c.PostForm("postId"), 10, 64)
 	if err != nil {
 		bindError(c, http.StatusBadRequest, err)
@@ -22,11 +23,17 @@ func (h *CommentHandler) AddComment(c *gin.Context) {
 	}
 
 	body := model.AddCommentRequest{
-		Content: content,
-		PostID:  postId,
+		AuthorID: authorId,
+		Content:  content,
+		PostID:   postId,
 	}
-
-	if err := h.commentService.AddComment(body); err != nil {
+	form, err := c.MultipartForm()
+	if err != nil {
+		bindError(c, http.StatusBadRequest, err)
+		return
+	}
+	files := form.File["file"]
+	if err := h.commentService.AddComment(&body, files); err != nil {
 		bindError(c, http.StatusInternalServerError, err)
 		return
 	}

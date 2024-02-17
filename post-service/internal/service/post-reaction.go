@@ -14,7 +14,7 @@ type PostReactionService struct {
 func NewPostReactionService(DB *gorm.DB) *PostReactionService {
 	return &PostReactionService{
 		DB:          DB,
-		postService: NewPostService(DB, client.NewStorageClient()),
+		postService: NewPostService(DB, client.NewStorageClient(DB)),
 	}
 }
 
