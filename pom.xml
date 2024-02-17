@@ -104,6 +104,7 @@
         <module>url-shortener-service</module>
         <module>news-service</module>
         <module>logging-spring-boot-starter</module>
+        <module>channel-service</module>
     </modules>
 
     <build>
