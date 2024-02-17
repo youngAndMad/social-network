@@ -48,7 +48,7 @@ func (h *PostHandler) AddPost(c *gin.Context) {
 	c.Status(http.StatusCreated)
 }
 
-func (h *PostHandler) GetAuthorPost(c *gin.Context) {
+func (h *PostHandler) GetAuthorPosts(c *gin.Context) {
 	log.Print("GetAuthorPosts called")
 
 	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
@@ -127,8 +127,8 @@ func RegisterPostRoutes(r *gin.Engine, db *gorm.DB) {
 		PostService: postService,
 	}
 
-	routes := r.Group("/post")
-	routes.GET("", h.GetAuthorPost)
+	routes := r.Group("/api/v1/post")
+	routes.GET("", h.GetAuthorPosts)
 	routes.GET("/:id", h.GetPostById)
 	routes.POST("", h.AddPost)
 	routes.PUT("/:id", h.UpdatePost)

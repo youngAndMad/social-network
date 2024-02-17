@@ -13,9 +13,13 @@ import socialapp.ktuserservice.model.dto.UserDto
 import socialapp.ktuserservice.model.dto.UserSearchCriteria
 import socialapp.ktuserservice.model.entity.User
 import socialapp.ktuserservice.service.UserService
+import socialapp.loggingstarter.annotations.LoggableInfo
+import socialapp.loggingstarter.annotations.LoggableTime
 
 @RestController
 @RequestMapping("api/v1/user")
+@LoggableInfo
+@LoggableTime
 class UserController(
     private var userService: UserService
 ) {
@@ -33,7 +37,6 @@ class UserController(
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun delete(@PathVariable id: Long) = userService.delete(id)
-
 
     @GetMapping("suggest")
     fun fetchSuggestions(@RequestParam query: String): ResponseEntity<Set<User>> =

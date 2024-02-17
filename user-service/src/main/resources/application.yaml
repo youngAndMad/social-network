@@ -72,3 +72,7 @@ resilience4j:
 logging:
   level:
     org.springframework.web: debug
+app:
+  common:
+    logging:
+      enabled: true

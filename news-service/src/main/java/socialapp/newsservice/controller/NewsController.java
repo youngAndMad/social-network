@@ -1,7 +1,6 @@
 package socialapp.newsservice.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/news")
-@Slf4j
 public class NewsController {
 
     private final NewsService newsService;
@@ -28,7 +26,6 @@ public class NewsController {
             @RequestParam("files") List<MultipartFile> multipartFiles,
             @RequestParam Boolean emailSending
     ) {
-        log.info(title + " " + content + " " + emailSending + " " + multipartFiles);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(newsService.saveNews(title, content, multipartFiles, emailSending));
     }

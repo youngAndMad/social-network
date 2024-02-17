@@ -13,14 +13,14 @@ import socialapp.newsservice.repository.EmailSendingRepository;
 @RequiredArgsConstructor
 public class ScheduledEmailSending {
 
-    private final KafkaTemplate<String,Object> kafkaTemplate;
-    private final EmailSendingRepository emailSendingRepository;
-
-    @Value("${app.email-sending-queue}")
-    private String emailSendingQueue;
-
-    @Value("${app.default-page-size}")
-    private Integer defaultPageSize;
+//    private final KafkaTemplate<String,Object> kafkaTemplate;
+//    private final EmailSendingRepository emailSendingRepository;
+//
+//    @Value("${app.email-sending-queue}")
+//    private String emailSendingQueue;
+//
+//    @Value("${app.default-page-size}")
+//    private Integer defaultPageSize;
 
     @Scheduled(cron = "${app.email-sending-cron}")
     public void scheduleEmailSending(){

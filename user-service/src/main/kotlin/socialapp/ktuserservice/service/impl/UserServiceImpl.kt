@@ -121,7 +121,7 @@ class UserServiceImpl(
     override fun me(): User {
         val auth = SecurityContextHolder.getContext().authentication
         val jwt = auth.principal as Jwt
-        val email = jwt.getClaimAsString("email")
-        return this.userRepository.findByEmail(email!!)!!
+        val email = jwt.getClaimAsString("email")!!
+        return this.userRepository.findByEmail(email)!!
     }
 }
