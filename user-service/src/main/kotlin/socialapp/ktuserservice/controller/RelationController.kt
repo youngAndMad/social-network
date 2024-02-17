@@ -7,12 +7,12 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import socialapp.ktuserservice.model.dto.UserRelationsDto
-import socialapp.loggingstarter.annotations.LoggableInfo
+//import socialapp.loggingstarter.annotations.LoggableInfo
 
 
 @RestController
 @RequestMapping("api/v1/user/relation")
-@LoggableInfo
+//@LoggableInfo
 class RelationController(
     private var relationService: RelationService
 ) {
