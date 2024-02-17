@@ -4,11 +4,9 @@ import jakarta.validation.Valid
 import jakarta.validation.constraints.Email
 import org.springframework.data.elasticsearch.core.SearchHits
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import socialapp.ktuserservice.model.dto.EmailResponseDto
-import socialapp.ktuserservice.model.dto.IsExistsResponse
 import socialapp.ktuserservice.model.dto.UserDto
 import socialapp.ktuserservice.model.dto.UserSearchCriteria
 import socialapp.ktuserservice.model.entity.User
@@ -16,6 +14,8 @@ import socialapp.ktuserservice.service.UserService
 
 @RestController
 @RequestMapping("api/v1/user")
+//@LoggableInfo
+//@LoggableTime
 class UserController(
         private var userService: UserService
 ) {
@@ -32,7 +32,6 @@ class UserController(
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun delete(@PathVariable id: Long) = userService.delete(id)
-
 
     @GetMapping("suggest")
     fun fetchSuggestions(@RequestParam query: String): Set<User> =
