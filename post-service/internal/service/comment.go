@@ -1,7 +1,9 @@
 package service
 
 import (
+	"fmt"
 	"gorm.io/gorm"
+	"mime/multipart"
 	"post-service/internal/model"
 	"post-service/internal/transport/http/client"
 )
@@ -14,11 +16,11 @@ type CommentService struct {
 func NewCommentService(DB *gorm.DB) *CommentService {
 	return &CommentService{
 		DB:          DB,
-		postService: NewPostService(DB, client.NewStorageClient()),
+		postService: NewPostService(DB, client.NewStorageClient(DB)),
 	}
 }
 
-func (s *CommentService) AddComment(request model.AddCommentRequest) (err error) {
+func (s *CommentService) AddComment(request *model.AddCommentRequest, files []*multipart.FileHeader) (err error) {
 
 	post, err := s.postService.GetPostByID(request.PostID)
 	if err != nil {
@@ -26,11 +28,30 @@ func (s *CommentService) AddComment(request model.AddCommentRequest) (err error)
 	}
 
 	comment := &model.Comment{
-		PostID:  post.ID,
-		Content: request.Content,
+		AuthorID: request.AuthorID,
+		PostID:   post.ID,
+		Content:  request.Content,
+	}
+	if err := s.DB.Create(&comment).Error; err != nil {
+		return err
 	}
 
-	return s.DB.Create(comment).Error
+	for _, file := range files {
+		err, fileUploadResponse := s.postService.storageClient.UploadFile("COMMENT_CONTENT", int(comment.ID), file)
+		if err != nil {
+			return err
+		}
+		fileRecord := &model.File{
+			Url:       fileUploadResponse.Url,
+			Extension: fileUploadResponse.Extension,
+			CommentID: comment.ID,
+		}
+		fmt.Println(fileRecord)
+		//if err := s.DB.Create(&fileRecord).Error; err != nil {
+		//	return err
+		//}
+	}
+	return nil
 }
 
 func (s *CommentService) DeleteComment(commentId uint64) (err error) {

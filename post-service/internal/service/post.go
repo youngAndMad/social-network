@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"gorm.io/gorm"
 	"mime/multipart"
 	"post-service/internal/model"
@@ -26,17 +27,24 @@ func (s *PostService) CreatePost(request *model.AddPostRequest, files []*multipa
 	post.AuthorID = request.AuthorID
 	post.Type = request.Type
 
-	// Create the post
 	if err := s.DB.Create(&post).Error; err != nil {
 		return err
 	}
 
-	// Upload files if any
 	for _, file := range files {
-		err := s.storageClient.UploadFile("POST_CONTENT", int(post.ID), file)
+		err, fileUploadResponse := s.storageClient.UploadFile("POST_CONTENT", int(post.ID), file)
 		if err != nil {
 			return err
 		}
+		fileRecord := &model.File{
+			Url:       fileUploadResponse.Url,
+			Extension: fileUploadResponse.Extension,
+			PostID:    post.ID,
+		}
+		fmt.Println(fileRecord)
+		//if err := s.DB.Create(&fileRecord).Error; err != nil {
+		//	return err
+		//}
 	}
 	return nil
 }
