@@ -1,5 +1,6 @@
 package socialapp.chatservice.service;
 
+import socialapp.chatservice.model.dto.IsOnlineResponse;
 import socialapp.chatservice.model.entity.AppUser;
 
 public interface UserStatusService {
@@ -8,6 +9,6 @@ public interface UserStatusService {
 
     void setUserOffline(AppUser appUser);
 
-    boolean isUserOnline(String email);
+    IsOnlineResponse isUserOnline(String email);
 
 }

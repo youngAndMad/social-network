@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import socialapp.chatservice.model.dto.IsOnlineResponse;
 import socialapp.chatservice.model.entity.AppUser;
 import socialapp.chatservice.service.UserStatusService;
 
@@ -31,8 +32,8 @@ public class UserStatusServiceImpl implements UserStatusService {
     }
 
     @Override
-    public boolean isUserOnline(String email) {
-        return Boolean.TRUE.equals(redis.opsForSet()
-                .isMember(USER_ONLINE_KEY, email));
+    public IsOnlineResponse isUserOnline(String email) {
+        return new IsOnlineResponse(Boolean.TRUE.equals(redis.opsForSet()
+                .isMember(USER_ONLINE_KEY, email)));
     }
 }
