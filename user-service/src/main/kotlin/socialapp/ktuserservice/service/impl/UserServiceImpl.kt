@@ -88,8 +88,13 @@ class UserServiceImpl(
     override fun update(userUpdateDto: UserDto, id: Long) {
         val user = findById(id)
 
-        addressService.update(userUpdateDto.address, user.address!!)
-        userMapper.update(user,userUpdateDto)
+        if (user.address == null) {
+            user.address = addressService.save(userUpdateDto.address)
+        } else {
+            addressService.update(userUpdateDto.address, user.address!!)
+        }
+        userMapper.update(user, userUpdateDto)
+
         userRepository.save(user)
     }
 
