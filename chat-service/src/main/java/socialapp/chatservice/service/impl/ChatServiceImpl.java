@@ -2,12 +2,17 @@ package socialapp.chatservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import socialapp.chatservice.common.exception.CreatePrivateChatMemberNotExistException;
 import socialapp.chatservice.common.feign.UserServiceClient;
 import socialapp.chatservice.mapper.ChatMapper;
 import socialapp.chatservice.mapper.MemberMapper;
 import socialapp.chatservice.model.dto.CreatePrivateChatRequestDto;
+import socialapp.chatservice.model.dto.notification.LeaveChatNotification;
 import socialapp.chatservice.model.dto.notification.MessageNotification;
 import socialapp.chatservice.model.dto.PrivateMessageRequest;
 import socialapp.chatservice.model.entity.AppUser;
@@ -25,6 +30,7 @@ public class ChatServiceImpl implements ChatService {
 
     private final ChatRepository chatRepository;
     private final ChatMapper chatMapper;
+    private final MongoTemplate mongoTemplate;
     private final UserServiceClient userServiceClient;
     private final MemberMapper memberMapper;
 
@@ -50,6 +56,15 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public MessageNotification saveMessage(PrivateMessageRequest messageRequest, AppUser appUser) {
         return null;//todo
+    }
+
+    @Override
+    public LeaveChatNotification leaveChat(AppUser appUser, String chatId) {
+        var query = new Query(Criteria.where(Chat.Fields.id).is(chatId));
+        var update = new Update().pull(Chat.Fields.members, Query.query(Criteria.where(AppUser.Fields.email).is(appUser.getEmail())));
+        var chat = mongoTemplate.findAndModify(query, update, Chat.class);
+        assert chat != null; // todo throw exception
+        return new LeaveChatNotification(chat.getId(), chat.getName(), appUser.getEmail());
     }
 
     private String getPrivateChatName(AppUser creator, AppUser receiver) {

@@ -2,6 +2,7 @@ package socialapp.chatservice.model.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 import org.springframework.data.annotation.Id;
 import socialapp.chatservice.model.enums.ChatType;
 
@@ -10,6 +11,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@FieldNameConstants
 public class Chat {
 
     @Id
