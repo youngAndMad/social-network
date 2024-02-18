@@ -129,4 +129,8 @@ class UserServiceImpl(
         val email = jwt.getClaimAsString("email")!!
         return this.userRepository.findByEmail(email)!!
     }
+
+    override fun deleteAvatar(id: Long) {
+        storageClient.deleteAvatar(id)
+    }
 }
