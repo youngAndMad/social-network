@@ -126,9 +126,9 @@ services:
 #      - "5434:5432"
 #    volumes:
 #      - post-postgres:/var/lib/postgresql/data
-networks:
-  social-app:
-    driver: bridge
+#networks:
+#  social-app:
+#    driver: bridge
 volumes:
   mongo:
 #  news:

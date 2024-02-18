@@ -1,11 +1,12 @@
 package socialapp.chatservice.controller;
 
+import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import socialapp.chatservice.common.annotation.FetchUserContext;
 import socialapp.chatservice.common.context.UserContextHolder;
+import socialapp.chatservice.model.dto.IsOnlineResponse;
 import socialapp.chatservice.service.UserStatusService;
 
 @RestController
@@ -28,5 +29,10 @@ public class UserStatusController {
         userStatusService.setUserOffline(UserContextHolder.getCurrentUser());
     }
 
-
+    @GetMapping("status")
+    ResponseEntity<IsOnlineResponse> isOnline(
+            @RequestParam @Email String email
+    ){
+        return ResponseEntity.ok(userStatusService.isUserOnline(email));
+    }
 }

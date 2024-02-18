@@ -36,11 +36,12 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     public Channel create(ChannelCreateRequest request) {
-        Channel channel = new Channel();
-        channel.setName(request.name());
-        channel.setChannelType(request.channelType());
-        channel.setAvatar(request.avatar());
-        channel.setAdminId(request.adminId());
+        Channel channel = Channel.builder()
+                .name(request.name())
+                .adminId(request.adminId())
+                .channelType(request.channelType())
+                .avatar(request.avatar())
+                .build();
         channelRepository.save(channel);
         return channel;
     }
