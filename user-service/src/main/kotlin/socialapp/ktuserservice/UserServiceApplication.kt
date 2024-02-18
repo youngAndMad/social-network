@@ -3,12 +3,14 @@ package socialapp.ktuserservice
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.cloud.openfeign.EnableFeignClients
+import org.springframework.context.annotation.EnableAspectJAutoProxy
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
 import javax.net.ssl.*
 
 @SpringBootApplication
 @EnableFeignClients
+@EnableAspectJAutoProxy
 class UserServiceApplication {
 
     object TrustAllCertificates : X509TrustManager {
