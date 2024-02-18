@@ -51,20 +51,19 @@ spring:
       client:
         provider:
           keycloak:
-            authorization-uri: ${OAUTH2_SERVER:http://localhost:8080}/oauth2/authorize
-            token-uri: ${OAUTH2_SERVER:http://localhost:8080}/oauth2/token
-            jwk-set-uri: ${OAUTH2_SERVER:http://localhost:8080}/oauth2/jwks
-            user-info-uri: ${OAUTH2_SERVER:http://localhost:8080}/userinfo
+            authorization-uri: ${OAUTH2_SERVER:http://localhost:8080}/auth/realms/socialapp/protocol/openid-connect/auth
+            token-uri: ${OAUTH2_SERVER:http://localhost:8080}/auth/realms/socialapp/protocol/openid-connect/token
+            jwk-set-uri: ${OAUTH2_SERVER:http://localhost:8080}/auth/realms/socialapp/protocol/openid-connect/certs
+            user-info-uri: ${OAUTH2_SERVER:http://localhost:8080}/auth/realms/socialapp/protocol/openid-connect/userinfo
             user-name-attribute: sub
             issuer-uri: ${OAUTH2_SERVER:http://localhost:8080}/auth/realms/socialapp
         registration:
           reg-client:
             provider: keycloak
             client-id: socialapp-web
-            client-secret: "secret"
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_basic
-            scope: user.read,user.write,openid
+            scope: openid
   autoconfigure:
     exclude:
      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
