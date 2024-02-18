@@ -7,7 +7,7 @@ on:
       - 'channel-service/**'
 
 jobs:
-  chat-service:
+  channel-service:
     runs-on: ubuntu-latest
     steps:
       - name: checkout repository
