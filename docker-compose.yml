@@ -1,32 +1,32 @@
 version: '3'
 services:
-  kc_db:
-    image: postgres:15.1
-    environment:
-      POSTGRES_HOST_AUTH_METHOD: trust
-      POSTGRES_USER: my_admin
-      POSTGRES_PASSWORD: my_password
-      POSTGRES_DB: keycloak_db
-    ports:
-      - "5433:5433"
-  keycloak:
-    image: quay.io/keycloak/keycloak:11.0.1
-    ports:
-      - "8080:8080"
-    environment:
-      DB_VENDOR: POSTGRES
-      DB_ADDR: kc_db
-      DB_DATABASE: keycloak_db
-      DB_USER: my_admin
-      DB_SCHEMA: public
-      DB_PASSWORD: my_password
-      KEYCLOAK_USER: kc_admin
-      KEYCLOAK_PASSWORD: kc_password
-    command: [ "-b", "0.0.0.0", "--server-config", "standalone-ha.xml", "-Dkeycloak.import=/opt/keycloak/data/import/social-socialapp-realm.json" ]
-    volumes:
-      -  ./docker/keycloak/:/opt/keycloak/data/import/
-    depends_on:
-     - kc_db
+#  kc_db:
+#    image: postgres:15.1
+#    environment:
+#      POSTGRES_HOST_AUTH_METHOD: trust
+#      POSTGRES_USER: my_admin
+#      POSTGRES_PASSWORD: my_password
+#      POSTGRES_DB: keycloak_db
+#    ports:
+#      - "5433:5433"
+#  keycloak:
+#    image: quay.io/keycloak/keycloak:11.0.1
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      DB_VENDOR: POSTGRES
+#      DB_ADDR: kc_db
+#      DB_DATABASE: keycloak_db
+#      DB_USER: my_admin
+#      DB_SCHEMA: public
+#      DB_PASSWORD: my_password
+#      KEYCLOAK_USER: kc_admin
+#      KEYCLOAK_PASSWORD: kc_password
+#    command: [ "-b", "0.0.0.0", "--server-config", "standalone-ha.xml", "-Dkeycloak.import=/opt/keycloak/data/import/social-socialapp-realm.json" ]
+#    volumes:
+#      -  ./docker/keycloak/:/opt/keycloak/data/import/
+#    depends_on:
+#     - kc_db
 #  neo4j:
 #    image: neo4j:5.15.0
 #    ports:
@@ -54,17 +54,17 @@ services:
 #    environment:
 #      - discovery.type=single-node
 #      - xpack.security.enabled=false
-#  mongo:
-#    container_name: mongo-db
-#    image: mongo
-#    restart: always
-#    ports:
-#      - "27018:27017"
-#    volumes:
-#      - mongo:/data/mongo
-#    environment:
-#      MONGO_INITDB_ROOT_USERNAME: mongouser
-#      MONGO_INITDB_ROOT_PASSWORD: mongopassword
+  mongo:
+    container_name: mongo-db
+    image: mongo
+    restart: always
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo:/data/mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongouser
+      MONGO_INITDB_ROOT_PASSWORD: mongopassword
 #  minio:
 #    container_name: minio-storage
 #    image: minio/minio:latest
@@ -126,11 +126,11 @@ services:
 #      - "5434:5432"
 #    volumes:
 #      - post-postgres:/var/lib/postgresql/data
-networks:
-  social-app:
-    driver: bridge
+#networks:
+#  social-app:
+#    driver: bridge
 volumes:
-  news:
+#  news:
   mongo:
-  minio_storage:
-  post-postgres:
+#  minio_storage:
+#  post-postgres:
