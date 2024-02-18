@@ -33,7 +33,7 @@ spring:
       should-create-index:
         socialapp.ktuserservice.model.entity.User
       url: ${ELASTIC_URL:localhost:9200}
-      connection-timeout: 1000 # 1 second
+      connection-timeout: 3000 # 3 second
   main:
     banner-mode: off
     allow-bean-definition-overriding: true

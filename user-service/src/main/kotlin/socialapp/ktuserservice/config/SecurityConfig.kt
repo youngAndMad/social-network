@@ -3,17 +3,21 @@ package socialapp.ktuserservice.config
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.config.Customizer;
+import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.oauth2.jwt.JwtDecoder
 import org.springframework.security.oauth2.jwt.JwtDecoders
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.web.cors.CorsConfigurationSource
+import socialapp.ktuserservice.config.handler.CustomAuthenticationSuccessHandler
+import socialapp.ktuserservice.repository.UserRepository
 
 @Configuration
 @EnableWebSecurity
-class SecurityConfig {
+class SecurityConfig (
+    private val userRepository: UserRepository
+){
 
     @Value("\${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
     private lateinit var oidcIssuerLocation: String
@@ -33,7 +37,13 @@ class SecurityConfig {
             }
             .cors { Customizer.withDefaults<CorsConfigurationSource>() }
             .csrf().disable()
+
+            .formLogin {
+                formLogin -> formLogin.successHandler(CustomAuthenticationSuccessHandler(userRepository))
+            }
+
             .oauth2ResourceServer().jwt()
+
         return http.build()
     }
 
@@ -42,3 +52,4 @@ class SecurityConfig {
         return JwtDecoders.fromIssuerLocation(oidcIssuerLocation)
     }
 }
+

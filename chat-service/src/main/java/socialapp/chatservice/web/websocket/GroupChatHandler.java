@@ -10,5 +10,7 @@ public class GroupChatHandler {
 
     private final ChatService chatService;
 
-    void leaveChat(){};
+    void leaveChat(){
+
+    };
 }
