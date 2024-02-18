@@ -82,14 +82,14 @@ services:
 #  zookeeper:
 #    image: confluentinc/cp-zookeeper:latest
 #    networks:
-#      - social-socialapp
+#      - social-app
 #    environment:
 #      ZOOKEEPER_CLIENT_PORT: 2181
 #      ZOOKEEPER_TICK_TIME: 2000
 #  kafka:
 #    image: confluentinc/cp-kafka:latest
 #    networks:
-#      - social-socialapp
+#      - social-app
 #    depends_on:
 #      - zookeeper
 #    ports:
@@ -104,7 +104,7 @@ services:
 #  kafdrop:
 #    image: obsidiandynamics/kafdrop:latest
 #    networks:
-#      - social-socialapp
+#      - social-app
 #    depends_on:
 #      - kafka
 #    ports:
@@ -130,7 +130,7 @@ services:
 #  social-app:
 #    driver: bridge
 volumes:
-#  news:
   mongo:
+#  news:
 #  minio_storage:
 #  post-postgres:

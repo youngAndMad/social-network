@@ -16,7 +16,6 @@ import java.util.List;
 public class ChannelServiceImpl implements ChannelService {
     private final ChannelRepository channelRepository;
 
-
     @Override
     public List<Channel> findAll() {
         return channelRepository.findAll();

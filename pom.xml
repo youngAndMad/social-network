@@ -128,7 +128,7 @@
             <!--                        </goals>-->
             <!--                    </execution>-->
             <!--                </executions>-->
-            <!--                <dependencies>-->
+            <!--               <dependencies>-->
             <!--                    &lt;!&ndash; Enable https://github.com/google/google-java-format &ndash;&gt;-->
             <!--                    <dependency>-->
             <!--                        <groupId>com.cosium.code</groupId>-->
@@ -182,20 +182,6 @@
                             -Amapstruct.defaultComponentModel=spring
                         </compilerArg>
                     </compilerArgs>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.mapstruct</groupId>
-                            <artifactId>mapstruct-processor</artifactId>
-                            <version>1.4.2.Final</version>
-                        </path>
-                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <plugin>
