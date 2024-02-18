@@ -16,5 +16,7 @@ public class Chat {
     private String id;
     private ChatType type;
     private LocalDateTime createdAt;
+    private String name;
     private Set<ChatMember> members;
+    private Set<Message> messages;
 }

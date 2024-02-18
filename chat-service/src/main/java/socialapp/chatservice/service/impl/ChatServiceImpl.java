@@ -1,12 +1,15 @@
 package socialapp.chatservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import socialapp.chatservice.common.exception.CreatePrivateChatMemberNotExistException;
 import socialapp.chatservice.common.feign.UserServiceClient;
 import socialapp.chatservice.mapper.ChatMapper;
 import socialapp.chatservice.mapper.MemberMapper;
 import socialapp.chatservice.model.dto.CreatePrivateChatRequestDto;
+import socialapp.chatservice.model.dto.notification.MessageNotification;
+import socialapp.chatservice.model.dto.PrivateMessageRequest;
 import socialapp.chatservice.model.entity.AppUser;
 import socialapp.chatservice.model.entity.Chat;
 import socialapp.chatservice.model.enums.ChatType;
@@ -17,6 +20,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ChatServiceImpl implements ChatService {
 
     private final ChatRepository chatRepository;
@@ -38,7 +42,18 @@ public class ChatServiceImpl implements ChatService {
         var creator = memberMapper.toPrivateChatMember(appUser);
         var receiver = memberMapper.toPrivateChatMember(userIsExist.user());
 
-        return chatRepository.save(chatMapper.toModel(Set.of(creator, receiver), ChatType.PRIVATE));
+        var saved = chatRepository.save(chatMapper.toModel(Set.of(creator, receiver), ChatType.PRIVATE, getPrivateChatName(appUser, userIsExist.user())));
+        log.info("Creating private chat between {} and {} id = {}", creator, receiver, saved.getId());
+        return saved;
+    }
+
+    @Override
+    public MessageNotification saveMessage(PrivateMessageRequest messageRequest, AppUser appUser) {
+        return null;//todo
+    }
+
+    private String getPrivateChatName(AppUser creator, AppUser receiver) {
+        return creator.getEmail() + ":" + receiver.getEmail();
     }
 
 }
