@@ -16,7 +16,6 @@ import java.util.List;
 public class ChannelServiceImpl implements ChannelService {
     private final ChannelRepository channelRepository;
 
-
     @Override
     public List<Channel> findAll() {
         return channelRepository.findAll();
@@ -37,12 +36,11 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     public Channel create(ChannelCreateRequest request) {
-        Channel channel = Channel.builder()
-                .name(request.name())
-                .adminId(request.adminId())
-                .channelType(request.channelType())
-                .avatar(request.avatar())
-                .build();
+        Channel channel = new Channel();
+        channel.setName(request.name());
+        channel.setChannelType(request.channelType());
+        channel.setAvatar(request.avatar());
+        channel.setAdminId(request.adminId());
         channelRepository.save(channel);
         return channel;
     }
