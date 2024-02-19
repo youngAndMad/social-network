@@ -35,8 +35,7 @@ public class NewsController {
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer pageSize
     ) {
-        Page<News> all = newsService.getAll(page, pageSize);
-        return ResponseEntity.ok(all);
+        return ResponseEntity.ok(newsService.getAll(page, pageSize));
     }
 
     @GetMapping("{id}")
@@ -45,7 +44,7 @@ public class NewsController {
     }
 
     @DeleteMapping("{id}")
-    ResponseEntity<Void> deleteNews(@PathVariable Long id) {
+    ResponseEntity<HttpStatus> deleteNews(@PathVariable Long id) {
         newsService.deleteNewsById(id);
         return ResponseEntity.noContent().build();
     }
