@@ -36,7 +36,7 @@ spring:
   datasource:
     url: ${PSQL_HOST:jdbc:postgresql://localhost:5432}/news
     driver-class-name: org.postgresql.Driver
-    username: ${PSQL_HOST:postgres}
+    username: ${PSQL_USERNAME:postgres}
     password: ${PSQL_PASSWORD:postgres}
   jpa:
     show-sql: true
