@@ -23,8 +23,8 @@ interface StorageClient {
     }
 
     @PostMapping(value = ["single"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
-    @CircuitBreaker(name = "storageService", fallbackMethod = "circuitBreakerCallback")
-    @Retry(name = "storageService")
+//    @CircuitBreaker(name = "storageService", fallbackMethod = "circuitBreakerCallback")
+//    @Retry(name = "storageService")
     fun upload(
         @RequestParam(value = "source") source: String="USER_PROFILE_IMAGE",
         @RequestParam target: Long,

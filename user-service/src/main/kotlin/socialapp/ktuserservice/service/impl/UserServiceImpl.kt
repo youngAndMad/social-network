@@ -77,6 +77,7 @@ class UserServiceImpl(
         val uploadedAvatar = storageClient.upload(USER_PROFILE_IMAGE, user.id!!, file)
 
         if (uploadedAvatar.statusCode.is2xxSuccessful && uploadedAvatar.body != null) {
+            log.info("avatar uploaded successfully {}", uploadedAvatar.body?.url)
             user.avatar = uploadedAvatar.body?.url
             userRepository.save(user)
         } else {
