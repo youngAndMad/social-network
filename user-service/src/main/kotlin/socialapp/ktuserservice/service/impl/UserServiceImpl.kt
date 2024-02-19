@@ -131,6 +131,9 @@ class UserServiceImpl(
     }
 
     override fun deleteAvatar(id: Long) {
-        storageClient.deleteAvatar(id)
+        val user = findById(id)
+        user.avatar = null
+        userRepository.save(user)
+//        storageClient.deleteAvatar(id) fixme create endpoint in storage service
     }
 }
