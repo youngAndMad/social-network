@@ -17,33 +17,33 @@ spring:
           enabled: true
       routes:
         - id: qr-service
-          uri: http://localhost:7070
+          uri: http://qr-service:7070
           predicates:
             - Path=/api/v1/qr/**
           filters:
-#            - TokenRelay=
+        #            - TokenRelay=
         - id: news-service
-          uri: http://localhost:8888
+          uri: http://news-service:8888
           predicates:
             - Path=/api/v1/news/**
           filters:
-#            - TokenRelay=
+        #            - TokenRelay=
         - id: storage-service
-          uri: http://localhost:7070
+          uri: http://storage-service:7070
           predicates:
             - Path=/api/v1/file/**
           filters:
-#            - TokenRelay=
+        #            - TokenRelay=
         - id: user-service
-          uri: http://localhost:8083
+          uri: http://user-service:8083
           predicates:
             - Path=/api/v1/user/**
           filters:
-#            - TokenRelay=
+        #            - TokenRelay=
         - id: post-service
           uri: http://localhost:1212
           predicates:
-            - Path=/api/v1/post/**
+            - Path=/api/v1/post-service/**
           filters:
   #            - TokenRelay=
   security:
@@ -66,12 +66,12 @@ spring:
             scope: openid
   autoconfigure:
     exclude:
-     - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
-     - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
-     - org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
+      - org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration
   data:
     redis:
-      host: redis
+      host: localhost
       port: 6379
       password: qwerfvp.o654ijnQWE.RFVP654O.IJN
   session:

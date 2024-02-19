@@ -8,7 +8,7 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      bootstrap-servers: http://localhost:9092
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:http://localhost:9092}
       properties:
         spring:
           json:
@@ -20,9 +20,9 @@ spring:
       client:
         config:
           user-service:
-            url: http://localhost:8082
+            url: ${USER_SERVICE_URL:http://localhost:8082}
           storage-service-client:
-            url: http://localhost:7070/api/v1/file
+            url: ${STORAGE_SERVICE_URL:http://localhost:7070/api/v1/file}
   security:
     oauth2:
       resourceserver:
@@ -34,10 +34,10 @@ spring:
     admin:
       enabled: false
   datasource:
-    url: jdbc:postgresql://localhost:5432/news
+    url: ${PSQL_HOST:jdbc:postgresql://localhost:5432}/news
     driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: postgres
+    username: ${PSQL_HOST:postgres}
+    password: ${PSQL_PASSWORD:postgres}
   jpa:
     show-sql: true
     properties:
