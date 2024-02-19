@@ -47,6 +47,9 @@ class UserController(
     fun uploadAvatar(@RequestParam("file") file: MultipartFile, @PathVariable id: Long) =
             userService.uploadAvatar(file, id)
 
+    @DeleteMapping("{id}/avatar")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deleteAvatar(@PathVariable id: Long) = userService.deleteAvatar(id)
 
     @PostMapping("search")
     fun search(

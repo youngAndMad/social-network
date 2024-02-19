@@ -77,6 +77,7 @@ class UserServiceImpl(
         val uploadedAvatar = storageClient.upload(USER_PROFILE_IMAGE, user.id!!, file)
 
         if (uploadedAvatar.statusCode.is2xxSuccessful && uploadedAvatar.body != null) {
+            log.info("avatar uploaded successfully {}", uploadedAvatar.body?.url)
             user.avatar = uploadedAvatar.body?.url
             userRepository.save(user)
         } else {
@@ -88,8 +89,13 @@ class UserServiceImpl(
     override fun update(userUpdateDto: UserDto, id: Long) {
         val user = findById(id)
 
-        addressService.update(userUpdateDto.address, user.address!!)
-        userMapper.update(user,userUpdateDto)
+        if (user.address == null) {
+            user.address = addressService.save(userUpdateDto.address)
+        } else {
+            addressService.update(userUpdateDto.address, user.address!!)
+        }
+        userMapper.update(user, userUpdateDto)
+
         userRepository.save(user)
     }
 
@@ -123,5 +129,12 @@ class UserServiceImpl(
         val jwt = auth.principal as Jwt
         val email = jwt.getClaimAsString("email")!!
         return this.userRepository.findByEmail(email)!!
+    }
+
+    override fun deleteAvatar(id: Long) {
+        val user = findById(id)
+        user.avatar = null
+        userRepository.save(user)
+//        storageClient.deleteAvatar(id) fixme create endpoint in storage service
     }
 }

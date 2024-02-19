@@ -13,6 +13,6 @@ public interface ChatMapper {
 
     @Mapping(target = "id" , ignore = true)
     @Mapping(target = "type" , expression = "java(type)")
-    Chat toModel(Set<ChatMember> members, ChatType type);
+    Chat toModel(Set<ChatMember> members, ChatType type, String name);
 
 }

@@ -1,4 +1,4 @@
-package socialapp.chatservice.controller;
+package socialapp.chatservice.web.http;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

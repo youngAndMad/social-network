@@ -12,7 +12,7 @@ spring:
       client:
         config:
           storage-service:
-            url: http://localhost:7070/api/v1/storage/
+            url: ${STORAGE_SERVICE_URL:http://localhost:7070/api/v1/file/}
             logger-level: full
             connect-timeout: 1000
             read-timeout: 2000
@@ -25,15 +25,15 @@ spring:
     show-sql: true
     open-in-view: false
   datasource:
-    password: postgres
-    username: postgres
-    url: jdbc:postgresql://localhost:5432/postgres
+    password: ${PSQL_PASSWORD:postgres}
+    username: ${PSQL_USERNAME:postgres}
+    url: ${PSQL_HOST:jdbc:postgresql://localhost:5432}/postgres
   data:
     elasticsearch:
       should-create-index:
         socialapp.ktuserservice.model.entity.User
       url: ${ELASTIC_URL:localhost:9200}
-      connection-timeout: 1000 # 1 second
+      connection-timeout: 3000 # 3 second
   main:
     banner-mode: off
     allow-bean-definition-overriding: true
@@ -72,7 +72,3 @@ resilience4j:
 logging:
   level:
     org.springframework.web: debug
-app:
-  common:
-    logging:
-      enabled: true

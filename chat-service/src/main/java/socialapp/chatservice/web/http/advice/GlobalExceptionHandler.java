@@ -1,4 +1,4 @@
-package socialapp.chatservice.controller.advice;
+package socialapp.chatservice.web.http.advice;
 
 import org.springframework.http.*;
 import org.springframework.validation.BindingResult;

@@ -7,9 +7,7 @@
 //import org.springframework.security.config.web.server.ServerHttpSecurity;
 //import org.springframework.security.web.server.SecurityWebFilterChain;
 //
-//import static org.springframework.security.config.Customizer.withDefaults;
-//
-//@Configuration(proxyBeanMethods = false)
+//@Configuration
 //@EnableWebFluxSecurity
 //public class SecurityConfig {
 //
@@ -17,7 +15,6 @@
 //    SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
 //        http
 //                .authorizeExchange(authorize -> authorize
-//                        .pathMatchers("/**").permitAll()
 //                        .anyExchange().permitAll()
 //                )
 //                .oauth2Login(Customizer.withDefaults())

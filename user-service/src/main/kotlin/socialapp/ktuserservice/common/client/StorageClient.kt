@@ -6,9 +6,12 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.multipart.MultipartFile
 import socialapp.ktuserservice.model.dto.FileUploadResponseDto
 
@@ -19,14 +22,17 @@ interface StorageClient {
         val log: Logger = LoggerFactory.getLogger(this::class.java)
     }
 
-    @PostMapping("single")
-    @CircuitBreaker(name = "storageService", fallbackMethod = "circuitBreakerCallback")
-    @Retry(name = "storageService")
+    @PostMapping(value = ["single"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+//    @CircuitBreaker(name = "storageService", fallbackMethod = "circuitBreakerCallback")
+//    @Retry(name = "storageService")
     fun upload(
         @RequestParam(value = "source") source: String="USER_PROFILE_IMAGE",
         @RequestParam target: Long,
-        @RequestParam("file") file: MultipartFile
+        @RequestPart("file") file: MultipartFile
     ): ResponseEntity<FileUploadResponseDto>
+
+    @DeleteMapping
+    fun deleteAvatar(@RequestParam target: Long,@RequestParam source: String = "USER_PROFILE_IMAGE")
 
     fun circuitBreakerCallback(throwable: Throwable): ResponseEntity<FileUploadResponseDto> {
         log.error("circuitBreakerCallback err = {}", throwable.message)

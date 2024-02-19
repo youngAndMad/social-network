@@ -26,4 +26,6 @@ interface UserService {
     fun getEmailList(page: Int,pageSize: Int): List<EmailResponseDto>
 
     fun me():User
+
+    fun deleteAvatar(id: Long)
 }

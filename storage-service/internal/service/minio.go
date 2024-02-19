@@ -43,7 +43,7 @@ func (s *MinioService) UploadFile(source entity.AttachmentSource, target int, fi
 		FileName:     file.Filename,
 		Extension:    getFileExtension(file.Filename),
 		UploadedTime: time.Now(),
-		Url:          objectName,
+		Url:          string(source) + "/" + objectName,
 		Source:       source,
 		Target:       int64(target),
 	}

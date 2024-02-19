@@ -2,7 +2,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-
+docker-compose.mcs.yaml
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml

@@ -26,6 +26,7 @@ public class ChannelServiceImpl implements ChannelService {
     private final ChannelRepository channelRepository;
     private final ChannelMapper channelMapper;
 
+
     @Override
     public Page<Channel> findAll(
             int page, int pageSize

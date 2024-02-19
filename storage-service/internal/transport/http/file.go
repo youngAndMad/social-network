@@ -67,6 +67,40 @@ func (h *FileHandler) UploadFiles(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+func (h *FileHandler) UploadFile(c *gin.Context) {
+	source := c.Query("source")
+	target, err := strconv.Atoi(c.Query("target"))
+	if err != nil {
+		bindError(c, http.StatusBadRequest, err)
+		return
+	}
+
+	file, err := c.FormFile("file")
+	if err != nil {
+		bindError(c, http.StatusBadRequest, err)
+		return
+	}
+
+	fileEntity, err := h.minioService.UploadFile(entity.AttachmentSource(source), target, file)
+	if err != nil {
+		bindError(c, http.StatusInternalServerError, err)
+		return
+	}
+
+	id, err := h.fileService.SaveFile(fileEntity)
+	if err != nil {
+		bindError(c, http.StatusInternalServerError, err)
+		return
+	}
+	if oid, ok := id.(primitive.ObjectID); ok {
+		fileEntity.ID = oid
+	}
+
+	response := entity.ToFileUploadResponse(fileEntity)
+
+	c.JSON(http.StatusOK, response)
+}
+
 func (h *FileHandler) RemoveFile(c *gin.Context) {
 	fileID := c.Query("id")
 
@@ -187,6 +221,7 @@ func NewFileRoutes(r *gin.Engine, collection *mongo.Collection, mongo *mongo.Cli
 	routes.GET("/", h.GetFile)
 	routes.GET("/download/:source/:target/:filename", h.DownloadFile) // Add this line for file download
 	routes.POST("", h.UploadFiles)
+	routes.POST("/single", h.UploadFile)
 	routes.GET("/files", h.GetFiles)
 	routes.DELETE("/files", h.RemoveFiles)
 }
