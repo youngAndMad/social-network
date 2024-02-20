@@ -2,7 +2,7 @@ spring:
   data:
     mongodb:
       uri: mongodb://mongouser:mongopassword@localhost:27018/channel.Channel?authSource=admin
-  security:s
+  security:
     oauth2:
       resourceserver:
         jwt:
