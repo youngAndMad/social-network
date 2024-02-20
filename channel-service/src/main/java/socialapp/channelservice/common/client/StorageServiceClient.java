@@ -19,4 +19,11 @@ public interface StorageServiceClient {
             @RequestParam("target") String target,
             @RequestPart("file") List<MultipartFile> multipartFile
     );
+
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    ResponseEntity<FileUploadResponse[]> uploadFile(
+            @RequestParam("source") String source,
+            @RequestParam("target") String target,
+            @RequestPart("file") MultipartFile multipartFile
+    );
 }

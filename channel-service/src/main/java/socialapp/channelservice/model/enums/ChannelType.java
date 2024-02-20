@@ -4,5 +4,7 @@ public enum ChannelType {
     IT,
     SPORT,
     EDUCATION,
-    MUSIC
+    MUSIC,
+    AUTO,
+    ELECTRONICS
 }

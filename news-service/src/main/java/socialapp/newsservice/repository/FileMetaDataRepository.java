@@ -9,5 +9,4 @@ import java.util.List;
 
 @Repository
 public interface FileMetaDataRepository extends JpaRepository<FileMetaData,Long> {
-    List<FileMetaData> findAllByNews(News news);
 }

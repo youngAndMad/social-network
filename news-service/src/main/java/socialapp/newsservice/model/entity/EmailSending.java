@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class EmailSending {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
