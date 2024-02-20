@@ -14,5 +14,4 @@ data class UserElasticWrapper(
     val birthDate: String,
     val avatar: String,
     val address: AddressDto?
-) {
-}
+)
