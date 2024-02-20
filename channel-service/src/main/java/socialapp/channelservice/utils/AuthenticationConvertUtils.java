@@ -1,12 +1,12 @@
-package relucky.code.utils;
+package socialapp.channelservice.utils;
 
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
-import relucky.code.model.entity.AppUser;
+import socialapp.channelservice.model.entity.AppUser;
 
-import static relucky.code.common.AppConstants.*;
+import static socialapp.channelservice.common.AppConstants.*;
 
 @UtilityClass
 @Slf4j
