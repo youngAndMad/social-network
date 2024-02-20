@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>relucky.code</groupId>
+    <groupId>socialapp</groupId>
     <artifactId>channel-service</artifactId>
 
     <properties>

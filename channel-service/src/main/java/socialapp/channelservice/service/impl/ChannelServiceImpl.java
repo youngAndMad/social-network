@@ -16,11 +16,10 @@ import socialapp.channelservice.model.payload.ChannelCreateRequest;
 import socialapp.channelservice.repository.ChannelRepository;
 import socialapp.channelservice.service.ChannelService;
 
-import java.util.List;
+import java.util.Objects;
 
-import static relucky.code.utils.AuthenticationConvertUtils.extractAppUser;
+import static socialapp.channelservice.utils.AuthenticationConvertUtils.extractAppUser;
 
-//import static relucky.code.utils.AuthenticationConvertUtils.extractAppUser;
 
 @Service
 @RequiredArgsConstructor
