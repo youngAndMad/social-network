@@ -20,11 +20,6 @@ class UserController(
         private var userService: UserService
 ) {
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    fun register(@RequestBody @Valid userDto: UserDto): User =
-            userService.register(userDto)
-
     @PutMapping("{id}")
     fun update(@RequestBody @Valid userUpdateDto: UserDto, @PathVariable id: Long) =
             userService.update(userUpdateDto, id)

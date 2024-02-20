@@ -43,20 +43,6 @@ class UserServiceImpl(
         val log: Logger = LoggerFactory.getLogger(this::class.java)
     }
 
-    override fun register(userDto: UserDto): User {
-        val user = userRepository.findByEmail(userDto.email)
-        if (user != null) {
-            log.info("User with email {} already exists", userDto.email)
-            return user
-        }
-
-        val address = addressService.save(userDto.address)
-        return userRepository.save(userMapper.toModel(userDto, address)).let {
-            userElasticRepository.insert(it)
-            it
-        }
-    }
-
     override fun delete(id: Long) = userRepository.deleteById(id)
 
     override fun fetchSuggestions(query: String) = userElasticRepository.fetchSuggestions(query)

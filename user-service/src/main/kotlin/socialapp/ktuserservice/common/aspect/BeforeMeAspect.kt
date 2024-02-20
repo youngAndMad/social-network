@@ -8,19 +8,22 @@ import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.stereotype.Component
 import socialapp.ktuserservice.model.entity.User
 import socialapp.ktuserservice.repository.UserRepository
+import socialapp.ktuserservice.repository.elastic.UserElasticRepository
 import kotlin.math.log
 
 @Aspect
 @Component
 class BeforeMeAspect (
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val userElasticRepository: UserElasticRepository
 ){
 
-    private val logger = LoggerFactory.getLogger(this::class.java)
+    private val logger = LoggerFactory.getLogger(BeforeMeAspect::class.java)
+
 
     @Before("execution(* socialapp.ktuserservice.controller.UserController.me(..))")
     fun beforeMe() {
-        SecurityContextHolder.getContext().authentication?.let {
+        SecurityContextHolder.getContext().authentication?.let { it ->
             val jwt = it.principal as Jwt
             val email = jwt.claims["email"] as String
 
@@ -39,7 +42,10 @@ class BeforeMeAspect (
                 this.familyName = familyName
             }
             logger.info("Saving user $user")
-            userRepository.save(user)
+            userRepository.save(user).let {registeredUser ->
+                userElasticRepository.insert(registeredUser)
+                logger.info("User [email=${user.email}, id=${user.id}]  saved successfully to elastic search")
+            }
         }
     }
 

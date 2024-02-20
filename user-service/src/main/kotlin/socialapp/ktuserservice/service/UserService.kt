@@ -7,8 +7,6 @@ import socialapp.ktuserservice.model.entity.User
 
 interface UserService {
 
-    fun register(userDto: UserDto): User
-
     fun delete(id: Long)
 
     fun fetchSuggestions(query: String): Set<User>
