@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import socialapp.channelservice.model.entity.Channel;
+import socialapp.channelservice.model.enums.ChannelType;
 import socialapp.channelservice.model.payload.ChannelCreateRequest;
 import socialapp.channelservice.service.ChannelService;
 
@@ -34,8 +35,9 @@ public class ChannelController {
     }
 
     @PostMapping
-    ResponseEntity<Channel> createChannel(@RequestBody ChannelCreateRequest channelCreateRequest,
+    ResponseEntity<Channel> createChannel(@RequestParam String name,
+                                          @RequestParam ChannelType type,
                                           @RequestParam("file") MultipartFile file) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(channelService.create(channelCreateRequest, file));
+        return ResponseEntity.status(HttpStatus.CREATED).body(channelService.create(name, type, file));
     }
 }

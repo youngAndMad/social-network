@@ -16,7 +16,7 @@ public interface StorageServiceClient {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ResponseEntity<FileUploadResponse[]> uploadFiles(
             @RequestParam("source") String source,
-            @RequestParam("target") Long target,
+            @RequestParam("target") String target,
             @RequestPart("file") List<MultipartFile> multipartFile
     );
 }
