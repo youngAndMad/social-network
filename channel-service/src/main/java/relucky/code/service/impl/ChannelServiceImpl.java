@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import relucky.code.common.client.StorageServiceClient;
@@ -17,6 +18,8 @@ import relucky.code.service.ChannelService;
 
 import java.util.List;
 import java.util.Objects;
+
+import static relucky.code.utils.AuthenticationConvertUtils.extractAppUser;
 
 //import static relucky.code.utils.AuthenticationConvertUtils.extractAppUser;
 
@@ -52,11 +55,10 @@ public class ChannelServiceImpl implements ChannelService {
     @Override
     public Channel create(ChannelCreateRequest request, MultipartFile multipartFile) {
         Channel channel = channelMapper.toModel(request);
-//        var authentication = SecurityContextHolder.getContext().getAuthentication();
-//        channel.setAdminEmail(Objects.requireNonNull(extractAppUser(authentication)).getEmail());
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        channel.setAdminEmail(Objects.requireNonNull(extractAppUser(authentication)).getEmail());
         Channel savedFile = channelRepository.save(channel);
-
-        storageServiceClient.uploadFiles("AVATAR", Long.valueOf(savedFile.getId()),List.of(multipartFile));
+//        storageServiceClient.uploadFiles("AVATAR", Long.valueOf(savedFile.getId()),List.of(multipartFile));
         return savedFile;
     }
 
