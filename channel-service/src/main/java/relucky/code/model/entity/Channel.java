@@ -18,7 +18,7 @@ public class Channel {
     private String name;
     private ChannelType channelType;
     private String avatar;
-    private Long adminId;
+    private String adminEmail;
     private List<Long> moderatorList;
     private List<Long> subscriberList;
 }

@@ -5,8 +5,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import relucky.code.common.client.StorageServiceClient;
 import relucky.code.common.exception.EntityNotFoundException;
 import relucky.code.model.entity.Channel;
 import relucky.code.model.mapper.ChannelMapper;
@@ -15,9 +16,9 @@ import relucky.code.repository.ChannelRepository;
 import relucky.code.service.ChannelService;
 
 import java.util.List;
+import java.util.Objects;
 
-import static org.springframework.security.oauth2.core.oidc.OidcScopes.EMAIL;
-import static org.springframework.security.oauth2.core.oidc.StandardClaimNames.*;
+//import static relucky.code.utils.AuthenticationConvertUtils.extractAppUser;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +26,7 @@ import static org.springframework.security.oauth2.core.oidc.StandardClaimNames.*
 public class ChannelServiceImpl implements ChannelService {
     private final ChannelRepository channelRepository;
     private final ChannelMapper channelMapper;
+    private final StorageServiceClient storageServiceClient;
 
 
     @Override
@@ -48,8 +50,14 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public Channel create(ChannelCreateRequest request) {
-        return channelRepository.save(channelMapper.toModel(request));
+    public Channel create(ChannelCreateRequest request, MultipartFile multipartFile) {
+        Channel channel = channelMapper.toModel(request);
+//        var authentication = SecurityContextHolder.getContext().getAuthentication();
+//        channel.setAdminEmail(Objects.requireNonNull(extractAppUser(authentication)).getEmail());
+        Channel savedFile = channelRepository.save(channel);
+
+        storageServiceClient.uploadFiles("AVATAR", Long.valueOf(savedFile.getId()),List.of(multipartFile));
+        return savedFile;
     }
 
 }

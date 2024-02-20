@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import relucky.code.model.entity.Channel;
 import relucky.code.model.payload.ChannelCreateRequest;
 import relucky.code.service.ChannelService;
@@ -34,8 +35,10 @@ public class ChannelController {
     ResponseEntity<Channel> getChannel(@PathVariable String id) {
         return ResponseEntity.ok(channelService.findOne(id));
     }
+
     @PostMapping
-    ResponseEntity<Channel> createChannel(@RequestBody ChannelCreateRequest channelCreateRequest){
-        return ResponseEntity.status(HttpStatus.CREATED).body(channelService.create(channelCreateRequest));
+    ResponseEntity<Channel> createChannel(@RequestBody ChannelCreateRequest channelCreateRequest,
+                                          @RequestParam("file") MultipartFile file) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(channelService.create(channelCreateRequest, file));
     }
 }
