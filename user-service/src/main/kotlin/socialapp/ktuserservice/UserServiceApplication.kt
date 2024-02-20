@@ -13,6 +13,7 @@ import javax.net.ssl.*
 @EnableAspectJAutoProxy
 class UserServiceApplication {
 
+
     object TrustAllCertificates : X509TrustManager {
         override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) = Unit
         override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) = Unit

@@ -8,6 +8,7 @@ import org.springframework.data.elasticsearch.core.SearchHits
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates
 import org.springframework.data.elasticsearch.core.query.Criteria
 import org.springframework.data.elasticsearch.core.query.CriteriaQuery
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.stereotype.Service
@@ -23,6 +24,7 @@ import socialapp.ktuserservice.common.mapper.UserMapper
 import socialapp.ktuserservice.model.dto.*
 import socialapp.ktuserservice.model.entity.User
 import socialapp.ktuserservice.repository.UserRepository
+import socialapp.ktuserservice.repository.elastic.UserElasticRepository
 import socialapp.ktuserservice.service.AddressService
 import socialapp.ktuserservice.service.UserService
 import java.util.stream.Collectors
@@ -33,7 +35,8 @@ class UserServiceImpl(
     private var elasticsearchOperations: ElasticsearchOperations,
     private var addressService: AddressService,
     private var storageClient: StorageClient,
-    private var userMapper: UserMapper
+    private var userMapper: UserMapper,
+    private var userElasticRepository: UserElasticRepository
 ) : UserService {
 
     private companion object {
@@ -41,28 +44,22 @@ class UserServiceImpl(
     }
 
     override fun register(userDto: UserDto): User {
-        val existsByEmail = userRepository.existsByEmail(userDto.email)
-
-        if (existsByEmail) {
-            return userRepository.findByEmail(userDto.email)!! // ???
+        val user = userRepository.findByEmail(userDto.email)
+        if (user != null) {
+            log.info("User with email {} already exists", userDto.email)
+            return user
         }
 
         val address = addressService.save(userDto.address)
-        val user = userMapper.toModel(userDto, address)
-        return userRepository.save(user)
+        return userRepository.save(userMapper.toModel(userDto, address)).let {
+            userElasticRepository.insert(it)
+            it
+        }
     }
 
     override fun delete(id: Long) = userRepository.deleteById(id)
 
-    override fun fetchSuggestions(query: String): Set<User> {
-        val usernameCriteria = Criteria.where(USERNAME).contains(query)
-        val criteriaQuery = CriteriaQuery(usernameCriteria)
-
-        return elasticsearchOperations.search(criteriaQuery, User::class.java, IndexCoordinates.of(USER_INDEX))
-            .stream()
-            .map { it.content }
-            .collect(Collectors.toSet())
-    }
+    override fun fetchSuggestions(query: String) = userElasticRepository.fetchSuggestions(query)
 
 
     override fun isExists(email: String): IsExistsResponse {
@@ -79,11 +76,12 @@ class UserServiceImpl(
         if (uploadedAvatar.statusCode.is2xxSuccessful && uploadedAvatar.body != null) {
             log.info("avatar uploaded successfully {}", uploadedAvatar.body?.url)
             user.avatar = uploadedAvatar.body?.url
-            userRepository.save(user)
+            userRepository.save(user).let{
+                userElasticRepository.update(it)
+            }
         } else {
             log.error("storage client error, status =  {}", uploadedAvatar.statusCode)
         }
-
     }
 
     override fun update(userUpdateDto: UserDto, id: Long) {
@@ -96,26 +94,13 @@ class UserServiceImpl(
         }
         userMapper.update(user, userUpdateDto)
 
-        userRepository.save(user)
+        userRepository.save(user).let {
+            userElasticRepository.update(it)
+        }
     }
 
-    override fun find(userSearchCriteria: UserSearchCriteria, page: Int, pageSize: Int): SearchHits<User> {
-
-        val usernameCriteria = userSearchCriteria.username?.let { Criteria.where(USERNAME).greaterThan(it) }
-        val ageFromCriteria = userSearchCriteria.ageFrom?.let { Criteria.where(AGE).greaterThan(it) }
-        val ageToCriteria = userSearchCriteria.ageTo?.let { Criteria.where(AGE).lessThan(it) }
-        val cityCriteria = userSearchCriteria.city?.let { Criteria.where(CITY).`is`(it) }
-        val countryCriteria = userSearchCriteria.country?.let { Criteria.where(COUNTRY).`is`(it) }
-
-        val finalCriteria =
-            listOfNotNull(usernameCriteria, ageFromCriteria, ageToCriteria, cityCriteria, countryCriteria)
-                .reduce { acc, criteria -> acc.and(criteria) }
-
-        val criteriaQuery = CriteriaQuery(finalCriteria)
-            .setPageable<CriteriaQuery>(PageRequest.of(page, pageSize))
-
-        return elasticsearchOperations.search(criteriaQuery, User::class.java, IndexCoordinates.of(USER_INDEX))
-    }
+    override fun find(userSearchCriteria: UserSearchCriteria, page: Int, pageSize: Int): SearchHits<User> =
+        userElasticRepository.findByFilter(userSearchCriteria, page, pageSize)
 
     override fun findById(id: Long): User = userRepository.findByID(id)
 
@@ -134,7 +119,10 @@ class UserServiceImpl(
     override fun deleteAvatar(id: Long) {
         val user = findById(id)
         user.avatar = null
-        userRepository.save(user)
+        userRepository.save(user).let {
+            userElasticRepository.update(it)
+        }
 //        storageClient.deleteAvatar(id) fixme create endpoint in storage service
     }
+
 }
