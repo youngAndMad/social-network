@@ -7,7 +7,9 @@ import socialapp.ktuserservice.model.entity.User
 import socialapp.ktuserservice.model.wrapper.UserElasticWrapper
 
 @Component
-class UserMapper {
+class UserMapper(
+    private val addressMapper: AddressMapper
+) {
     fun update(user: User, userDto: UserDto): User {
         return user.apply {
             setUserProperties(this, userDto, user.address!!)
@@ -34,7 +36,8 @@ class UserMapper {
             user.familyName!!,
             user.email!!,
             user.birthDate.toString(),
-            user.avatar!!
+            user.avatar ?:"null",
+            addressMapper.toDto(user.address)
         )
     }
 

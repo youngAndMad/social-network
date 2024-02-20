@@ -20,4 +20,11 @@ class AddressMapper {
             city = addressDto.city
         }
     }
+
+    fun toDto(address: Address?): AddressDto? {
+        return if (address != null) AddressDto(
+            address.country!!,
+            address.city!!
+        ) else null
+    }
 }

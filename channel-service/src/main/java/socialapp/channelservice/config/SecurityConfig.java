@@ -1,4 +1,4 @@
-package relucky.code.config;
+package socialapp.channelservice.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
