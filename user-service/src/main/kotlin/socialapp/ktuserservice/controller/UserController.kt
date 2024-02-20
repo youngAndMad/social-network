@@ -10,6 +10,7 @@ import socialapp.ktuserservice.model.dto.EmailResponseDto
 import socialapp.ktuserservice.model.dto.UserDto
 import socialapp.ktuserservice.model.dto.UserSearchCriteria
 import socialapp.ktuserservice.model.entity.User
+import socialapp.ktuserservice.model.wrapper.UserElasticWrapper
 import socialapp.ktuserservice.service.UserService
 
 @RestController
@@ -29,7 +30,7 @@ class UserController(
     fun delete(@PathVariable id: Long) = userService.delete(id)
 
     @GetMapping("suggest")
-    fun fetchSuggestions(@RequestParam query: String): Set<User> =
+    fun fetchSuggestions(@RequestParam query: String): Set<UserElasticWrapper> =
             userService.fetchSuggestions(query)
 
 
@@ -51,7 +52,7 @@ class UserController(
             @RequestBody userSearchCriteria: UserSearchCriteria,
             @RequestParam(required = false) page: Int,
             @RequestParam(required = false, defaultValue = "10") pageSize: Int
-    ): SearchHits<User> = userService.find(userSearchCriteria, page, pageSize)
+    ): SearchHits<UserElasticWrapper> = userService.find(userSearchCriteria, page, pageSize)
 
     @GetMapping("emails")
     fun fetchEmails(

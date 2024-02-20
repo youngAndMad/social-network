@@ -4,16 +4,10 @@ import org.springframework.stereotype.Component
 import socialapp.ktuserservice.model.dto.UserDto
 import socialapp.ktuserservice.model.entity.Address
 import socialapp.ktuserservice.model.entity.User
+import socialapp.ktuserservice.model.wrapper.UserElasticWrapper
 
 @Component
 class UserMapper {
-
-    fun toModel(userDto: UserDto, address: Address): User {
-        return User().apply {
-            setUserProperties(this, userDto, address)
-        }
-    }
-
     fun update(user: User, userDto: UserDto): User {
         return user.apply {
             setUserProperties(this, userDto, user.address!!)
@@ -30,6 +24,18 @@ class UserMapper {
             gender = userDto.gender
             this.address = address
         }
+    }
+
+    fun toWrapper(user: User): UserElasticWrapper {
+        return UserElasticWrapper(
+            user.id!!,
+            user.givenName!!,
+            user.preferredUsername!!,
+            user.familyName!!,
+            user.email!!,
+            user.birthDate.toString(),
+            user.avatar!!
+        )
     }
 
 }

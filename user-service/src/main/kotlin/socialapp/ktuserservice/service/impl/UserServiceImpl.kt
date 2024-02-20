@@ -23,6 +23,7 @@ import socialapp.ktuserservice.common.client.StorageClient
 import socialapp.ktuserservice.common.mapper.UserMapper
 import socialapp.ktuserservice.model.dto.*
 import socialapp.ktuserservice.model.entity.User
+import socialapp.ktuserservice.model.wrapper.UserElasticWrapper
 import socialapp.ktuserservice.repository.UserRepository
 import socialapp.ktuserservice.repository.elastic.UserElasticRepository
 import socialapp.ktuserservice.service.AddressService
@@ -85,7 +86,7 @@ class UserServiceImpl(
         }
     }
 
-    override fun find(userSearchCriteria: UserSearchCriteria, page: Int, pageSize: Int): SearchHits<User> =
+    override fun find(userSearchCriteria: UserSearchCriteria, page: Int, pageSize: Int): SearchHits<UserElasticWrapper> =
         userElasticRepository.findByFilter(userSearchCriteria, page, pageSize)
 
     override fun findById(id: Long): User = userRepository.findByID(id)
