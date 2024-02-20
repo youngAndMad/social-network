@@ -10,7 +10,6 @@ import (
 	"net/http"
 	"storage-service/internal/entity"
 	"storage-service/internal/service"
-	"strconv"
 )
 
 type FileHandler struct {
@@ -20,11 +19,7 @@ type FileHandler struct {
 
 func (h *FileHandler) UploadFiles(c *gin.Context) {
 	source := c.Query("source")
-	target, err := strconv.Atoi(c.Query("target"))
-	if err != nil {
-		bindError(c, http.StatusBadRequest, err)
-		return
-	}
+	target := c.Query("target")
 	form, err := c.MultipartForm()
 	if err != nil {
 		bindError(c, http.StatusBadRequest, err)
@@ -69,11 +64,7 @@ func (h *FileHandler) UploadFiles(c *gin.Context) {
 
 func (h *FileHandler) UploadFile(c *gin.Context) {
 	source := c.Query("source")
-	target, err := strconv.Atoi(c.Query("target"))
-	if err != nil {
-		bindError(c, http.StatusBadRequest, err)
-		return
-	}
+	target := c.Query("target")
 
 	file, err := c.FormFile("file")
 	if err != nil {

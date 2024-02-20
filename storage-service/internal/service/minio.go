@@ -19,9 +19,9 @@ func NewMinioService(minio *minio.Client) *MinioService {
 	}
 }
 
-func (s *MinioService) UploadFile(source entity.AttachmentSource, target int, file *multipart.FileHeader) (entity.File, error) {
+func (s *MinioService) UploadFile(source entity.AttachmentSource, target string, file *multipart.FileHeader) (entity.File, error) {
 
-	targetPath := fmt.Sprintf("%d", target)
+	targetPath := fmt.Sprintf("%s", target)
 
 	src, err := file.Open()
 	if err != nil {
@@ -45,7 +45,7 @@ func (s *MinioService) UploadFile(source entity.AttachmentSource, target int, fi
 		UploadedTime: time.Now(),
 		Url:          string(source) + "/" + objectName,
 		Source:       source,
-		Target:       int64(target),
+		Target:       target,
 	}
 
 	return fileDoc, nil
@@ -56,7 +56,7 @@ func (s *MinioService) DownloadFile(source entity.AttachmentSource, id string, f
 		id+"/"+fileName, minio.GetObjectOptions{})
 }
 
-func (s *MinioService) RemoveFile(source entity.AttachmentSource, fileName string, target int64) error {
-	targetPath := fmt.Sprintf("%d/%s", target, fileName)
+func (s *MinioService) RemoveFile(source entity.AttachmentSource, fileName string, target string) error {
+	targetPath := fmt.Sprintf("%s/%s", target, fileName)
 	return s.minio.RemoveObject(context.Background(), entity.GetBucket(source).Name, targetPath, minio.RemoveObjectOptions{})
 }
