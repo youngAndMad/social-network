@@ -36,7 +36,6 @@ public class ChannelServiceImpl implements ChannelService {
     private final StorageServiceClient storageServiceClient;
     private final MongoTemplate mongoTemplate;
 
-
     @Override
     public Page<Channel> findAll(
             int page, int pageSize
@@ -60,23 +59,23 @@ public class ChannelServiceImpl implements ChannelService {
     @Override
     public Channel create(String name, ChannelType channelType, MultipartFile multipartFile) {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
-        Channel channel = Channel.builder()
+
+        var savedFile = channelRepository.save(Channel.builder()
                 .name(name)
                 .channelType(channelType)
                 .adminEmail(Objects.requireNonNull(extractAppUser(authentication)).getEmail())
-                .build();
-        Channel savedFile = channelRepository.save(channel);
-        log.info(savedFile.getId());
-        ResponseEntity<FileUploadResponse[]> userProfileImage = storageServiceClient.uploadFile(SOURCE_NAME, savedFile.getId(), multipartFile);
-        FileUploadResponse fileUploadResponse = Objects.requireNonNull(userProfileImage.getBody())[0];
-        savedFile.setAvatarUrl(fileUploadResponse.url());
-        channelRepository.save(savedFile);
-        return savedFile;
+                .build());
+
+        if (multipartFile == null) {
+            return savedFile;
+        }
+
+        return proceedChannelAvatarUploading(multipartFile, savedFile);
     }
 
     @Override
     public void updateChannel(ChannelUpdateRequest request, String id) {
-        Channel channel = findOne(id);
+        var channel = findOne(id);
         channel.setName(request.name());
         channel.setChannelType(request.channelType());
         channelRepository.save(channel);
@@ -85,10 +84,13 @@ public class ChannelServiceImpl implements ChannelService {
     @Override
     public void updateAvatar(MultipartFile multipartFile, String id) {
         Channel channel = findOne(id);
-        ResponseEntity<FileUploadResponse[]> responseEntity = storageServiceClient.uploadFile(SOURCE_NAME, channel.getId(), multipartFile);
-        FileUploadResponse fileUploadResponse = Objects.requireNonNull(responseEntity.getBody())[0];
-        channel.setAvatarUrl(fileUploadResponse.url());
-        channelRepository.save(channel);
+        proceedChannelAvatarUploading(multipartFile, channel);
+    }
+
+    private Channel proceedChannelAvatarUploading(MultipartFile multipartFile, Channel channel) {
+        var responseEntity = storageServiceClient.uploadFile(SOURCE_NAME, channel.getId(), multipartFile);
+        channel.setAvatarUrl(Objects.requireNonNull(responseEntity.getBody()).url());
+        return channelRepository.save(channel);
     }
 
     @Override
@@ -96,9 +98,9 @@ public class ChannelServiceImpl implements ChannelService {
         if (!channelRepository.existsById(id)) {
             throw new EntityNotFoundException(Channel.class, id);
         }
-        Query query = new Query();
+        var query = new Query();
         query.addCriteria(Criteria.where("id").is(id));
-        Update update = new Update();
+        var update = new Update();
         update.unset("avatarUrl");
         mongoTemplate.updateFirst(query, update, Channel.class);
     }

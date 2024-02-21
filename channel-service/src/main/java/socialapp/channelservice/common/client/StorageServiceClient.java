@@ -13,15 +13,9 @@ import java.util.List;
 
 @FeignClient(name = "storage-service-client")
 public interface StorageServiceClient {
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    ResponseEntity<FileUploadResponse[]> uploadFiles(
-            @RequestParam("source") String source,
-            @RequestParam("target") String target,
-            @RequestPart("file") List<MultipartFile> multipartFile
-    );
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    ResponseEntity<FileUploadResponse[]> uploadFile(
+    @PostMapping(value = "single", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    ResponseEntity<FileUploadResponse> uploadFile(
             @RequestParam("source") String source,
             @RequestParam("target") String target,
             @RequestPart("file") MultipartFile multipartFile

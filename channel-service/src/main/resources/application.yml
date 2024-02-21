@@ -1,4 +1,6 @@
 spring:
+  main:
+    banner-mode: off
   data:
     mongodb:
       uri: mongodb://mongouser:mongopassword@localhost:27018/channel.Channel?authSource=admin
@@ -14,3 +16,10 @@ spring:
         config:
           storage-service-client:
             url: http://localhost:7070/api/v1/file
+  application:
+    name: channel-service
+logging:
+  level:
+    org.springframework:
+      web: debug
+      security: debug

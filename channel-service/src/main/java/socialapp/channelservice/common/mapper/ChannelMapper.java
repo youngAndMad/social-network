@@ -1,4 +1,4 @@
-package socialapp.channelservice.model.mapper;
+package socialapp.channelservice.common.mapper;
 
 import org.mapstruct.Mapper;
 import socialapp.channelservice.model.entity.Channel;
