@@ -93,8 +93,8 @@ public class ChannelController {
 
     @DeleteMapping("{id}/moderator")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void removeModerator(@PathVariable String id, @RequestBody AppUser appUser) {
-        channelService.removeModerator(id, appUser);
+    void removeModerator(@PathVariable String id, @RequestParam String email) {
+        channelService.removeModerator(id, email);
     }
 
 }

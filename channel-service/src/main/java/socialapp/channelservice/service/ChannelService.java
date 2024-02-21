@@ -33,5 +33,5 @@ public interface ChannelService {
 
     void addModerator(String id, AppUser appUser);
 
-    void removeModerator(String id, AppUser appUser);
+    void removeModerator(String id,String  email);
 }

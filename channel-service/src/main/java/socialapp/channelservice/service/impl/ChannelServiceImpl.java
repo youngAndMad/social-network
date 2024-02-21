@@ -140,7 +140,7 @@ public class ChannelServiceImpl implements ChannelService {
         var admin = getAuthenticatedUser();
         var channel = findOne(id);
         if (!admin.equals(channel.getAdmin())) {
-            throw new AccessDeniedException("You are not allowed to add moderator to this channel")
+            throw new AccessDeniedException("You are not allowed to add moderator to this channel");
         }
 
         if (channel.getModeratorList().contains(appUser)) {
@@ -152,18 +152,18 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public void removeModerator(String id, AppUser appUser) {
+    public void removeModerator(String id, String  email) {
         var admin = getAuthenticatedUser();
         var channel = findOne(id);
         if (!admin.equals(channel.getAdmin())) {
             throw new AccessDeniedException("You are not allowed to add moderator to this channel");
         }
 
-        if (!channel.getModeratorList().contains(appUser)) {
+        if (!channel.getModeratorList().stream().noneMatch(m -> m.getEmail().equals(email))) {
             return;
         }
 
-        channel.getModeratorList().remove(appUser);
+        channel.getModeratorList().removeIf(m -> m.getEmail().equals(email));
         channelRepository.save(channel);
     }
 
