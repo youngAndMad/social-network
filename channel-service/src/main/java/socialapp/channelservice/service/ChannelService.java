@@ -6,6 +6,9 @@ import socialapp.channelservice.model.entity.Channel;
 import socialapp.channelservice.model.enums.ChannelType;
 import socialapp.channelservice.model.payload.ChannelUpdateRequest;
 
+import java.util.List;
+import java.util.Set;
+
 public interface ChannelService {
     Page<Channel> findAll(int page, int pageSize);
 
@@ -15,9 +18,15 @@ public interface ChannelService {
 
     Channel create(String name, ChannelType channelType, MultipartFile file);
 
+    Set<Channel> currentUserChannels();
+
     void updateChannel(ChannelUpdateRequest request, String id);
 
     void updateAvatar(MultipartFile multipartFile, String id);
 
     void deleteAvatar(String id);
+
+    void subscribe(String id);
+
+    void unsubscribe(String id);
 }

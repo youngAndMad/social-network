@@ -14,6 +14,8 @@ import socialapp.channelservice.model.enums.ChannelType;
 import socialapp.channelservice.model.payload.ChannelUpdateRequest;
 import socialapp.channelservice.service.ChannelService;
 
+import java.util.Set;
+
 @RestController
 @RequestMapping("/api/v1/channel")
 @RequiredArgsConstructor
@@ -64,4 +66,23 @@ public class ChannelController {
     void deleteAvatar(@PathVariable String id) {
         channelService.deleteAvatar(id);
     }
+
+    @GetMapping("my-channels")
+    Set<Channel> getMyChannels() {
+        return channelService.currentUserChannels();
+    }
+
+    @PostMapping("{id}/subscribe")
+    @ResponseStatus(HttpStatus.CREATED)
+    void subscribe(@PathVariable String id) {
+        channelService.subscribe(id);
+    }
+
+    @DeleteMapping("{id}/unsubscribe")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void unsubscribe(@PathVariable String id) {
+        channelService.unsubscribe(id);
+    }
 }
+
+

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import socialapp.channelservice.common.client.StorageServiceClient;
 import socialapp.channelservice.common.exception.EntityNotFoundException;
+import socialapp.channelservice.model.entity.AppUser;
 import socialapp.channelservice.model.entity.Channel;
 import socialapp.channelservice.model.enums.ChannelType;
 import socialapp.channelservice.model.payload.ChannelUpdateRequest;
@@ -22,7 +23,9 @@ import socialapp.channelservice.model.payload.FileUploadResponse;
 import socialapp.channelservice.repository.ChannelRepository;
 import socialapp.channelservice.service.ChannelService;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import static socialapp.channelservice.common.AppConstants.SOURCE_NAME;
 import static socialapp.channelservice.utils.AuthenticationConvertUtils.extractAppUser;
@@ -45,7 +48,8 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     public Channel findOne(String id) {
-        return channelRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Channel.class, id));
+        return channelRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Channel.class, id));
     }
 
     @Override
@@ -58,12 +62,10 @@ public class ChannelServiceImpl implements ChannelService {
 
     @Override
     public Channel create(String name, ChannelType channelType, MultipartFile multipartFile) {
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-
         var savedFile = channelRepository.save(Channel.builder()
                 .name(name)
                 .channelType(channelType)
-                .adminEmail(Objects.requireNonNull(extractAppUser(authentication)).getEmail())
+                .admin(getAuthenticatedUser())
                 .build());
 
         if (multipartFile == null) {
@@ -71,6 +73,11 @@ public class ChannelServiceImpl implements ChannelService {
         }
 
         return proceedChannelAvatarUploading(multipartFile, savedFile);
+    }
+
+    @Override
+    public Set<Channel> currentUserChannels() {
+        return channelRepository.findByAdminEmail(getAuthenticatedUser().getEmail());
     }
 
     @Override
@@ -103,6 +110,32 @@ public class ChannelServiceImpl implements ChannelService {
         var update = new Update();
         update.unset("avatarUrl");
         mongoTemplate.updateFirst(query, update, Channel.class);
+    }
+
+    @Override
+    public void subscribe(String id) {
+        var channel = findOne(id);
+        var user = getAuthenticatedUser();
+        if (channel.getSubscriberList().contains(user)) {
+            return;
+        }
+        channel.getSubscriberList().add(user);
+        channelRepository.save(channel);
+    }
+
+    @Override
+    public void unsubscribe(String id) {
+        var channel = findOne(id);
+        var user = getAuthenticatedUser();
+        if (!channel.getSubscriberList().contains(user)) {
+            return;
+        }
+        channel.getSubscriberList().remove(user);
+        channelRepository.save(channel);
+    }
+
+    private AppUser getAuthenticatedUser() {
+        return Objects.requireNonNull(extractAppUser(SecurityContextHolder.getContext().getAuthentication()));
     }
 
 }
