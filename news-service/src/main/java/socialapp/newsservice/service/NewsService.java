@@ -16,5 +16,5 @@ public interface NewsService {
 
     void deleteNewsById(Long id);
 
-    News updateNews(News news);
+    News updateNews(Long id, String title, String content);
 }

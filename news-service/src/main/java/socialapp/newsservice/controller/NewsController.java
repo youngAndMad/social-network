@@ -1,9 +1,12 @@
 package socialapp.newsservice.controller;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.config.annotation.web.socket.EnableWebSocketSecurity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import socialapp.newsservice.model.entity.News;
@@ -49,8 +52,12 @@ public class NewsController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping
-    ResponseEntity<News> updateNews(@RequestBody News news) {
-        return ResponseEntity.ok(newsService.updateNews(news));
+    @PatchMapping("{id}")
+    News updateNews(
+            @PathVariable Long id,
+            @RequestParam @NotNull @NotEmpty String title,
+            @RequestParam @NotNull @NotEmpty String content
+    ) {
+         return newsService.updateNews(id, title, content);
     }
 }

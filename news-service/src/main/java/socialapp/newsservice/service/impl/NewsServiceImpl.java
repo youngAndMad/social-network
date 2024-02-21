@@ -71,7 +71,10 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public News updateNews(News news) {
+    public News updateNews(Long id,String title,String content) {
+        var news = getById(id);
+        news.setTitle(title);
+        news.setContent(content);
         return newsRepository.save(news);
     }
 }
