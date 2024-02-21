@@ -210,7 +210,7 @@ func NewFileRoutes(r *gin.Engine, collection *mongo.Collection, mongo *mongo.Cli
 
 	routes.DELETE("/", h.RemoveFile)
 	routes.GET("/", h.GetFile)
-	routes.GET("/download/:source/:target/:filename", h.DownloadFile) // Add this line for file download
+	routes.GET("/download/:source/:target/:filename", h.DownloadFile)
 	routes.POST("", h.UploadFiles)
 	routes.POST("/single", h.UploadFile)
 	routes.GET("/files", h.GetFiles)
