@@ -2,6 +2,7 @@ package socialapp.channelservice.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
+import socialapp.channelservice.model.entity.AppUser;
 import socialapp.channelservice.model.entity.Channel;
 import socialapp.channelservice.model.enums.ChannelType;
 import socialapp.channelservice.model.payload.ChannelUpdateRequest;
@@ -29,4 +30,8 @@ public interface ChannelService {
     void subscribe(String id);
 
     void unsubscribe(String id);
+
+    void addModerator(String id, AppUser appUser);
+
+    void removeModerator(String id, AppUser appUser);
 }

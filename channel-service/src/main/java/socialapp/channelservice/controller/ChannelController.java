@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import socialapp.channelservice.model.entity.AppUser;
 import socialapp.channelservice.model.entity.Channel;
 import socialapp.channelservice.model.enums.ChannelType;
 import socialapp.channelservice.model.payload.ChannelUpdateRequest;
@@ -83,6 +84,19 @@ public class ChannelController {
     void unsubscribe(@PathVariable String id) {
         channelService.unsubscribe(id);
     }
+
+    @PostMapping("{id}/moderator")
+    @ResponseStatus(HttpStatus.CREATED)
+    void addModerator(@PathVariable String id, @RequestBody AppUser appUser) {
+        channelService.addModerator(id, appUser);
+    }
+
+    @DeleteMapping("{id}/moderator")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void removeModerator(@PathVariable String id, @RequestBody AppUser appUser) {
+        channelService.removeModerator(id, appUser);
+    }
+
 }
 
 

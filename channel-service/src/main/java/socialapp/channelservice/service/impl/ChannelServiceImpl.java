@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import socialapp.channelservice.common.client.StorageServiceClient;
+import socialapp.channelservice.common.exception.AccessDeniedException;
 import socialapp.channelservice.common.exception.EntityNotFoundException;
 import socialapp.channelservice.model.entity.AppUser;
 import socialapp.channelservice.model.entity.Channel;
@@ -131,6 +132,38 @@ public class ChannelServiceImpl implements ChannelService {
             return;
         }
         channel.getSubscriberList().remove(user);
+        channelRepository.save(channel);
+    }
+
+    @Override
+    public void addModerator(String id, AppUser appUser) {
+        var admin = getAuthenticatedUser();
+        var channel = findOne(id);
+        if (!admin.equals(channel.getAdmin())) {
+            throw new AccessDeniedException("You are not allowed to add moderator to this channel")
+        }
+
+        if (channel.getModeratorList().contains(appUser)) {
+            return;
+        }
+
+        channel.getModeratorList().add(appUser);
+        channelRepository.save(channel);
+    }
+
+    @Override
+    public void removeModerator(String id, AppUser appUser) {
+        var admin = getAuthenticatedUser();
+        var channel = findOne(id);
+        if (!admin.equals(channel.getAdmin())) {
+            throw new AccessDeniedException("You are not allowed to add moderator to this channel");
+        }
+
+        if (!channel.getModeratorList().contains(appUser)) {
+            return;
+        }
+
+        channel.getModeratorList().remove(appUser);
         channelRepository.save(channel);
     }
 
