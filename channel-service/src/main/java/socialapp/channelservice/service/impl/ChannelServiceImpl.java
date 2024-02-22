@@ -24,6 +24,7 @@ import socialapp.channelservice.model.payload.FileUploadResponse;
 import socialapp.channelservice.repository.ChannelRepository;
 import socialapp.channelservice.service.ChannelService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -66,6 +67,8 @@ public class ChannelServiceImpl implements ChannelService {
         var savedFile = channelRepository.save(Channel.builder()
                 .name(name)
                 .channelType(channelType)
+                .subscriberList(new ArrayList<>())
+                .moderatorList(new ArrayList<>())
                 .admin(getAuthenticatedUser())
                 .build());
 
@@ -80,6 +83,7 @@ public class ChannelServiceImpl implements ChannelService {
     public Set<Channel> currentUserChannels() {
         return channelRepository.findByAdminEmail(getAuthenticatedUser().getEmail());
     }
+
 
     @Override
     public void updateChannel(ChannelUpdateRequest request, String id) {

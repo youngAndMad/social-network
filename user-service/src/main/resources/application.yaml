@@ -15,7 +15,7 @@ spring:
             url: ${STORAGE_SERVICE_URL:http://localhost:7070/api/v1/file/}
             logger-level: full
             connect-timeout: 1000
-            read-timeout: 2000
+            read-timeout: 4000
   jpa:
     properties:
       hibernate:
@@ -33,7 +33,7 @@ spring:
       should-create-index:
         socialapp.ktuserservice.model.wrapper.UserElasticWrapper
       url: ${ELASTIC_URL:localhost:9200}
-      connection-timeout: 3000 # 3 second
+      connection-timeout: 5000 # 3 second
   main:
     banner-mode: off
     allow-bean-definition-overriding: true

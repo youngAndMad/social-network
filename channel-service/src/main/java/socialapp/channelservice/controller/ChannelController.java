@@ -21,6 +21,7 @@ import java.util.Set;
 @RequestMapping("/api/v1/channel")
 @RequiredArgsConstructor
 public class ChannelController {
+
     private final ChannelService channelService;
 
     @GetMapping
@@ -96,7 +97,6 @@ public class ChannelController {
     void removeModerator(@PathVariable String id, @RequestParam String email) {
         channelService.removeModerator(id, email);
     }
-
 }
 
 

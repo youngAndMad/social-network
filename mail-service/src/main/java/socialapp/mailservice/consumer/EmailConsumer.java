@@ -16,7 +16,7 @@ public class EmailConsumer {
     private final MailService mailService;
 
 
-    @KafkaListener(topics = {"${spring.kafka.queues.news-letter}"}, groupId = "")
+//    @KafkaListener(topics = {"${spring.kafka.queues.news-letter}"}, groupId = "")
     void consumeNewsLetter(EmailMessageDto message) {
         log.info("Consuming email: {}", message);
         mailService.send(message, MailMessageType.NEWSLETTER);

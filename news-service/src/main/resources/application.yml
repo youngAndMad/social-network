@@ -22,6 +22,8 @@ spring:
           user-service:
             url: ${USER_SERVICE_URL:http://localhost:8082}
           storage-service-client:
+            read-timeout: 200000
+            connect-timeout: 200000
             url: ${STORAGE_SERVICE_URL:http://localhost:7070/api/v1/file}
   security:
     oauth2:
