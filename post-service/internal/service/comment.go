@@ -44,12 +44,13 @@ func (s *CommentService) AddComment(request *model.AddCommentRequest, files []*m
 		fileRecord := &model.File{
 			Url:       fileUploadResponse.Url,
 			Extension: fileUploadResponse.Extension,
-			CommentID: comment.ID,
+			OwnerID:   comment.ID,
+			OwnerType: "comment",
 		}
 		fmt.Println(fileRecord)
-		//if err := s.DB.Create(&fileRecord).Error; err != nil {
-		//	return err
-		//}
+		if err := s.DB.Create(&fileRecord).Error; err != nil {
+			return err
+		}
 	}
 	return nil
 }

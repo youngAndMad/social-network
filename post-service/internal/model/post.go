@@ -16,5 +16,5 @@ type Post struct {
 	AuthorID   uint64         `json:"authorId"`
 	Comments   []Comment      `json:"comments"`
 	Reactions  []PostReaction `json:"reactions"`
-	Files      []File         `json:"files" gorm:"foreignKey:PostID"`
+	Files      []File         `gorm:"polymorphic:Owner;"`
 }

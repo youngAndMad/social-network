@@ -39,16 +39,16 @@ func (s *PostService) CreatePost(request *model.AddPostRequest, files []*multipa
 		fileRecord := &model.File{
 			Url:       fileUploadResponse.Url,
 			Extension: fileUploadResponse.Extension,
-			PostID:    post.ID,
+			OwnerID:   post.ID,
+			OwnerType: "post",
 		}
 		fmt.Println(fileRecord)
-		//if err := s.DB.Create(&fileRecord).Error; err != nil {
-		//	return err
-		//}
+		if err := s.DB.Create(&fileRecord).Error; err != nil {
+			return err
+		}
 	}
 	return nil
 }
-
 func (s *PostService) GetAuthorPosts(authorID uint64, postType model.PostType) ([]model.Post, error) {
 	var posts []model.Post
 	result := s.DB.Find(&posts, "author_id = ? AND type = ?", authorID, postType)

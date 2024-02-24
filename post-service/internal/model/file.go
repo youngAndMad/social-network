@@ -6,6 +6,6 @@ type File struct {
 	gorm.Model
 	Url       string `json:"url"`
 	Extension string `json:"extension"`
-	CommentID uint
-	PostID    uint
+	OwnerID   uint
+	OwnerType string
 }

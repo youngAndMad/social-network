@@ -33,7 +33,7 @@ services:
 #      - "7474:7474"
 #      - "7687:7687"
 #    environment:
-#      NEO4J_AUTH: neo4j/strong_password
+#     NEO4J_AUTH: neo4j/strong_password
 #  postgres:
 #    container_name: news
 #    image: postgres:15.1
@@ -115,22 +115,22 @@ services:
 #    image: redis
 #    ports:
 #      - "6379:6379"
-#  postgres-post:
-#    image: postgres
-#    container_name: post-postgres
-#    environment:
-#      POSTGRES_USER: postgres
-#      POSTGRES_PASSWORD: postgres
-#      POSTGRES_DB: post
-#    ports:
-#      - "5434:5432"
-#    volumes:
-#      - post-postgres:/var/lib/postgresql/data
-#networks:
-#  social-app:
-#    driver: bridge
+  postgres-post:
+    image: postgres
+    container_name: post-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: post
+    ports:
+      - "5434:5432"
+    volumes:
+      - post-postgres:/var/lib/postgresql/data
+networks:
+  social-app:
+    driver: bridge
 volumes:
   mongo:
 #  news:
   minio_storage:
-#  post-postgres:
+  post-postgres:

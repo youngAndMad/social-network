@@ -7,7 +7,6 @@ import (
 
 func bindError(c *gin.Context, status int, err error) {
 	_err := c.AbortWithError(status, err)
-
 	if _err != nil {
 		log.Fatal(err)
 	}

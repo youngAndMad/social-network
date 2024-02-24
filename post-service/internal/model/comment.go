@@ -7,5 +7,6 @@ type Comment struct {
 	Content  string `json:"content"`
 	PostID   uint   `json:"postId"`
 	AuthorID uint64 `json:"authorId"`
-	Files    []File `json:"files" gorm:"foreignKey:CommentID"`
+	Post     Post
+	Files    []File `gorm:"polymorphic:Owner;"`
 }
