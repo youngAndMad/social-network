@@ -26,7 +26,7 @@ func (s *PostReactionService) AddPostReaction(request model.AddPostReactionReque
 
 	postReaction := &model.PostReaction{
 		PostId:       post.ID,
-		AuthorId:     request.AuthorId,
+		OwnerID:      request.OwnerID,
 		ReactionType: request.PostReactionType,
 	}
 
