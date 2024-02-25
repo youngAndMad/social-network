@@ -17,19 +17,14 @@ type PostHandler struct {
 
 func (h *PostHandler) AddPost(c *gin.Context) {
 	content := c.PostForm("content")
-	authorId, err := strconv.ParseUint(c.PostForm("authorId"), 10, 64)
-
-	if err != nil {
-		bindError(c, http.StatusBadRequest, err)
-		return
-	}
+	authorId := c.PostForm("ownerID")
 
 	postType := model.PostType(c.PostForm("type"))
 
 	body := model.AddPostRequest{
-		Content:  content,
-		AuthorID: authorId,
-		Type:     postType,
+		Content: content,
+		OwnerID: authorId,
+		Type:    postType,
 	}
 
 	form, err := c.MultipartForm()
@@ -48,16 +43,12 @@ func (h *PostHandler) AddPost(c *gin.Context) {
 	c.Status(http.StatusCreated)
 }
 
-func (h *PostHandler) GetAuthorPosts(c *gin.Context) {
-	log.Print("GetAuthorPosts called")
+func (h *PostHandler) GetOwnerPosts(c *gin.Context) {
+	log.Print("GetOwnerPosts called")
 
-	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
-	if err != nil {
-		bindError(c, http.StatusBadRequest, err)
-		return
-	}
+	id := c.Query("ownerID")
 
-	if posts, err := h.PostService.GetAuthorPosts(id, model.PostType(c.Param("postType"))); err != nil {
+	if posts, err := h.PostService.GetOwnerPosts(id, model.PostType(c.Query("postType"))); err != nil {
 		bindError(c, http.StatusNotFound, err)
 		return
 	} else {
@@ -69,25 +60,20 @@ func (h *PostHandler) GetAuthorPosts(c *gin.Context) {
 func (h *PostHandler) UpdatePost(c *gin.Context) {
 	body := model.UpdatePostRequest{}
 
-	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
-	if err != nil {
-		bindError(c, http.StatusBadRequest, err)
-		return
-	}
-
-	var post model.Post
+	id := c.Param("id")
 
 	if err := c.BindJSON(&body); err != nil {
 		bindError(c, http.StatusBadRequest, err)
 		return
 	}
 
-	if err := h.PostService.UpdatePostContent(id, body.Content); err != nil {
+	post, err := h.PostService.UpdatePostContent(id, body.Content)
+	if err != nil {
 		bindError(c, http.StatusInternalServerError, err)
 		return
 	}
 
-	c.JSON(http.StatusCreated, &post)
+	c.JSON(http.StatusOK, post)
 }
 
 func (h *PostHandler) GetPostById(c *gin.Context) {
@@ -128,7 +114,7 @@ func RegisterPostRoutes(r *gin.Engine, db *gorm.DB) {
 	}
 
 	routes := r.Group("/api/v1/post")
-	routes.GET("", h.GetAuthorPosts)
+	routes.GET("", h.GetOwnerPosts)
 	routes.GET("/:id", h.GetPostById)
 	routes.POST("", h.AddPost)
 	routes.PUT("/:id", h.UpdatePost)

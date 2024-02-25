@@ -34,26 +34,26 @@ services:
 #      - "7687:7687"
 #    environment:
 #     NEO4J_AUTH: neo4j/strong_password
-  postgres:
-    container_name: news
-    image: postgres:15.1
-    environment:
-      POSTGRES_DB: news
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      PGDATA: /data/postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - news:/data/postgres
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.3.3
-    container_name: elasticsearch_container
-    ports:
-      - "9200:9200"
-    environment:
-      - discovery.type=single-node
-      - xpack.security.enabled=false
+#  postgres:
+#    container_name: news
+#    image: postgres:15.1
+#    environment:
+#      POSTGRES_DB: news
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: postgres
+#      PGDATA: /data/postgres
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - news:/data/postgres
+#  elasticsearch:
+#    image: docker.elastic.co/elasticsearch/elasticsearch:8.3.3
+#    container_name: elasticsearch_container
+#    ports:
+#      - "9200:9200"
+#    environment:
+#      - discovery.type=single-node
+#      - xpack.security.enabled=false
 #  mongo:
 #    container_name: mongo-db
 #    image: mongo
@@ -79,58 +79,58 @@ services:
 #    volumes:
 #      - minio_storage:/data
 #    command: server --console-address ":9001" /data
-  zookeeper:
-    image: confluentinc/cp-zookeeper:latest
-    networks:
-      - social-app
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-  kafka:
-    image: confluentinc/cp-kafka:latest
-    networks:
-      - social-app
-    depends_on:
-      - zookeeper
-    ports:
-      - "9092:9092"
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-  kafdrop:
-    image: obsidiandynamics/kafdrop:latest
-    networks:
-      - social-app
-    depends_on:
-      - kafka
-    ports:
-      - "19000:9000"
-    environment:
-      KAFKA_BROKERCONNECT: kafka:29092
-  redis:
-    image: redis
-    ports:
-      - "6379:6379"
-#  postgres-post:
-#    image: postgres
-#    container_name: post-postgres
+#  zookeeper:
+#    image: confluentinc/cp-zookeeper:latest
+#    networks:
+#      - social-app
 #    environment:
-#      POSTGRES_USER: postgres
-#      POSTGRES_PASSWORD: postgres
-#      POSTGRES_DB: post
+#      ZOOKEEPER_CLIENT_PORT: 2181
+#      ZOOKEEPER_TICK_TIME: 2000
+#  kafka:
+#    image: confluentinc/cp-kafka:latest
+#    networks:
+#      - social-app
+#    depends_on:
+#      - zookeeper
 #    ports:
-#      - "5434:5432"
-#    volumes:
-#      - post-postgres:/var/lib/postgresql/data
+#      - "9092:9092"
+#    environment:
+#      KAFKA_BROKER_ID: 1
+#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+#      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+#      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+#  kafdrop:
+#    image: obsidiandynamics/kafdrop:latest
+#    networks:
+#      - social-app
+#    depends_on:
+#      - kafka
+#    ports:
+#      - "19000:9000"
+#    environment:
+#      KAFKA_BROKERCONNECT: kafka:29092
+#  redis:
+#    image: redis
+#    ports:
+#      - "6379:6379"
+  postgres-post:
+    image: postgres
+    container_name: post-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: post
+    ports:
+      - "5434:5432"
+    volumes:
+      - post-postgres:/var/lib/postgresql/data
 networks:
   social-app:
     driver: bridge
 volumes:
 #  mongo:
-  news:
+#  news:
 #  minio_storage:
-#  post-postgres:
+  post-postgres:

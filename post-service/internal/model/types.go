@@ -1,15 +1,15 @@
 package model
 
 type AddCommentRequest struct {
-	AuthorID uint64 `json:"authorId"`
-	Content  string `json:"content"`
-	PostID   uint64 `json:"postId"`
+	OwnerID string `json:"ownerId"`
+	Content string `json:"content"`
+	PostID  uint64 `json:"postId"`
 }
 
 type AddPostRequest struct {
-	Content  string   `json:"content"`
-	Type     PostType `json:"type"`
-	AuthorID uint64   `json:"authorId"`
+	Content string   `json:"content"`
+	Type    PostType `json:"type"`
+	OwnerID string   `json:"ownerId"`
 }
 
 type UpdatePostRequest struct {
@@ -23,7 +23,7 @@ type UpdateCommentRequest struct {
 type AddPostReactionRequest struct {
 	PostId           uint64 `json:"postId"`
 	PostReactionType `json:"reactionType"`
-	AuthorId         uint `json:"authorId"`
+	OwnerID          string `json:"ownerId"`
 }
 
 type AddFileRequest struct {

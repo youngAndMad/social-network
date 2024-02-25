@@ -28,9 +28,9 @@ func (s *CommentService) AddComment(request *model.AddCommentRequest, files []*m
 	}
 
 	comment := &model.Comment{
-		AuthorID: request.AuthorID,
-		PostID:   post.ID,
-		Content:  request.Content,
+		OwnerID: request.OwnerID,
+		PostID:  post.ID,
+		Content: request.Content,
 	}
 	if err := s.DB.Create(&comment).Error; err != nil {
 		return err

@@ -15,7 +15,7 @@ type CommentHandler struct {
 
 func (h *CommentHandler) AddComment(c *gin.Context) {
 	content := c.PostForm("content")
-	authorId, err := strconv.ParseUint(c.PostForm("authorId"), 10, 64)
+	authorId := c.PostForm("ownerID")
 	postId, err := strconv.ParseUint(c.PostForm("postId"), 10, 64)
 	if err != nil {
 		bindError(c, http.StatusBadRequest, err)
@@ -23,9 +23,9 @@ func (h *CommentHandler) AddComment(c *gin.Context) {
 	}
 
 	body := model.AddCommentRequest{
-		AuthorID: authorId,
-		Content:  content,
-		PostID:   postId,
+		OwnerID: authorId,
+		Content: content,
+		PostID:  postId,
 	}
 	form, err := c.MultipartForm()
 	if err != nil {
@@ -87,7 +87,7 @@ func RegisterCommentRoutes(r *gin.Engine, db *gorm.DB) {
 		commentService: commentService,
 	}
 
-	routes := r.Group("/comment")
+	routes := r.Group("/api/v1/comment")
 	routes.POST("", h.AddComment)
 	routes.PUT("/:id", h.UpdateComment)
 	routes.DELETE("/:id", h.DeleteComment)

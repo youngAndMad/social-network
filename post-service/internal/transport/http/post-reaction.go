@@ -49,7 +49,7 @@ func RegisterPostReactionRoutes(r *gin.Engine, db *gorm.DB) {
 		postReactionService: postService,
 	}
 
-	routes := r.Group("/post-reaction")
+	routes := r.Group("/api/v1/post-reaction")
 
 	routes.POST("", h.AddPostReaction)
 	routes.DELETE("/:id", h.DeletePostReaction)

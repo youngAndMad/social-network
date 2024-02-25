@@ -15,6 +15,6 @@ const (
 type PostReaction struct {
 	gorm.Model
 	ReactionType PostReactionType `json:"reactionType"`
-	AuthorId     uint             `json:"authorId"`
+	OwnerID      string           `json:"ownerId"`
 	PostId       uint             `json:"postId"`
 }
