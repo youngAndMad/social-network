@@ -35,7 +35,6 @@ class UserMapper(
             user.preferredUsername!!,
             user.familyName!!,
             user.email!!,
-            user.birthDate.toString(),
             user.avatar ?:"null",
             addressMapper.toDto(user.address)
         )

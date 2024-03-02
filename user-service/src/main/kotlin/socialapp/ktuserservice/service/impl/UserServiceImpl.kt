@@ -3,21 +3,11 @@ package socialapp.ktuserservice.service.impl
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations
 import org.springframework.data.elasticsearch.core.SearchHits
-import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates
-import org.springframework.data.elasticsearch.core.query.Criteria
-import org.springframework.data.elasticsearch.core.query.CriteriaQuery
-import org.springframework.data.elasticsearch.repository.ElasticsearchRepository
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
-import socialapp.ktuserservice.common.AppConstants.Companion.AGE
-import socialapp.ktuserservice.common.AppConstants.Companion.CITY
-import socialapp.ktuserservice.common.AppConstants.Companion.COUNTRY
-import socialapp.ktuserservice.common.AppConstants.Companion.USERNAME
-import socialapp.ktuserservice.common.AppConstants.Companion.USER_INDEX
 import socialapp.ktuserservice.common.AppConstants.Companion.USER_PROFILE_IMAGE
 import socialapp.ktuserservice.common.client.StorageClient
 import socialapp.ktuserservice.common.mapper.UserMapper
@@ -27,16 +17,16 @@ import socialapp.ktuserservice.model.wrapper.UserElasticWrapper
 import socialapp.ktuserservice.repository.UserRepository
 import socialapp.ktuserservice.repository.elastic.UserElasticRepository
 import socialapp.ktuserservice.service.AddressService
+import socialapp.ktuserservice.service.RelationService
 import socialapp.ktuserservice.service.UserService
-import java.util.stream.Collectors
 
 @Service
 class UserServiceImpl(
     private var userRepository: UserRepository,
-    private var elasticsearchOperations: ElasticsearchOperations,
     private var addressService: AddressService,
     private var storageClient: StorageClient,
     private var userMapper: UserMapper,
+//    private var relationService: RelationServiceImpl,
     private var userElasticRepository: UserElasticRepository
 ) : UserService {
 
@@ -101,6 +91,7 @@ class UserServiceImpl(
         val jwt = auth.principal as Jwt
         val email = jwt.getClaimAsString("email")!!
         return this.userRepository.findByEmail(email)!!
+//        return UserResponseDto(user, null!!)
     }
 
     override fun deleteAvatar(id: Long) {
