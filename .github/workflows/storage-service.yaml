@@ -7,7 +7,7 @@ on:
       - 'storage-service/**'
 
 jobs:
-  qr-service:
+  storage-service:
     runs-on: ubuntu-latest
     steps:
       - name: checkout repository
