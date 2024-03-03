@@ -38,7 +38,6 @@ func (h *FileHandler) UploadFiles(c *gin.Context) {
 			bindError(c, http.StatusInternalServerError, err)
 			return
 		}
-
 		fileEntities = append(fileEntities, fileEntity)
 	}
 

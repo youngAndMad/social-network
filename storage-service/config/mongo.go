@@ -19,6 +19,5 @@ func InitMongoClient(env Env) *mongo.Client {
 	if err != nil {
 		log.Fatalf("Failed to ping MongoDB: %v", err)
 	}
-
 	return client
 }

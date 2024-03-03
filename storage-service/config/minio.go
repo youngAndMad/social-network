@@ -15,6 +15,5 @@ func InitMinioClient(env Env) *minio.Client {
 		log.Println("Error")
 		log.Fatal(err)
 	}
-
 	return minioClient
 }

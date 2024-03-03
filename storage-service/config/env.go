@@ -31,7 +31,6 @@ func LoadEnv(path string) (env Env, err error) {
 	}
 
 	err = viper.Unmarshal(&env)
-
 	fmt.Print(env)
 	return
 }
