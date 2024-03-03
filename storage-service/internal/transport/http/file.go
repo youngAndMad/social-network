@@ -43,7 +43,7 @@ func (h *FileHandler) UploadFiles(c *gin.Context) {
 	}
 
 	var response []entity.FileUploadResponse
-
+	fmt.Println("test")
 	for _, fileEntity := range fileEntities {
 		id, err := h.fileService.SaveFile(fileEntity)
 		if err != nil {
