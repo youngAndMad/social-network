@@ -12,7 +12,7 @@ func InitMinioClient(env Env) *minio.Client {
 		Secure: env.MinioSecure,
 	})
 	if err != nil {
-		log.Println("Ошибка")
+		log.Println("Error")
 		log.Fatal(err)
 	}
 

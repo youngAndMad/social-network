@@ -36,7 +36,6 @@ func main() {
 
 	log.Printf("app running on %s", env.Port)
 }
-
 func checkMinioBuckets(m *minio.Client) {
 	for _, bucket := range entity.Buckets {
 		exists, err := m.BucketExists(context.Background(), bucket.Name)
