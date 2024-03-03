@@ -1,18 +1,14 @@
 package socialapp.ktuserservice.controller
 
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
-import socialapp.ktuserservice.service.RelationService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import socialapp.ktuserservice.model.dto.UserRelationsDto
-//import socialapp.loggingstarter.annotations.LoggableInfo
+import socialapp.ktuserservice.service.RelationService
 
 
 @RestController
 @RequestMapping("api/v1/user/relation")
-//@LoggableInfo
 class RelationController(
     private var relationService: RelationService
 ) {

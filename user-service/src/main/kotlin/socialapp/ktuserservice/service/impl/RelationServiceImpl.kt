@@ -82,7 +82,10 @@ class RelationServiceImpl(
             this.receiver = subscription.receiver
         }
 
-        friendshipRepository.save(friendShip)
+
+        friendshipRepository.save(friendShip).let {
+            subscriptionRepository.delete(subscription)
+        }
     }
 
     override fun findUserRelations(userId: Long): UserRelationsDto {
@@ -93,18 +96,19 @@ class RelationServiceImpl(
         val friends = friendshipRepository.findAllByReceiverIdOrSenderId(user.id!!, user.id!!)
 
         return UserRelationsDto(
-            blockSet.stream().map { b -> RelationDto(b.receiver!!, b.createdTime?.toLocalDate()!!) }
+            blockSet.stream().map { b -> RelationDto(b.id!!, b.receiver!!, b.createdTime?.toLocalDate()!!) }
                 .collect(Collectors.toSet()),
             friends.stream().map { f ->
                 RelationDto(
+                    f.id!!,
                     if (f.receiver?.id == user.id) f.sender!! else f.receiver!!,
                     f.createdTime?.toLocalDate()!!
                 )
             }
                 .collect(Collectors.toSet()),
-            outgoingSubscriptions.stream().map { b -> RelationDto(b.receiver!!, b.createdTime?.toLocalDate()!!) }
+            outgoingSubscriptions.stream().map { b -> RelationDto(b.id!!,b.receiver!!, b.createdTime?.toLocalDate()!!) }
                 .collect(Collectors.toSet()),
-            incomingSubscriptions.stream().map { b -> RelationDto(b.sender!!, b.createdTime?.toLocalDate()!!) }
+            incomingSubscriptions.stream().map { b -> RelationDto(b.id!!,b.sender!!, b.createdTime?.toLocalDate()!!) }
                 .collect(Collectors.toSet())
         )
     }
