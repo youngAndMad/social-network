@@ -1,14 +1,15 @@
-FROM golang:1.16-alpine
+FROM golang:1.21-alpine
 
-WORKDIR /project/go-docker/
+WORKDIR /app
 
-# COPY go.mod, go.sum and download the dependencies
-COPY go.* ./
+COPY go.mod go.sum ./
 RUN go mod download
 
-# COPY All things inside the project and build
-COPY . .
-RUN go build -o /project/go-docker/build/myapp .
+RUN go get github.com/bytedance/sonic@v1.9.1
+RUN go mod tidy
 
-EXPOSE 8080
-ENTRYPOINT [ "/project/go-docker/build/myapp" ]
+COPY . .
+RUN go build -x -o main ./cmd
+
+EXPOSE 7070
+CMD ["./main"]
