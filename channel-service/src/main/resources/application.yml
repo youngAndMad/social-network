@@ -3,7 +3,7 @@ spring:
     banner-mode: off
   data:
     mongodb:
-      uri: mongodb://admin:adminpassword@91.147.92.254:27017/channel.Channel?authSource=admin
+      uri: mongodb://mongouser:mongopassword@localhost:27018/channel.Channel?authSource=admin
   security:
     oauth2:
       resourceserver:

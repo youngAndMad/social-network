@@ -54,17 +54,17 @@ services:
 #    environment:
 #      - discovery.type=single-node
 #      - xpack.security.enabled=false
-#  mongo:
-#    container_name: mongo-db
-#    image: mongo
-#    restart: always
-#    ports:
-#      - "27018:27017"
-#    volumes:
-#      - mongo:/data/mongo
-#    environment:
-#      MONGO_INITDB_ROOT_USERNAME: mongouser
-#      MONGO_INITDB_ROOT_PASSWORD: mongopassword
+  mongo:
+    container_name: mongo-db
+    image: mongo
+    restart: always
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo:/data/mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongouser
+      MONGO_INITDB_ROOT_PASSWORD: mongopassword
 #  minio:
 #    container_name: minio-storage
 #    image: minio/minio:latest
@@ -115,22 +115,22 @@ services:
 #    image: redis
 #    ports:
 #      - "6379:6379"
-  postgres-post:
-    image: postgres
-    container_name: post-postgres
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: post
-    ports:
-      - "5434:5432"
-    volumes:
-      - post-postgres:/var/lib/postgresql/data
-networks:
-  social-app:
-    driver: bridge
+#  postgres-post:
+#    image: postgres
+#    container_name: post-postgres
+#    environment:
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: postgres
+#      POSTGRES_DB: post
+#    ports:
+#      - "5434:5432"
+#    volumes:
+#      - post-postgres:/var/lib/postgresql/data
+#networks:
+#  social-app:
+#    driver: bridge
 volumes:
-#  mongo:
+  mongo:
 #  news:
 #  minio_storage:
-  post-postgres:
+#  post-postgres:
