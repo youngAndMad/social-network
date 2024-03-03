@@ -102,6 +102,7 @@ public class ChannelServiceImpl implements ChannelService {
     private Channel proceedChannelAvatarUploading(MultipartFile multipartFile, Channel channel) {
         var responseEntity = storageServiceClient.uploadFile(SOURCE_NAME, channel.getId(), multipartFile);
         channel.setAvatarUrl(Objects.requireNonNull(responseEntity.getBody()).url());
+        System.out.println(channel);
         return channelRepository.save(channel);
     }
 

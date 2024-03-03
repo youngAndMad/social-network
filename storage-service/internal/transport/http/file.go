@@ -25,14 +25,11 @@ func (h *FileHandler) UploadFiles(c *gin.Context) {
 		bindError(c, http.StatusBadRequest, err)
 		return
 	}
-
 	files := form.File["file"]
-
 	if len(files) == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "at least one file is required"})
 		return
 	}
-
 	var fileEntities []entity.File
 
 	for _, file := range files {
