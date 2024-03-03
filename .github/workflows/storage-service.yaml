@@ -28,5 +28,3 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       - name: Docker push
         run: docker push daneker/storage-service:latest
-
-
