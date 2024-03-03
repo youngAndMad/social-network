@@ -41,7 +41,7 @@ func (h *FileHandler) UploadFiles(c *gin.Context) {
 		}
 		fileEntities = append(fileEntities, fileEntity)
 	}
-
+	fmt.Println("hola")
 	var response []entity.FileUploadResponse
 	fmt.Println("test")
 	for _, fileEntity := range fileEntities {
