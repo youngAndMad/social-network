@@ -9,7 +9,7 @@ import socialapp.chatservice.model.enums.ChatRole;
 @Mapper(imports = {ChatRole.class})
 public interface MemberMapper {
 
-    @Mapping(target = "appUser", expression = "appUser")
+    @Mapping(target = "appUser", expression = "java(appUser)")
     PrivateChatMember toPrivateChatMember(AppUser appUser);
 
 }

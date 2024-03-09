@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import socialapp.chatservice.model.enums.ChatType;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -19,6 +20,6 @@ public class Chat {
     private ChatType type;
     private LocalDateTime createdAt;
     private String name;
-    private Set<ChatMember> members;
-    private Set<Message> messages;
+    private Set<ChatMember> members = new HashSet<>();
+    private Set<Message> messages = new HashSet<>();
 }

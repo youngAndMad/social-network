@@ -20,17 +20,17 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/auth/realms/socialapp
-          jwk-set-uri: http://localhost:8080/auth/realms/socialapp/protocol/openid-connect/certs
+          issuer-uri: ${OAUTH2_SERVER:http://localhost:8080}/auth/realms/socialapp
+          jwk-set-uri: ${OAUTH2_SERVER:http://localhost:8080}/auth/realms/socialapp/protocol/openid-connect/certs
   application:
     name: chat-service
   data:
     redis:
       master:
-        host: localhost
+        host: ${REDIS_HOST:localhost}
         port: 6379
       slaves:
-        - host: localhost
+        - host: ${REDIS_HOST:localhost}
           port: 6379
 server:
   port: 9393
@@ -42,6 +42,6 @@ logging:
 
 cors:
   allowCredentials: false
-  allowedOrigins: http://localhost:4200,http://127.0.0.1:5500
+  allowedOrigins: http://localhost:4200
   allowedMethods: GET,POST,PUT,DELETE,OPTIONS,HEAD
   allowedHeaders: origin,content-type,accept,authorization,cookie
