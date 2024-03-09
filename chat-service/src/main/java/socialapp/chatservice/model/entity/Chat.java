@@ -14,12 +14,11 @@ import java.util.Set;
 @Setter
 @FieldNameConstants
 public class Chat {
-
     @Id
     private String id;
+    private String name;
     private ChatType type;
     private LocalDateTime createdAt;
-    private String name;
     private Set<ChatMember> members = new HashSet<>();
     private Set<Message> messages = new HashSet<>();
 }

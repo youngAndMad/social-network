@@ -16,6 +16,7 @@ import socialapp.chatservice.model.dto.CreatePrivateChatRequestDto;
 import socialapp.chatservice.model.dto.notification.LeaveChatNotification;
 import socialapp.chatservice.model.entity.AppUser;
 import socialapp.chatservice.model.entity.Chat;
+import socialapp.chatservice.model.entity.ChatMember;
 import socialapp.chatservice.model.entity.Message;
 import socialapp.chatservice.model.enums.ChatType;
 import socialapp.chatservice.repository.ChatRepository;
@@ -87,6 +88,19 @@ public class ChatServiceImpl implements ChatService {
         }
 
         return chat;
+    }
+
+    @Override
+    public Set<ChatMember> getChatMembers(String chatId) {
+        var query = new Query(Criteria.where(Chat.Fields.id).is(chatId));
+        query.fields().include(Chat.Fields.members);
+        var chat = mongoTemplate.findOne(query, Chat.class);
+
+        if (chat == null) {
+            throw new EntityNotFoundException(Chat.class, chatId);
+        }
+
+        return chat.getMembers();
     }
 
     private String getPrivateChatName(AppUser creator, AppUser receiver) {
