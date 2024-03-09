@@ -16,5 +16,5 @@ type Post struct {
 	OwnerID   string         `json:"ownerId"`
 	Comments  []Comment      `json:"comments" gorm:"constraint:OnDelete:CASCADE"`
 	Reactions []PostReaction `json:"reactions" gorm:"constraint:OnDelete:CASCADE"`
-	Files     []File         `gorm:"polymorphic:Owner;constraint:OnDelete:CASCADE"`
+	Files     []File         `json:"files" gorm:"polymorphic:Owner;constraint:OnDelete:CASCADE"`
 }

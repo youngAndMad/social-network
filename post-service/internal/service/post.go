@@ -28,12 +28,15 @@ func (s *PostService) CreatePost(request *model.AddPostRequest, files []*multipa
 	post.Type = request.Type
 
 	if err := s.DB.Create(&post).Error; err != nil {
+		fmt.Errorf("ahahah error %s", err)
 		return err
 	}
 
 	for _, file := range files {
 		err, fileUploadResponse := s.storageClient.UploadFile("POST_CONTENT", int(post.ID), file)
 		if err != nil {
+			fmt.Errorf("ahahah error %s", err)
+
 			return err
 		}
 		fileRecord := &model.File{
@@ -42,8 +45,9 @@ func (s *PostService) CreatePost(request *model.AddPostRequest, files []*multipa
 			OwnerID:   post.ID,
 			OwnerType: "post",
 		}
-		fmt.Println(fileRecord)
 		if err := s.DB.Create(&fileRecord).Error; err != nil {
+			fmt.Errorf("ahahah error %s", err)
+
 			return err
 		}
 	}
@@ -56,7 +60,6 @@ func (s *PostService) GetOwnerPosts(ownerId string, postType model.PostType) ([]
 	if result.Error != nil {
 		fmt.Printf("Error: %v\n", result.Error)
 	}
-	fmt.Println(posts)
 	return posts, result.Error
 }
 

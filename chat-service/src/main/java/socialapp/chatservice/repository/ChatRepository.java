@@ -6,4 +6,7 @@ import socialapp.chatservice.model.entity.Chat;
 
 @Repository
 public interface ChatRepository extends MongoRepository<Chat,String> {
+
+
+
 }

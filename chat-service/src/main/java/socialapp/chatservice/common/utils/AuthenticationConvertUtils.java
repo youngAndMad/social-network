@@ -17,8 +17,8 @@ public class AuthenticationConvertUtils {
 
     private final JwtDecoder jwtDecoder;
 
-    public AppUser extractAppUser(Authentication authentication) {
-        if (authentication != null && authentication.getPrincipal() instanceof Jwt jwt) {
+    public AppUser extractAppUser(Authentication auth) {
+        if (auth != null && auth.getPrincipal() instanceof Jwt jwt) {
             return extractAppUser(jwt);
         }
         log.warn("extractAppUser authentication is null or not instance of Jwt");

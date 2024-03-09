@@ -30,9 +30,9 @@ public class UserStatusController {
     }
 
     @GetMapping("status")
-    ResponseEntity<IsOnlineResponse> isOnline(
+    IsOnlineResponse isOnline(
             @RequestParam @Email String email
-    ){
-        return ResponseEntity.ok(userStatusService.isUserOnline(email));
+    ) {
+        return userStatusService.isUserOnline(email);
     }
 }

@@ -6,12 +6,15 @@ import socialapp.chatservice.model.dto.notification.MessageNotification;
 import socialapp.chatservice.model.dto.PrivateMessageRequest;
 import socialapp.chatservice.model.entity.AppUser;
 import socialapp.chatservice.model.entity.Chat;
+import socialapp.chatservice.model.entity.Message;
 
 public interface ChatService {
 
     Chat createPrivateChat(AppUser appUser, CreatePrivateChatRequestDto requestDto);
 
-    MessageNotification saveMessage(PrivateMessageRequest messageRequest, AppUser appUser);
-
     LeaveChatNotification leaveChat(AppUser appUser, String chatId);
+
+    boolean existById(String chatId);
+
+    Chat insertMessage(String chatId, Message message);
 }

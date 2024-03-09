@@ -8,15 +8,15 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import socialapp.chatservice.common.exception.CreatePrivateChatMemberNotExistException;
+import socialapp.chatservice.common.exception.EntityNotFoundException;
 import socialapp.chatservice.common.feign.UserServiceClient;
 import socialapp.chatservice.mapper.ChatMapper;
 import socialapp.chatservice.mapper.MemberMapper;
 import socialapp.chatservice.model.dto.CreatePrivateChatRequestDto;
 import socialapp.chatservice.model.dto.notification.LeaveChatNotification;
-import socialapp.chatservice.model.dto.notification.MessageNotification;
-import socialapp.chatservice.model.dto.PrivateMessageRequest;
 import socialapp.chatservice.model.entity.AppUser;
 import socialapp.chatservice.model.entity.Chat;
+import socialapp.chatservice.model.entity.Message;
 import socialapp.chatservice.model.enums.ChatType;
 import socialapp.chatservice.repository.ChatRepository;
 import socialapp.chatservice.service.ChatService;
@@ -54,17 +54,39 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public MessageNotification saveMessage(PrivateMessageRequest messageRequest, AppUser appUser) {
-        return null;//todo
-    }
-
-    @Override
     public LeaveChatNotification leaveChat(AppUser appUser, String chatId) {
         var query = new Query(Criteria.where(Chat.Fields.id).is(chatId));
         var update = new Update().pull(Chat.Fields.members, Query.query(Criteria.where(AppUser.Fields.email).is(appUser.getEmail())));
         var chat = mongoTemplate.findAndModify(query, update, Chat.class);
-        assert chat != null; // todo throw exception
+
+        if (chat == null) {
+            throw new EntityNotFoundException(Chat.class, chatId);
+        }
+
+        if (chat.getMembers().isEmpty()) {
+            chatRepository.deleteById(chatId);
+        }
+
         return new LeaveChatNotification(chat.getId(), chat.getName(), appUser.getEmail());
+    }
+
+    @Override
+    public boolean existById(String chatId) {
+        return chatRepository.existsById(chatId);
+    }
+
+    @Override
+    public Chat insertMessage(String chatId, Message message) {
+        var query = new Query(Criteria.where(Chat.Fields.id).is(chatId));
+        var update = new Update().push(Chat.Fields.messages, message);
+
+        var chat = mongoTemplate.findAndModify(query, update, Chat.class);
+
+        if (chat == null) {
+            throw new EntityNotFoundException(Chat.class, chatId);
+        }
+
+        return chat;
     }
 
     private String getPrivateChatName(AppUser creator, AppUser receiver) {

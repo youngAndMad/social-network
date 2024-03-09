@@ -10,6 +10,6 @@ import java.time.LocalDateTime;
 public class Message {
     private String id;
     private String content;
-    private String senderEmail;
+    private AppUser sender;
     private LocalDateTime sentAt;
 }
