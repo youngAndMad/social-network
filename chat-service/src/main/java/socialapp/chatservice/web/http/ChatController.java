@@ -13,7 +13,7 @@ import socialapp.chatservice.service.ChatService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v/chat")
+@RequestMapping("/api/v1/chat")
 public class ChatController {
 
     private final ChatService chatService;

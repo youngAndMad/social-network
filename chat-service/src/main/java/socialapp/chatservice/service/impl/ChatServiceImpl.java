@@ -42,12 +42,19 @@ public class ChatServiceImpl implements ChatService {
     ) {
         var userIsExist = userServiceClient.isExists(requestDto.receiverEmail());
 
-        if (!userIsExist.isExists()) {
+        if (!userIsExist.exists()) {
             throw new CreatePrivateChatMemberNotExistException(requestDto.receiverEmail());
         }
 
         var creator = memberMapper.toPrivateChatMember(appUser);
         var receiver = memberMapper.toPrivateChatMember(userIsExist.user());
+
+        var query = new Query(Criteria.where(Chat.Fields.members).all(Set.of(creator, receiver)));
+        var chat = mongoTemplate.findOne(query, Chat.class);
+
+        if (chat != null) {
+            return chat;
+        }
 
         var saved = chatRepository.save(chatMapper.toModel(Set.of(creator, receiver), ChatType.PRIVATE, getPrivateChatName(appUser, userIsExist.user())));
         log.info("Creating private chat between {} and {} id = {}", creator, receiver, saved.getId());

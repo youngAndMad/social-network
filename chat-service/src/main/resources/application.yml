@@ -8,7 +8,7 @@ spring:
       client:
         config:
           user-service:
-            url: http://localhost:8080
+            url: http://localhost:8083
           storage-service:
             follow-redirects: true
             url: http://localhost:7070

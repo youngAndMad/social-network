@@ -28,6 +28,7 @@ class SecurityConfig{
                     HttpMethod.GET,
                     "/swagger-ui/**",
                     "/v3/api-docs/**",
+                    "/api/v1/user/is-exists/**",
                 ).permitAll()
                     .requestMatchers("/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
