@@ -10,7 +10,7 @@ import socialapp.chatservice.model.entity.Message;
 public interface NotificationMapper {
 
     @Mapping(target = "chatName", source = "chat.name")
-    @Mapping(target = "senderName", source = "message.sender.preferredUsername")
+    @Mapping(target = "senderName", source = "message.sender.email")
     @Mapping(target = "notificationTime", expression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "message", source = "message.content")
     @Mapping(target = "chatId", source = "chat.id")

@@ -1,6 +1,7 @@
 package socialapp.chatservice.model.dto.notification;
 
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public record MessageNotification (
@@ -9,5 +10,5 @@ public record MessageNotification (
         LocalDateTime notificationTime,
         String message,
         String chatId
-){
+) implements Serializable {
 }
