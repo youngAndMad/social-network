@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import socialapp.chatservice.model.dto.IsExistsResponse;
 
-@FeignClient(name = "user-service", url = "http://localhost:8083")
+@FeignClient(name = "user-service")
 public interface UserServiceClient {
 
     @GetMapping("/api/v1/user/is-exists")

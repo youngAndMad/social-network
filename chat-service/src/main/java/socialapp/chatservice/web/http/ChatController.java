@@ -2,9 +2,10 @@ package socialapp.chatservice.web.http;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import socialapp.chatservice.common.annotation.FetchUserContext;
 import socialapp.chatservice.common.context.UserContextHolder;
 import socialapp.chatservice.model.dto.CreatePrivateChatRequestDto;
@@ -20,7 +21,6 @@ public class ChatController {
 
     @PostMapping("private-chat")
     @FetchUserContext
-    @ResponseStatus(HttpStatus.CREATED)
     Chat createPrivateChat(
             @RequestBody @Valid CreatePrivateChatRequestDto requestDto
     ) {

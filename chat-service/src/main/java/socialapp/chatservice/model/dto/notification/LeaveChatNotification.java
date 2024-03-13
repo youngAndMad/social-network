@@ -1,9 +1,12 @@
 package socialapp.chatservice.model.dto.notification;
 
-public record LeaveChatNotification (
-        String chatId,
-        String chatName,
-        String username
-){
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class LeaveChatNotification extends Notification{
+    private String id;
+    private String username;
 }
 

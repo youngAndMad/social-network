@@ -36,7 +36,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ProblemDetail createProblemDetail(Exception ex, HttpStatusCode status, String defaultDetail, String detailMessageCode, Object[] detailMessageArguments, WebRequest request) {
+    protected ProblemDetail createProblemDetail(
+            Exception ex, HttpStatusCode status,
+            String defaultDetail,
+            String detailMessageCode,
+            Object[] detailMessageArguments,
+            WebRequest request) {
         return super.createProblemDetail(ex, status, defaultDetail, detailMessageCode, detailMessageArguments, request);
     }
 

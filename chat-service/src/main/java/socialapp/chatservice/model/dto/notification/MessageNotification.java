@@ -1,14 +1,13 @@
 package socialapp.chatservice.model.dto.notification;
 
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
 
-public record MessageNotification (
-        String chatName,
-        String senderName,
-        LocalDateTime notificationTime,
-        String message,
-        String chatId
-) implements Serializable {
+@Getter
+@Setter
+public class MessageNotification extends Notification {
+    private String id;
+    private String senderName;
+    private String message;
 }

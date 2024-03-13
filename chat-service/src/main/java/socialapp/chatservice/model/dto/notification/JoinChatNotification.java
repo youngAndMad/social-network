@@ -1,6 +1,11 @@
 package socialapp.chatservice.model.dto.notification;
 
-public record JoinChatNotification(
-        String username
-) {
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class JoinChatNotification extends Notification{
+    private String id;
+    private String username;
 }
