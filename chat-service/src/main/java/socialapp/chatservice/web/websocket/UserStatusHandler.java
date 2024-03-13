@@ -10,6 +10,7 @@ import socialapp.chatservice.common.utils.AuthenticationConvertUtils;
 import socialapp.chatservice.service.MessageService;
 import socialapp.chatservice.service.UserStatusService;
 
+import static socialapp.chatservice.common.AppConstants.USER_NOTIFICATION_DESTINATION;
 import static socialapp.chatservice.common.AppConstants.X_AUTHORIZATION;
 
 @Controller
@@ -32,10 +33,11 @@ public class UserStatusHandler {
         var userNotifications = messageService.checkMessages(appUser);
 
         userNotifications.forEach(notification -> {
-            simpMessagingTemplate.convertAndSend(
-                    "/queue/private-message/" + appUser.getEmail(),
-                    notification
-            );
+            simpMessagingTemplate.convertAndSendToUser(
+                    appUser.getEmail(),
+                    USER_NOTIFICATION_DESTINATION,
+                    notification)
+            ;
         });
     }
 

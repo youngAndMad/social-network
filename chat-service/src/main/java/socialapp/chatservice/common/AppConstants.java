@@ -11,7 +11,7 @@ public class AppConstants {
     public static final String X_AUTHORIZATION = "X-Authorization";
     public static final String AUTHORIZATION = "Authorization";
     public static final String BEARER = "Bearer ";
-    public static final String USER_CHAT_DESTINATION_PREFIX = "/user/chat/queue/";
+    public static final String USER_NOTIFICATION_DESTINATION = "/queue/notifications";
     public static final String USER_MESSAGE_NOTIFICATIONS = "message-notification:%s";
     public static final String USER_NOTIFICATIONS = "user-notification:%s";
 

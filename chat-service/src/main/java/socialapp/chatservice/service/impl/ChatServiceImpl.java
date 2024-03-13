@@ -12,6 +12,7 @@ import socialapp.chatservice.common.exception.EntityNotFoundException;
 import socialapp.chatservice.common.feign.UserServiceClient;
 import socialapp.chatservice.mapper.ChatMapper;
 import socialapp.chatservice.mapper.MemberMapper;
+import socialapp.chatservice.mapper.NotificationMapper;
 import socialapp.chatservice.model.dto.CreatePrivateChatRequestDto;
 import socialapp.chatservice.model.dto.notification.LeaveChatNotification;
 import socialapp.chatservice.model.entity.AppUser;
@@ -34,6 +35,7 @@ public class ChatServiceImpl implements ChatService {
     private final MongoTemplate mongoTemplate;
     private final UserServiceClient userServiceClient;
     private final MemberMapper memberMapper;
+    private final NotificationMapper notificationMapper;
 
     @Override
     public Chat createPrivateChat(
@@ -75,7 +77,7 @@ public class ChatServiceImpl implements ChatService {
             chatRepository.deleteById(chatId);
         }
 
-        return new LeaveChatNotification(chat.getId(), chat.getName(), appUser.getEmail());
+        return notificationMapper.createLeaveChatNotification(appUser, chat);
     }
 
     @Override

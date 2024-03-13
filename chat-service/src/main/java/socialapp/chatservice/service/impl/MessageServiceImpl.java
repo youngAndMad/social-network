@@ -42,7 +42,7 @@ public class MessageServiceImpl implements MessageService {
             AppUser appUser
     ) {
         if (!chatService.existById(messageRequest.chatId())) {
-            log.warn("Chat with id = {} not found", messageRequest.chatId());
+            log.error("Chat with id = {} not found", messageRequest.chatId());
             throw new EntityNotFoundException(Chat.class, messageRequest.chatId());
         }
 
@@ -63,7 +63,6 @@ public class MessageServiceImpl implements MessageService {
         if (notifications == null) {
             return Collections.emptySet();
         }
-
 
         return notifications.stream()
                 .map(notification -> (MessageNotification) notification)
