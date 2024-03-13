@@ -15,14 +15,13 @@ import socialapp.chatservice.service.ChatService;
 import socialapp.chatservice.service.MessageService;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static socialapp.chatservice.common.AppConstants.USER_NOTIFICATIONS;
+import static socialapp.chatservice.common.AppConstants.USER_MESSAGE_NOTIFICATIONS;
 
 @Service
 @RequiredArgsConstructor
@@ -59,7 +58,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Set<MessageNotification> checkMessages(AppUser appUser) { // todo extract to separate service with redis operations
         var notifications = redisTemplate.opsForZSet()
-                .range(USER_NOTIFICATIONS.formatted(appUser.getEmail()), 0, -1);
+                .range(USER_MESSAGE_NOTIFICATIONS.formatted(appUser.getEmail()), 0, -1);
 
         if (notifications == null) {
             return Collections.emptySet();
@@ -74,9 +73,9 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public void persistMessageNotification(MessageNotification messageNotification) {
         redisTemplate.opsForZSet()
-                .add(USER_NOTIFICATIONS.formatted(messageNotification.senderName()),
+                .add(USER_MESSAGE_NOTIFICATIONS.formatted(messageNotification.getSenderName()),
                         messageNotification,
-                        toEpochSecond.apply(messageNotification.notificationTime())
+                        toEpochSecond.apply(messageNotification.getNotificationTime())
                 );
     }
 
