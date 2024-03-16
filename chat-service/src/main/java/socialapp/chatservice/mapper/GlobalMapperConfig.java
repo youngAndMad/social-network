@@ -6,8 +6,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @MapperConfig(
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
-        implementationName = "Default<CLASS_NAME>"
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
 )
 public class GlobalMapperConfig {
 }
