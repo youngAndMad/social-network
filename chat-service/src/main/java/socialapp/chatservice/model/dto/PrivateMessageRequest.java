@@ -1,7 +1,9 @@
 package socialapp.chatservice.model.dto;
 
+import jakarta.validation.constraints.NotEmpty;
+
 public record PrivateMessageRequest(
-    String message,
-    String chatId
+    @NotEmpty String message,
+    @NotEmpty String chatId
 ){
 }

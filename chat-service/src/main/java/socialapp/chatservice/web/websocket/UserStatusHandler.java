@@ -1,10 +1,12 @@
 package socialapp.chatservice.web.websocket;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import socialapp.chatservice.common.annotation.BearerToken;
 import socialapp.chatservice.common.context.UserContextHolder;
 import socialapp.chatservice.common.utils.AuthenticationConvertUtils;
 import socialapp.chatservice.service.MessageService;
@@ -24,7 +26,7 @@ public class UserStatusHandler {
 
     @MessageMapping("/user-status/start-session")
     void startSession(
-            @Header(X_AUTHORIZATION) String authToken
+            @Header(X_AUTHORIZATION) @BearerToken String authToken
     ) {
         var appUser = authenticationConvertUtils.extractFromBearer(authToken);
 
@@ -42,7 +44,7 @@ public class UserStatusHandler {
     }
 
     @MessageMapping("/user-status/close-session")
-    void closeSession(@Header(X_AUTHORIZATION) String authToken) {
+    void closeSession(@Header(X_AUTHORIZATION) @BearerToken String authToken) {
         var appUser = authenticationConvertUtils.extractFromBearer(authToken);
         userStatusService.setUserOffline(appUser);
     }

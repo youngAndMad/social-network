@@ -1,14 +1,14 @@
 package socialapp.chatservice.web.websocket;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
+import socialapp.chatservice.common.annotation.BearerToken;
 import socialapp.chatservice.common.utils.AuthenticationConvertUtils;
 import socialapp.chatservice.model.dto.LeaveChatRequest;
-import socialapp.chatservice.model.dto.notification.LeaveChatNotification;
 import socialapp.chatservice.service.ChatService;
 import socialapp.chatservice.service.NotificationService;
 import socialapp.chatservice.service.UserStatusService;
@@ -27,8 +27,8 @@ public class GroupChatHandler {
 
     @MessageMapping("/leave-chat")
     void leaveChat(
-            @Header(X_AUTHORIZATION) String authToken,
-            @Valid LeaveChatRequest leaveChatRequest
+            @Header(X_AUTHORIZATION) @BearerToken String authToken,
+            @Validated LeaveChatRequest leaveChatRequest
     ){
         var currentUser = authenticationConvertUtils.extractFromBearer(authToken);
         var leaveChatNotification = chatService.leaveChat(currentUser, leaveChatRequest.chatId());

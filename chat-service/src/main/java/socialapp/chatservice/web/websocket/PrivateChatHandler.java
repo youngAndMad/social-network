@@ -7,6 +7,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
+import socialapp.chatservice.common.annotation.BearerToken;
 import socialapp.chatservice.common.utils.AuthenticationConvertUtils;
 import socialapp.chatservice.model.dto.PrivateMessageRequest;
 import socialapp.chatservice.service.ChatService;
@@ -28,8 +30,8 @@ public class PrivateChatHandler {
     private final UserStatusService userStatusService;
 
     @MessageMapping("private-chat-message")
-    void sendMessage(@Header(X_AUTHORIZATION) String authToken,
-                     @Payload PrivateMessageRequest messageRequest
+    void sendMessage(@Header(X_AUTHORIZATION) @BearerToken String authToken,
+                     @Payload @Validated PrivateMessageRequest messageRequest
     ) {
         var appUser = authenticationConvertUtils.extractFromBearer(authToken);
         log.info("User {} sent message: {}", appUser.getEmail(), messageRequest);
