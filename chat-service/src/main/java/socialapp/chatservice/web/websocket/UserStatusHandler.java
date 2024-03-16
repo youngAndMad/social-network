@@ -1,13 +1,11 @@
 package socialapp.chatservice.web.websocket;
 
-import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import socialapp.chatservice.common.annotation.BearerToken;
-import socialapp.chatservice.common.context.UserContextHolder;
 import socialapp.chatservice.common.utils.AuthenticationConvertUtils;
 import socialapp.chatservice.service.MessageService;
 import socialapp.chatservice.service.UserStatusService;
