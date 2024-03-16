@@ -23,4 +23,6 @@ public interface ChatService {
     Chat insertMessage(String chatId, Message message);
 
     Set<ChatMember> getChatMembers(String chatId);
+
+    List<Chat> getChatsByMember(AppUser appUser);
 }

@@ -181,6 +181,9 @@
                         <compilerArg>
                             -Amapstruct.defaultComponentModel=spring
                         </compilerArg>
+                        <compilerArg>
+                            --enable-preview
+                        </compilerArg>
                     </compilerArgs>
                 </configuration>
             </plugin>

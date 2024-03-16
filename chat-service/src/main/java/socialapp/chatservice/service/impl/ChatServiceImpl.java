@@ -2,6 +2,8 @@ package socialapp.chatservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -23,6 +25,7 @@ import socialapp.chatservice.model.enums.ChatType;
 import socialapp.chatservice.repository.ChatRepository;
 import socialapp.chatservice.service.ChatService;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -81,11 +84,13 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
+    @Cacheable(value = "chat", key = "#chatId")
     public boolean existById(String chatId) {
         return chatRepository.existsById(chatId);
     }
 
     @Override
+    @CachePut(value = "chat", key = "#chatId")
     public Chat insertMessage(String chatId, Message message) {
         var query = new Query(Criteria.where(Chat.Fields.id).is(chatId));
         var update = new Update().push(Chat.Fields.messages, message);
@@ -100,6 +105,16 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
+    @Cacheable(value = "chat", key = "#appUser.email")
+    public List<Chat> getChatsByMember(AppUser appUser) {
+        var query = new Query(Criteria.where(Chat.Fields.members)
+                .elemMatch(Criteria.where(AppUser.Fields.email).is(appUser.getEmail())));
+
+        return mongoTemplate.find(query, Chat.class);
+    }
+
+    @Override
+    @Cacheable(value = "chatMembers", key = "#chatId")
     public Set<ChatMember> getChatMembers(String chatId) {
         var query = new Query(Criteria.where(Chat.Fields.id).is(chatId));
         query.fields().include(Chat.Fields.members);

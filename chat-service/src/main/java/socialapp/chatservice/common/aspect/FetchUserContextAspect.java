@@ -30,7 +30,7 @@ public class FetchUserContextAspect {
             var appUser = authenticationConvertUtils.extractAppUser(authentication);
             UserContextHolder.setCurrentUser(appUser);
             log.info("User context set for: {}", appUser);
-        }else {
+        } else {
             log.info("Authentication from SecurityContextHolder is null, skipping setting user context");
         }
 
