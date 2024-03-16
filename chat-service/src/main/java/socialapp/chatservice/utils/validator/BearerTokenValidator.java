@@ -14,13 +14,13 @@ public class BearerTokenValidator implements ConstraintValidator<BearerToken,Str
      * This method checks if a given string is a valid Bearer token.
      * A valid Bearer token is not null and starts with "Bearer ".
      *
-     * @param s the string to be checked
+     * @param bearerToken the string to be checked
      * @param ctx the context in which the constraint is evaluated
      * @return true if the string is a valid Bearer token, false otherwise
      */
     @Override
-    public boolean isValid(String s, ConstraintValidatorContext ctx) {
-        return s != null && s.startsWith("Bearer ");
+    public boolean isValid(String bearerToken, ConstraintValidatorContext ctx) {
+        return bearerToken != null && bearerToken.startsWith("Bearer ");
     }
 
 }

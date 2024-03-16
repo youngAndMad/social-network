@@ -10,47 +10,25 @@ import org.testcontainers.utility.DockerImageName;
 
 @TestConfiguration
 @Slf4j
-public class TestContainerConfig {
+public class RedisTestContainerConfig {
 
     @Value("${spring.data.redis.port}")
     private Integer redisPort;
-
-    @Value("${spring.data.mongodb.port}")
-    private Integer mongoPort;
-
-    private GenericContainer<?> mongoContainer;
     private GenericContainer<?> redisContainer;
-
-
-    @Bean
-    GenericContainer<?> mongoContainer() {
-        mongoContainer = new GenericContainer<>(DockerImageName.parse("mongo:latest"))
-                .withExposedPorts(mongoPort, mongoPort);
-
-        mongoContainer.start();
-
-        log.info("Mongo container started on port: {}", mongoContainer.getMappedPort(mongoPort));
-
-        return mongoContainer;
-    }
 
     @Bean
     GenericContainer<?> redisContainer() {
         redisContainer = new GenericContainer<>(DockerImageName.parse("redis:latest"))
-                .withExposedPorts(redisPort, redisPort);
+                .withExposedPorts(redisPort);
 
         redisContainer.start();
-
-        log.info("Redis container started on port: {}", redisContainer.getMappedPort(redisPort));
         return redisContainer;
     }
 
     @PreDestroy
     public void destroy() {
-        log.info("Stopping containers... [redis, mongo]");
-        mongoContainer.stop();
+        log.info("Stopping containers... [redis]");
         redisContainer.stop();
     }
-
 
 }

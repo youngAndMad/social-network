@@ -4,11 +4,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.web.SecurityFilterChain;
+
+import static java.lang.StringTemplate.STR;
 
 @Configuration
 @EnableWebSecurity
@@ -30,18 +34,23 @@ public class SecurityConfig {
                                             "/swagger-ui.html",
                                     "/**"
                                     ).permitAll()
-                                    .requestMatchers("/admin/**").hasRole("ROLE_ADMIN")
+                                    .requestMatchers("/admin/**").hasRole("ADMIN")
                                     .anyRequest().authenticated();
                         }
                 )
-                .cors().disable().csrf().disable()
-                .oauth2ResourceServer().jwt();
+                .cors(Customizer.withDefaults())
+                .csrf(Customizer.withDefaults())
+                .oauth2ResourceServer(
+                        resourceServer -> resourceServer.jwt(jwt -> jwt.decoder(jwtDecoder()))
+                );
 
-        http.headers().frameOptions().disable()
-                .httpStrictTransportSecurity().disable();
+        http.headers(headers ->
+                        headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
+                        .httpStrictTransportSecurity(HeadersConfigurer.HstsConfig::disable)
+                );
 
 
-        return http.build();
+            return http.build();
     }
 
     @Bean
