@@ -8,7 +8,7 @@ import socialapp.chatservice.model.enums.ChatType;
 
 import java.util.Set;
 
-@Mapper
+@Mapper(config = GlobalMapperConfig.class)
 public interface ChatMapper {
 
     @Mapping(target = "id" , ignore = true)

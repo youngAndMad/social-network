@@ -6,7 +6,7 @@ import socialapp.chatservice.model.dto.PrivateMessageRequest;
 import socialapp.chatservice.model.entity.AppUser;
 import socialapp.chatservice.model.entity.Message;
 
-@Mapper
+@Mapper(config = GlobalMapperConfig.class)
 public interface MessageMapper {
 
     @Mapping(target = "content", source = "privateMessageRequest.message")

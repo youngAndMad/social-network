@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Mapper(
+        config = GlobalMapperConfig.class,
         imports = {
                 UUID.class, LocalDateTime.class, NotificationType.class
         }

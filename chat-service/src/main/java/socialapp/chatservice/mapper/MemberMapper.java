@@ -6,7 +6,7 @@ import socialapp.chatservice.model.entity.AppUser;
 import socialapp.chatservice.model.entity.PrivateChatMember;
 import socialapp.chatservice.model.enums.ChatRole;
 
-@Mapper(imports = {ChatRole.class})
+@Mapper(config = GlobalMapperConfig.class)
 public interface MemberMapper {
 
     @Mapping(target = "appUser", expression = "java(appUser)")
