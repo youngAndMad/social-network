@@ -10,7 +10,7 @@ public record RegistrationDto(
         String lastName,
         @Email
         String email,
-        @Password
+//        @Password
         String password,
         String phone,
         @NotBlank

@@ -11,6 +11,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {PasswordValidator.class})
 public @interface Password {
+
     String message() default """
             Too weak password, password should be between 8-30 characters.
             As minimum one digit, one special is required

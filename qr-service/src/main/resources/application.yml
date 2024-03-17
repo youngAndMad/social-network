@@ -4,8 +4,6 @@ qr:
   charset: UTF-8
 server:
   port: 7070
-  servlet:
-    context-path: /api/v1/qr
 spring:
   main:
     banner-mode: off

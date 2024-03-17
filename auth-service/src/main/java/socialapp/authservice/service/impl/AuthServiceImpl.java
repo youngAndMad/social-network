@@ -48,10 +48,10 @@ public class AuthServiceImpl implements AuthService {
         var hashedPassword = passwordEncoder.encode(registrationDto.password());
         var user = userMapper.toModel(registrationDto, hashedPassword, otp);
 
-        kafkaTemplate.send(
-                emailVerificationQueue,
-                new EmailMessageDto(user.getEmail(), String.valueOf(otp))
-        );
+//        kafkaTemplate.send( todo uncomment
+//                emailVerificationQueue,
+//                new EmailMessageDto(user.getEmail(), String.valueOf(otp))
+//        );
 
         return userRepository.save(user);
     }
