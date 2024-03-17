@@ -8,7 +8,7 @@ on:
 
 jobs:
   api-gateway:
-    uses: youngAndMad/deploy/.github/workflows/ci-cd.yml@master
+    uses: youngAndMad/deploy/.github/workflows/ci-cd.yaml@master
     with:
       maven-command: 'mvn -B clean install --file api-gateway/pom.xml'
       docker-image-name: 'daneker/api-gateway:latest'
