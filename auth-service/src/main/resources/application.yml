@@ -1,0 +1,46 @@
+logging:
+  level:
+    org.springframework:
+      web: debug
+      security: debug
+server:
+  port: 8080
+  scheme: http
+  host: localhost
+spring:
+  rabbitmq:
+    queues:
+      email-verification-name: email-verification.queue
+      email-verification-routing-key: email-verification.routing-key
+      email-verification-exchange: email-verification.exchange
+      reset-password-name: reset-password.queue
+      reset-password-routing-key: reset-password.routing-key
+      reset-password-exchange: reset-password.exchange
+    username: user
+    password: password
+    host: localhost
+  liquibase:
+    enabled: true
+    change-log: classpath:db.changelog/db.changelog-master.yaml
+  main:
+    banner-mode: off
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auth_service
+    password: postgres
+    username: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    open-in-view: true
+    properties:
+      hibernate:
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  output:
+    ansi:
+      enabled: ALWAYS
+app:
+  password-reset-token-ttl: 1800 #  30 min
+  otp-ttl: 300 # 5min

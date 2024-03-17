@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - include:
+      - file: classpath:/db.changelog/changeset/db.changelog-1-create-users-table.sql
+  - include:
+      - file: classpath:/db.changelog/changeset/db.changelog-2-alter-table-users.sql
+  - include:
+      - file: classpath:/db.changelog/changeset/db.changelog-3-create-role-table.sql
+  - include:
+      - file: classpath:/db.changelog/changeset/db.changelog-4-create-authority-table.sql
+  - include:
+      - file: classpath:/db.changelog/changeset/db.changelog-5-create-reset-password-token-table.sql
