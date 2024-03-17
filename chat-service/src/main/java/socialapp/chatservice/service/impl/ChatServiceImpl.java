@@ -108,7 +108,7 @@ public class ChatServiceImpl implements ChatService {
     @Cacheable(value = "chat", key = "#appUser.email")
     public List<Chat> getChatsByMember(AppUser appUser) {
         var query = new Query(Criteria.where(Chat.Fields.members)
-                .elemMatch(Criteria.where(AppUser.Fields.email).is(appUser.getEmail())));
+                .elemMatch(Criteria.where(STR."\{ChatMember.Fields.appUser}.\{AppUser.Fields.email}").is(appUser.getEmail())));
 
         return mongoTemplate.find(query, Chat.class);
     }
@@ -128,7 +128,7 @@ public class ChatServiceImpl implements ChatService {
     }
 
     private String getPrivateChatName(AppUser creator, AppUser receiver) {
-        return creator.getEmail() + ":" + receiver.getEmail();
+        return STR."\{creator.getEmail()}:\{receiver.getEmail()}";
     }
 
 }

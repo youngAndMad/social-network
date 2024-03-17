@@ -13,6 +13,7 @@ public interface ChatMapper {
 
     @Mapping(target = "id" , ignore = true)
     @Mapping(target = "type" , expression = "java(type)")
+    @Mapping(target="createdAt" , expression = "java(java.time.LocalDateTime.now())")
     Chat toModel(Set<ChatMember> members, ChatType type, String name);
 
 }

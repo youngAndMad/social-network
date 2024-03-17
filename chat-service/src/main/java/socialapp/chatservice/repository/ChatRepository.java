@@ -6,6 +6,7 @@ import socialapp.chatservice.model.entity.Chat;
 
 import javax.swing.text.html.Option;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface ChatRepository extends MongoRepository<Chat,String> {

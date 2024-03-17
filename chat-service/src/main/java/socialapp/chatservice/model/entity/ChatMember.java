@@ -2,6 +2,7 @@ package socialapp.chatservice.model.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 
 /**
  * This is a marker class for chat members.
@@ -9,6 +10,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@FieldNameConstants
 public abstract class ChatMember {
     private AppUser appUser;
     private String lastSeenMessageId;
