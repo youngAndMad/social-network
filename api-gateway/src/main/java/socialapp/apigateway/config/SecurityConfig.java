@@ -15,7 +15,7 @@ public class SecurityConfig {
     SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         http
                 .authorizeExchange(authorize -> authorize
-                        .anyExchange().permitAll()
+                        .anyExchange().authenticated()
                 )
                 .oauth2Login(Customizer.withDefaults())
                 .cors(Customizer.withDefaults())
