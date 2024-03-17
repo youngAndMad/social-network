@@ -3,14 +3,13 @@ package socialapp.authservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import socialapp.authservice.common.exception.InvalidOtpException;
 import socialapp.authservice.common.exception.OtpExpiredException;
 import socialapp.authservice.common.mapper.UserMapper;
-import socialapp.authservice.config.rabbit.RabbitProperties;
 import socialapp.authservice.model.dto.EmailMessageDto;
 import socialapp.authservice.model.dto.RegistrationDto;
 import socialapp.authservice.model.entity.User;
@@ -32,8 +31,10 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final RabbitTemplate rabbitTemplate;
-    private final RabbitProperties rabbitProperties;
+    private final KafkaTemplate<String, EmailMessageDto> kafkaTemplate;
+
+    @Value("${spring.kafka.queues.email-verification}")
+    private String emailVerificationQueue;
 
     private final SecureRandom random = new SecureRandom();
     @Value("${app.otp-ttl}")
@@ -47,9 +48,8 @@ public class AuthServiceImpl implements AuthService {
         var hashedPassword = passwordEncoder.encode(registrationDto.password());
         var user = userMapper.toModel(registrationDto, hashedPassword, otp);
 
-        rabbitTemplate.convertAndSend(
-                rabbitProperties.getEmailVerificationExchange(),
-                rabbitProperties.getEmailVerificationRoutingKey(),
+        kafkaTemplate.send(
+                emailVerificationQueue,
                 new EmailMessageDto(user.getEmail(), String.valueOf(otp))
         );
 

@@ -1,12 +1,13 @@
 package socialapp.authservice.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import socialapp.authservice.model.dto.RegistrationDto;
 import socialapp.authservice.model.dto.ResetPasswordRequestDto;
+import socialapp.authservice.model.entity.User;
 import socialapp.authservice.security.AppUserDetails;
 import socialapp.authservice.service.AuthService;
 import socialapp.authservice.service.ResetPasswordService;
@@ -22,44 +23,37 @@ public class AuthController {
     private final AuthService authService;
     private final ResetPasswordService resetPasswordService;
 
-    @PostMapping("registration")
-    ResponseEntity<?> register(@RequestBody @Valid RegistrationDto registrationDto) {
-        return ResponseEntity.status(CREATED)
-                .body(authService.register(registrationDto));
+    @PostMapping("register")
+    @ResponseStatus(CREATED)
+    User register(@RequestBody @Validated RegistrationDto registrationDto) {
+        return authService.register(registrationDto);
     }
 
     @GetMapping("reset-password-request")
-    ResponseEntity<?> resetPasswordRequest(@AuthenticationPrincipal AppUserDetails userDetails){
+    void resetPasswordRequest(@AuthenticationPrincipal AppUserDetails userDetails) {
         resetPasswordService.resetRequest(userDetails);
-        return ResponseEntity.status(OK)
-                .build();
     }
 
-    @PostMapping()
-    ResponseEntity<?>  resetPasswordAttempt(
-            @RequestBody @Valid ResetPasswordRequestDto resetPasswordRequestDto,
+    @PostMapping("reset-password/attempt")
+    void resetPasswordAttempt(
+            @RequestBody @Validated ResetPasswordRequestDto resetPasswordRequestDto,
             @AuthenticationPrincipal AppUserDetails userDetails
-    ){
-        resetPasswordService.resetAttempt(userDetails,resetPasswordRequestDto);
-
-        return ResponseEntity.status(OK)
-                .build();
+    ) {
+        resetPasswordService.resetAttempt(userDetails, resetPasswordRequestDto);
     }
 
 
     @PostMapping("confirm-email")
-    ResponseEntity<?> confirmEmail(
+    void confirmEmail(
             @RequestParam Integer otp,
             @AuthenticationPrincipal AppUserDetails userDetails
     ) {
-        authService.confirmEmail(otp,userDetails);
-        return ResponseEntity.status(OK)
-                .build();
+        authService.confirmEmail(otp, userDetails);
     }
 
     @GetMapping("/me")
-    ResponseEntity<?> me(@AuthenticationPrincipal AppUserDetails userDetails) {
-        return ResponseEntity.ok(userDetails);
+    AppUserDetails me(@AuthenticationPrincipal AppUserDetails userDetails) {
+        return userDetails;
     }
 
 }

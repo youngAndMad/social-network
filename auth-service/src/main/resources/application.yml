@@ -8,17 +8,20 @@ server:
   scheme: http
   host: localhost
 spring:
-  rabbitmq:
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      bootstrap-servers: http://localhost:9092
+      properties:
+        spring:
+          json:
+            add:
+              type:
+                headers: false
     queues:
-      email-verification-name: email-verification.queue
-      email-verification-routing-key: email-verification.routing-key
-      email-verification-exchange: email-verification.exchange
-      reset-password-name: reset-password.queue
-      reset-password-routing-key: reset-password.routing-key
-      reset-password-exchange: reset-password.exchange
-    username: user
-    password: password
-    host: localhost
+      email-verification: email-verification.queue
+      reset-password: reset-password.queue
   liquibase:
     enabled: true
     change-log: classpath:db.changelog/db.changelog-master.yaml

@@ -11,6 +11,8 @@ import org.springframework.security.oauth2.server.authorization.client.InMemoryR
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 
+import java.util.UUID;
+
 @Configuration
 public class SecurityConfig {
 
@@ -20,7 +22,8 @@ public class SecurityConfig {
 
     @Bean
     RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder) {
-        var registeredClient = RegisteredClient.withId("demo")
+
+        var registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("demo")
                 .clientSecret(passwordEncoder.encode("secret"))
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
@@ -28,10 +31,10 @@ public class SecurityConfig {
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .redirectUri("http://127.0.0.1:8082/login/oauth2/code/reg-client")
-                .scope("user.read")
-                .scope("user.write")
+                .scope("profile")
                 .scope("openid")
                 .build();
+
         return new InMemoryRegisteredClientRepository(registeredClient);
     }
 
