@@ -2,7 +2,7 @@ name: CI CD Storage service
 
 on:
   push:
-    branches: [ master ]
+    branches: [ avoid_ci_cd ]
     paths:
       - 'storage-service/**'
 

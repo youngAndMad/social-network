@@ -2,7 +2,7 @@ name: CI CD New service
 
 on:
   push:
-    branches: [ master ]
+    branches: [ avoid_ci_cd ]
     paths:
       - 'news-service/**'
 

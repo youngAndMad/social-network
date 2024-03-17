@@ -2,7 +2,7 @@ name: CI CD Logging starter
 
 on:
   push:
-    branches: [ master ]
+    branches: [ avoid_ci_cd ]
     paths:
       - 'logging-spring-boot-starter/**'
   workflow_dispatch:

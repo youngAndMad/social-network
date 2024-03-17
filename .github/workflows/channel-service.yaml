@@ -2,7 +2,7 @@ name: CI CD Channel service
 
 on:
   push:
-    branches: [ master ]
+    branches: [ avoid_ci_cd ]
     paths:
       - 'channel-service/**'
 

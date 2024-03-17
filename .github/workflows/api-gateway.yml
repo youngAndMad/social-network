@@ -2,7 +2,7 @@ name: CI CD Api gateway
 
 on:
   push:
-    branches: [ master ]
+    branches: [ avoid_ci_cd ]
     paths:
       - 'api-gateway/**'
 
