@@ -8,6 +8,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import socialapp.authservice.common.exception.InvalidOtpException;
+import socialapp.authservice.common.exception.InvalidRequestPayloadException;
+import socialapp.authservice.common.exception.InvalidResetPasswordToken;
 import socialapp.authservice.common.exception.OtpExpiredException;
 import socialapp.authservice.common.mapper.UserMapper;
 import socialapp.authservice.model.dto.EmailMessageDto;
@@ -44,6 +46,14 @@ public class AuthServiceImpl implements AuthService {
     public User register(
             RegistrationDto registrationDto
     ) {
+        if (userRepository.existsByEmail(registrationDto.email())) {
+            throw new InvalidRequestPayloadException("User with this email already exists");
+        }
+
+        if (userRepository.existsByTag(registrationDto.tag())) {
+            throw new InvalidRequestPayloadException("User with this tag already exists");
+        }
+
         var otp = randomOtp();
         var hashedPassword = passwordEncoder.encode(registrationDto.password());
         var user = userMapper.toModel(registrationDto, hashedPassword, otp);

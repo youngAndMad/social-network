@@ -1,5 +1,6 @@
 package socialapp.authservice.controller.advice;
 
+import jakarta.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
@@ -15,6 +16,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import socialapp.authservice.common.exception.EmailNotVerifiedException;
+import socialapp.authservice.common.exception.InvalidRequestPayloadException;
 import socialapp.authservice.common.exception.OtpExpiredException;
 import socialapp.authservice.model.dto.ErrorDetails;
 
@@ -26,9 +28,13 @@ import java.util.stream.Collectors;
 @Primary
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({EmailNotVerifiedException.class, OtpExpiredException.class})
-    ResponseEntity<?> handle(RuntimeException th, WebRequest request) {
-        var errorDetails = buildErrorDetails(th, HttpStatus.BAD_REQUEST, request);
+    @ExceptionHandler({
+            EmailNotVerifiedException.class,
+            InvalidRequestPayloadException.class,
+            OtpExpiredException.class
+    })
+    ResponseEntity<ErrorDetails> handle(RuntimeException ex, WebRequest request) {
+        var errorDetails = buildErrorDetails(ex, HttpStatus.BAD_REQUEST, request);
 
         return ResponseEntity
                 .badRequest()
@@ -37,8 +43,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     @Override
-    protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex, HttpHeaders headers,
-                                                                      HttpStatusCode status, WebRequest request) {
+    protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(
+            HttpMediaTypeNotAcceptableException ex,
+            HttpHeaders headers,
+            HttpStatusCode status,
+            WebRequest request
+    ) {
         var errorDetails = buildErrorDetails(ex, HttpStatus.BAD_REQUEST, request);
         return ResponseEntity
                 .badRequest()
@@ -46,10 +56,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
+    protected ResponseEntity<Object> handleExceptionInternal(
+            Exception ex,
+            @Nullable Object body,
+            HttpHeaders headers,
+            HttpStatusCode statusCode,
+            WebRequest request
+    ) {
         log.info("handleExceptionInternal message = {}", ex.getMessage());
         return super.handleExceptionInternal(ex, body, headers, statusCode, request);
     }
+
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(

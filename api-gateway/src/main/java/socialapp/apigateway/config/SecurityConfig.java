@@ -18,7 +18,8 @@ public class SecurityConfig {
                         .anyExchange().permitAll()
                 )
                 .oauth2Login(Customizer.withDefaults())
-                .cors(Customizer.withDefaults());
+                .cors(Customizer.withDefaults())
+                .csrf(ServerHttpSecurity.CsrfSpec::disable);
         return http.build();
     }
 }

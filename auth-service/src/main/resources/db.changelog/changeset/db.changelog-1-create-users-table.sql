@@ -5,7 +5,7 @@ CREATE TABLE users
     id         bigserial PRIMARY KEY,
     first_name varchar(255)        NOT NULL,
     last_name  varchar(255)        NOT NULL,
-    username   varchar(255) UNIQUE NOT NULL,
+    username   varchar(255)        NOT NULL,
     password   varchar(255)        NOT NULL,
     tag        varchar(255) UNIQUE NOT NULL,
     email      varchar(255) UNIQUE NOT NULL,
